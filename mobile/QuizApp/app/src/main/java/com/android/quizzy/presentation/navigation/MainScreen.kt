@@ -35,8 +35,8 @@ fun MainScreen(
     Scaffold(
         bottomBar = {
             AnimatedBottomNavigation(navController = navController, uiViewModel)
-
-        }
+        },
+        topBar = {}
     ) { innerPadding: PaddingValues ->
         ExampleNavigation(
             innerPadding = innerPadding,
