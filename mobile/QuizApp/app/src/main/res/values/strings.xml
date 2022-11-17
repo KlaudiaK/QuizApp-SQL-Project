@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quizzy</string>
+    <string name="login">Login to your Account</string>
+    <string name="name_too_short">Name too short</string>
+    <string name="success">Success</string>
+    <string name="credit_card_number">credit card number</string>
+    <string name="name">Name</string>
+    <string name="name_cannot_contain_digits">Name cannot contain digits</string>
+    <string name="email_cannot_be_empty">Email cannot be empty</string>
+    <string name="email_doesnt_mach_pattern">Email doesn\'t match pattern</string>
+    <string name="password_too_short">The password needs to consist of \n at least 8 characters</string>
+    <string name="password_pattern">The password needs to contain \n at least one letter and digit</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="repeated_password">Repeated password</string>
+    <string name="repeated_password_doesnt_match">The passwords don\'t match</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="username">Username</string>
+    <string name="username_too_short">The username needs to consist of \n at least 3 characters</string >
+    <string name="username_pattern">The username cannot contain \n only digits</string>
+    <string name="write_to_owner">write to owner</string>
+    <string name="title">Title</string>
+    <string name="edition">Edition</string>
+    <string name="author">Author</string>
+    <string name="take_photo">Take photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="category">Category</string>
+</resources>
