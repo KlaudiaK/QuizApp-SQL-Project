@@ -15,6 +15,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
+import com.android.quizzy.presentation.destinations.InputValidationAutoDebounceScreenDestination
 import com.android.quizzy.ui.theme.green60
 import com.android.quizzy.ui.theme.orange20
 import com.android.quizzy.ui.theme.pastelBlack
@@ -114,7 +116,7 @@ fun LoginScreen(
             onClick = {
                 viewModel.onEvent(LoginScreenEvent.OnLoginButtonClicked)
               //  if (!uiState.value.incorrectEmail && !uiState.value.incorrectPassword)
-                   // navigator.navigate(CategoriesScreenDestination)
+                    navigator.navigate(CategoriesScreenDestination)
             },
             colors = ButtonDefaults.buttonColors(containerColor = green60)
         ) {
@@ -124,7 +126,7 @@ fun LoginScreen(
         TextButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = {
-               // navigator.navigate(InputValidationAutoDebounceScreenDestination);
+                navigator.navigate(InputValidationAutoDebounceScreenDestination);
                 uiViewModel.onBottomBarVisibilityChange(false)
             }
 
