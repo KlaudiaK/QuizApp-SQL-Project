@@ -47,13 +47,13 @@ val textFieldModifier = Modifier
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun quizDetailsTextFieldColors() = TextFieldDefaults.outlinedTextFieldColors(
-    unfocusedBorderColor = pastelViolet,
-    textColor = pastelViolet,
-    focusedBorderColor = pastelViolet,
-    focusedLabelColor = pastelViolet,
-    unfocusedLabelColor = pastelViolet,
-    focusedTrailingIconColor = pastelViolet,
-    unfocusedTrailingIconColor = pastelViolet
+    unfocusedBorderColor = yellowPastel,
+    textColor = white20,
+    focusedBorderColor = sandYellow,
+    focusedLabelColor = yellowPastel,
+    unfocusedLabelColor = sandYellow,
+    focusedTrailingIconColor = white20,
+    unfocusedTrailingIconColor = white20
 )
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -234,7 +234,7 @@ fun ChipGroup(
                     onClick = { onSelectedChanged(it.name) },
                     leadingIcon = { Icon(it.icon, null, Modifier.alpha(0.7F)) },
                     label = { Text(text = it.name, fontSize = 12.sp) },
-                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = lightGreen20),
+                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = darkGreen80),
                     shape = RoundedCornerShape(12.dp),
                     elevation = FilterChipDefaults.filterChipElevation(10.dp)
                 )
