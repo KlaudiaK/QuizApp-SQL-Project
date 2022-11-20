@@ -31,10 +31,10 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun LoginScreen(
     navigator: DestinationsNavigator,
-    viewModel: AppViewModel = hiltViewModel<AppViewModel>(),
-    uiViewModel: UiViewModel = hiltViewModel<UiViewModel>()
+    viewModel: AppViewModel = hiltViewModel(),
+    uiViewModel: UiViewModel
 ) {
-
+    uiViewModel.onBottomBarVisibilityChange(false)
     val context = LocalContext.current
     val localFocusManager = LocalFocusManager.current
 
@@ -115,8 +115,9 @@ fun LoginScreen(
                 .fillMaxWidth(),
             onClick = {
                 viewModel.onEvent(LoginScreenEvent.OnLoginButtonClicked)
-              //  if (!uiState.value.incorrectEmail && !uiState.value.incorrectPassword)
-                    navigator.navigate(CategoriesScreenDestination)
+                //  if (!uiState.value.incorrectEmail && !uiState.value.incorrectPassword)
+                navigator.popBackStack()
+                navigator.navigate(CategoriesScreenDestination)
             },
             colors = ButtonDefaults.buttonColors(containerColor = green60)
         ) {

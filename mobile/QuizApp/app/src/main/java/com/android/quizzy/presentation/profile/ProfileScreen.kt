@@ -1,6 +1,5 @@
 package com.android.quizzy.presentation.profile
 
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
 import com.android.quizzy.presentation.destinations.LoginScreenDestination
 import com.android.quizzy.ui.theme.black80
 import com.android.quizzy.ui.theme.pastelBlue20
@@ -98,9 +98,11 @@ fun ProfileScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
 
-
             OutlinedButton(
-                onClick = { navigator.navigate(LoginScreenDestination) }, modifier = Modifier
+                onClick = {
+                    navigator.popBackStack(CategoriesScreenDestination, true)
+                    navigator.navigate(LoginScreenDestination)
+                }, modifier = Modifier
                     .width(120.dp)
                     .height(50.dp)
             ) {

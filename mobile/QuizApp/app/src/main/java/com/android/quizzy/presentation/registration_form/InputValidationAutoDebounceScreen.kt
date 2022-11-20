@@ -23,18 +23,17 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.android.quizzy.R
+import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
 import com.android.quizzy.ui.theme.pastelBlack
 import com.android.quizzy.ui.theme.pastelBlue20
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Destination(route = "registration", start = false)
@@ -45,7 +44,7 @@ fun InputValidationAutoDebounceScreen(
     UIviewModel: UiViewModel = hiltViewModel<UiViewModel>()
 ) {
     UIviewModel.onBottomBarVisibilityChange(true)
-    LaunchedEffect(key1 = Unit){
+    LaunchedEffect(key1 = Unit) {
 
     }
 
@@ -61,7 +60,7 @@ fun InputValidationAutoDebounceScreen(
             lifecycleOwner.lifecycle,
             Lifecycle.State.STARTED,
 
-        )
+            )
     }
 
     val username by viewModel.username.collectAsState()
@@ -74,9 +73,9 @@ fun InputValidationAutoDebounceScreen(
     val creditCardNumberFocusRequester = remember { FocusRequester() }
     val usernameFocusRequester = remember { FocusRequester() }
     val firstnameFocusRequester = remember { FocusRequester() }
-    val emailFocusRequester = remember{ FocusRequester() }
-    val passwordFocusRequester = remember{ FocusRequester() }
-    val repeatedPasswordFocusRequester = remember{ FocusRequester() }
+    val emailFocusRequester = remember { FocusRequester() }
+    val passwordFocusRequester = remember { FocusRequester() }
+    val repeatedPasswordFocusRequester = remember { FocusRequester() }
     LaunchedEffect(Unit) {
         events.collect { event ->
             when (event) {
@@ -113,11 +112,12 @@ fun InputValidationAutoDebounceScreen(
         verticalArrangement = Arrangement.Center,
         //horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Register",
+        Text(
+            text = "Register",
             color = pastelBlack,
             style = MaterialTheme.typography.displayLarge,
             modifier = Modifier.padding(bottom = 40.dp),
-            )
+        )
         CustomTextField(
             modifier = Modifier
                 .focusRequester(usernameFocusRequester)
@@ -227,14 +227,15 @@ fun InputValidationAutoDebounceScreen(
                 .align(Alignment.CenterHorizontally),
             onClick = {
                 viewModel::onContinueClick;
-                //navigator.navigate(QuizListDestination)
-                      },
-                enabled = areInputsValid,
-                colors = ButtonDefaults.buttonColors(containerColor = pastelBlue20),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
-                ) {
-                Text(text = "Continue")
-            }
+                navigator.popBackStack()
+                navigator.navigate(CategoriesScreenDestination)
+            },
+            enabled = areInputsValid,
+            colors = ButtonDefaults.buttonColors(containerColor = pastelBlue20),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
+        ) {
+            Text(text = "Continue")
+        }
 
     }
 

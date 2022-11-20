@@ -25,11 +25,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.quizzy.presentation.NavGraphs
 import com.android.quizzy.presentation.categories.CategoriesScreen
-import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
-import com.android.quizzy.presentation.destinations.MyQuizesScreenDestination
-import com.android.quizzy.presentation.destinations.QuizDetailsDestination
-import com.android.quizzy.presentation.destinations.QuizListDestination
+import com.android.quizzy.presentation.destinations.*
 import com.android.quizzy.presentation.details.QuizDetails
+import com.android.quizzy.presentation.login.LoginScreen
 import com.android.quizzy.presentation.my_quizzes.MyQuizesScreen
 import com.android.quizzy.presentation.quiz_list.QuizList
 import com.android.quizzy.presentation.registration_form.OnboardingViewModel
@@ -62,7 +60,7 @@ fun ExampleNavigation(
         composable(QuizListDestination) {
             QuizList(
                 uiViewModel = viewModel,
-                navigator = EmptyDestinationsNavigator,
+                navigator = this.destinationsNavigator,
                 category = navArgs.category
             )
         }
@@ -77,6 +75,9 @@ fun ExampleNavigation(
         }
         composable(MyQuizesScreenDestination) {
             MyQuizesScreen(navigator = this.destinationsNavigator, viewModel = viewModel)
+        }
+        composable(LoginScreenDestination) {
+            LoginScreen(navigator = this.destinationsNavigator, uiViewModel = viewModel)
         }
     }
 
