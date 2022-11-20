@@ -61,8 +61,9 @@ fun ExampleNavigation(
     ) {
         composable(QuizListDestination) {
             QuizList(
-                UIViewModel = viewModel,
-                navigator = EmptyDestinationsNavigator
+                uiViewModel = viewModel,
+                navigator = EmptyDestinationsNavigator,
+                category = navArgs.category
             )
         }
         composable(CategoriesScreenDestination) {

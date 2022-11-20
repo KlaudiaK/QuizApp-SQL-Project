@@ -55,7 +55,11 @@ fun CategoriesScreen(
             ) {
                 items(categories2) { category ->
                     CategoryCard(category = category, onClick = {
-                        navigator.navigate(QuizListDestination)
+                        navigator.navigate(
+                            QuizListDestination(
+                                category = category.name,
+                            )
+                        )
                     })
                 }
             }
