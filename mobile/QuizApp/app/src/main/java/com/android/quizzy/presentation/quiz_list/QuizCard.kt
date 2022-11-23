@@ -30,6 +30,7 @@ import com.android.quizzy.ui.theme.black60
 fun QuizCard(
     item: Quiz,
     onClick: () -> Unit,
+    backgroundColor: Color = black60
 ) {
     val title = item.title
     val author = item.author
@@ -45,11 +46,13 @@ fun QuizCard(
             .heightIn(max = 200.dp)
             .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = black60),
-          border = BorderStroke(0.5.dp, Categories.values().find {
-              it.name.lowercase() == (item.category?.lowercase() ?: "")
-          }?.color
-              ?: Color.Transparent)
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        border = BorderStroke(
+            0.5.dp, Categories.values().find {
+                it.name.lowercase() == (item.category?.lowercase() ?: "")
+            }?.color
+                ?: Color.Transparent
+        )
     ) {
 
 
@@ -66,13 +69,10 @@ fun QuizCard(
                 contentDescription = "thumbnail",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-
                     .height(120.dp)
-
                     .aspectRatio(0.8f)
-                    .padding(2.dp)
                     .align(Alignment.CenterVertically)
-                    .clip(RoundedCornerShape(36)),
+                    .clip(RoundedCornerShape(24)),
                 alpha = 0.95f,
                 onLoading = { Log.i("Load", "Loading") },
                 onSuccess = { Log.i("Load", "Success") },
