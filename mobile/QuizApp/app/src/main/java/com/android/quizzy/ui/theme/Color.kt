@@ -49,3 +49,8 @@ val green60 = Color(0xFF89968f)
 val lightGray = Color(0xFFF8F8F8)
 val black80 = Color(0xFF262B29)
 val black60 = Color(0xFF383F3D)
+
+val metalicGold = Color(0xFFD4AF37)
+val silver = Color(	0xFF838996)
+val platinium = Color(0xFFe5e4e2)
+val bronze = Color(0xFFcd7f32)
