@@ -86,7 +86,7 @@ fun ProfileScreen(
         Box(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(top = 70.dp)
+                //.padding(top = 70.dp)
         ) {
             Achievements()
         }

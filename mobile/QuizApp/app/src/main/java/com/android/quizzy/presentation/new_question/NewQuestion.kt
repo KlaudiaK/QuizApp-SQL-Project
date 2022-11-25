@@ -60,8 +60,8 @@ fun NewQuestion(
 
                 Text(
                     text = "Add new question",
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.W500,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.W400,
                     color = pastelWhite,
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 16.dp, end = 20.dp)
@@ -78,8 +78,10 @@ fun NewQuestion(
                         )
                     },
                     modifier = Modifier
-                        .heightIn(max = 80.dp)
-                        .fillMaxWidth(),
+                        .padding(vertical = 12.dp)
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        ,
                     label = { Text("Question") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         unfocusedBorderColor = lightGreen20,
@@ -99,20 +101,36 @@ fun NewQuestion(
                         isSelected = answer.isCorrect,
                         onValueChanged = { questionViewModel.onAnswerChangedChanged(it, index) })
                 }
-
-                OutlinedButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .width(180.dp)
-                        .padding(vertical = 24.dp)
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Add",
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.W500,
-                        color = lightPastelBlue20
-                    )
+                    OutlinedButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .width(180.dp)
+                            .wrapContentHeight()
+                            .padding(vertical = 24.dp)
+                    ) {
+                        Text(
+                            text = "Save",
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.W300,
+                            color = lightPastelBlue20
+                        )
+                    }
+
+                    TextButton(onClick = { /*TODO*/ }) {
+                        Text(
+                            text = "Add another",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W300,
+                            color = orange20
+                        )
+                    }
                 }
+
             }
 
 

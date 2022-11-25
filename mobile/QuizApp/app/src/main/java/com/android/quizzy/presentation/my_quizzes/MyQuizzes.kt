@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.twotone.WorkspacePremium
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,28 +50,74 @@ fun MyQuizesScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navigator.navigate(
-                    QuizDetailsDestination
-                )
-            }) {
+            FloatingActionButton(
+                onClick = {
+                    navigator.navigate(
+                        QuizDetailsDestination
+                    )
+                }, elevation = FloatingActionButtonDefaults.elevation(12.dp),
+                shape = CircleShape
+
+            ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new Quiz")
             }
         }, floatingActionButtonPosition = FabPosition.End,
         containerColor = black80
     ) {
-        Column {
-            Text(
-                text = "Hello username !",
-                style = TextStyle(
-                    fontSize = 32.sp,
-                    color = white20,
-                    fontWeight = FontWeight.W400,
-                    fontFamily = FontFamily.Monospace
-                ),
-                modifier = Modifier.padding(8.dp)
-            )
-            Row(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp, top = 22.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Row(
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Column {
+
+
+                    Row(
+                        Modifier
+                            .wrapContentSize()
+                            .padding(horizontal = 0.dp, vertical = 0.dp),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Text(
+                            text = "Hello,",
+                            style = TextStyle(
+                                fontSize = 28.sp,
+                                color = white20,
+                                fontWeight = FontWeight.W300,
+                                fontFamily = FontFamily.Monospace,
+                                textAlign = TextAlign.End
+                            ),
+                        )
+                        Text(
+                            text = "Katie",
+                            style = TextStyle(
+                                fontSize = 28.sp,
+                                color = white20,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = FontFamily.Monospace,
+                                textAlign = TextAlign.Start,
+                            ),
+                        )
+                    }
+                    Text(
+                        text = "Glad you're back",
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = white20,
+                            fontWeight = FontWeight.W100,
+                            fontFamily = FontFamily.Monospace,
+                        ),
+                        modifier = Modifier
+                            .wrapContentSize()
+                    )
+                }
                 Card(
                     border = BorderStroke(0.3.dp, black60),
                     elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
@@ -81,37 +129,42 @@ fun MyQuizesScreen(
                     shape = CircleShape
                 ) {
 
+                    Row(modifier = Modifier.fillMaxWidth()) {
 
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(url)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "thumbnail",
-                        contentScale = ContentScale.FillBounds,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .aspectRatio(1.0f)
-                            .padding(2.dp)
-                            .clip(CircleShape),
-                        alpha = 0.95f,
-                        onLoading = { Log.i("Load", "Loading") },
-                        onSuccess = { Log.i("Load", "Success") },
-                        onError = { Log.i("Load", "Error") },
-                    )
 
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(url)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "thumbnail",
+                            contentScale = ContentScale.FillBounds,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .aspectRatio(1.0f)
+                                .padding(2.dp)
+                                .clip(CircleShape),
+                            alpha = 0.95f,
+                            onLoading = { Log.i("Load", "Loading") },
+                            onSuccess = { Log.i("Load", "Success") },
+                            onError = { Log.i("Load", "Error") },
+                        )
+                        Icon(
+                            Icons.TwoTone.WorkspacePremium,
+                            contentDescription = null,
+                            tint = Rank.values().random().color,
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
                 }
-                Icon(
-                    Icons.TwoTone.WorkspacePremium,
-                    contentDescription = null,
-                    tint = Rank.values().random().color,
-                    modifier = Modifier.size(36.dp)
-                )
             }
+
+
 
             Spacer(
                 modifier = Modifier
-                    .fillMaxWidth(0.7F)
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
                     .height(0.2.dp)
                     .background(white20)
             )
@@ -124,12 +177,15 @@ fun MyQuizesScreen(
                     fontFamily = FontFamily.Monospace
                 ),
                 modifier = Modifier.padding(
-                    start = 8.dp, top = 10.dp
+                    top = 16.dp
                 )
             )
 
             LazyColumn(
-                modifier = Modifier.padding(top = 10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                horizontalAlignment = Alignment.Start,
                 content = {
 
                     uiState.value.quizItems?.let { item ->

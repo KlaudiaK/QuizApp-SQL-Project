@@ -3,6 +3,7 @@ package com.android.quizzy.presentation.quiz_list
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -10,6 +11,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,11 +42,14 @@ fun QuizCard(
     Card(
         shape = RoundedCornerShape(24),
         modifier = Modifier
-            .padding(16.dp)
+            .padding(vertical = 16.dp)
             //  .border(BorderStroke(2.dp,MaterialTheme.colorScheme.secondary))
-
             .heightIn(max = 200.dp)
-            .clickable(onClick = onClick),
+            .clickable(
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         border = BorderStroke(
