@@ -28,7 +28,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.android.quizzy.domain.Categories
 import com.android.quizzy.domain.Rank
-import com.android.quizzy.presentation.destinations.QuizDetailsDestination
+import com.android.quizzy.presentation.destinations.AddNewQuizScreenDestination
 import com.android.quizzy.presentation.quiz_list.QuizCard
 import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.QuizListViewModel
@@ -53,7 +53,7 @@ fun MyQuizesScreen(
             FloatingActionButton(
                 onClick = {
                     navigator.navigate(
-                        QuizDetailsDestination
+                        AddNewQuizScreenDestination
                     )
                 }, elevation = FloatingActionButtonDefaults.elevation(12.dp),
                 shape = CircleShape

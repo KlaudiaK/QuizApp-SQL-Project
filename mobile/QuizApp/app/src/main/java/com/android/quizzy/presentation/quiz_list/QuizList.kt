@@ -38,7 +38,7 @@ fun QuizList(
     Scaffold(containerColor = black80) {
 
 
-        Box(Modifier.fillMaxSize()) {
+        Box(Modifier.fillMaxSize().padding(16.dp)) {
             SegmentedControl(
                 items = listOf("Community", "Friends"), onItemSelection = {}, modifier = Modifier
                     .align(Alignment.TopCenter)

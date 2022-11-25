@@ -41,7 +41,6 @@ fun CategoriesScreen(
                 .padding(16.dp)
         ) {
 
-
             Text(
                 text = "Choose category",
                 fontSize = 32.sp,
@@ -51,7 +50,8 @@ fun CategoriesScreen(
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp)
+                contentPadding = PaddingValues(8.dp),
+
             ) {
                 items(categories2) { category ->
                     CategoryCard(category = category, onClick = {

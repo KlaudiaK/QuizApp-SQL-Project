@@ -47,7 +47,7 @@ val textFieldModifier = Modifier
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun quizDetailsTextFieldColors() = TextFieldDefaults.outlinedTextFieldColors(
-    unfocusedBorderColor = yellowPastel,
+    unfocusedBorderColor = orange20,
     textColor = white20,
     focusedBorderColor = sandYellow,
     focusedLabelColor = yellowPastel,
@@ -59,7 +59,7 @@ fun quizDetailsTextFieldColors() = TextFieldDefaults.outlinedTextFieldColors(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Destination(route = "add_new_quiz")
 @Composable
-fun QuizDetails(
+fun AddNewQuizScreen(
     navigator: DestinationsNavigator,
     viewModel: UiViewModel,
     quizViewModel: QuizViewModel = hiltViewModel()
@@ -110,9 +110,9 @@ fun QuizDetails(
                     ) {
                         Text(
                             text = "Create new quiz",
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.W600,
-                            color = pastelWhite,
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.W400,
+                            color = white20,
                             modifier = Modifier
                                 .padding(top = 12.dp, bottom = 16.dp, end = 20.dp)
                                 .align(Alignment.Start)
@@ -224,7 +224,8 @@ fun ChipGroup(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround
     ) {
         LazyRow {
             items(list) {
@@ -354,7 +355,7 @@ fun QuizImage(modifier: Modifier) {
                 .height(30.dp)
                 .align(Alignment.BottomEnd)
         ) {
-            Icon(Icons.TwoTone.AddCircleOutline, contentDescription = null, tint = yellowPastel)
+            Icon(Icons.TwoTone.AddCircleOutline, contentDescription = null, tint = orange20)
         }
     }
 }
