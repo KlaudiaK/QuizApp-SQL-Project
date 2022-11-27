@@ -37,31 +37,25 @@ ALTER TABLE Difficulty_Levels ADD CONSTRAINT Difficulty_Levels_PK PRIMARY KEY ( 
 
 CREATE TABLE favourites (
     user_id   INTEGER NOT NULL,
-    quiz_id   INTEGER NOT NULL,
-    quizes_id INTEGER NOT NULL,
-    users_id  INTEGER NOT NULL
+    quiz_id   INTEGER NOT NULL
 );
 
 ALTER TABLE favourites
     ADD CONSTRAINT favourites_pk PRIMARY KEY ( user_id,
-                                               quiz_id,
-                                               quizes_id,
-                                               users_id );
+                                               quiz_id
+                                                );
 
 CREATE TABLE "Friends Requests" (
     sent      DATE NOT NULL,
     from_user INTEGER NOT NULL,
-    to_user   DATE NOT NULL,
-    users_id  INTEGER NOT NULL,
-    users_id2 INTEGER NOT NULL
+    to_user   INTEGER NOT NULL
 );
 
 ALTER TABLE "Friends Requests"
     ADD CONSTRAINT friends_requests_pk PRIMARY KEY ( sent,
                                                      from_user,
-                                                     to_user,
-                                                     users_id,
-                                                     users_id2 );
+                                                     to_user
+                                                     );
 
 CREATE TABLE questions (
     id               INTEGER NOT NULL,
@@ -72,7 +66,7 @@ CREATE TABLE questions (
     quizes_id        INTEGER NOT NULL
 );
 
-ALTER TABLE questions ADD CONSTRAINT questions_pk PRIMARY KEY ( quizes_id );
+ALTER TABLE questions ADD CONSTRAINT questions_pk PRIMARY KEY ( id );
 
 CREATE TABLE quizes (
     id                                       INTEGER NOT NULL,
@@ -102,17 +96,14 @@ ALTER TABLE ranks ADD CONSTRAINT ranks_pk PRIMARY KEY ( min_points,
 CREATE TABLE "Solved Quizes" (
     user_id   INTEGER NOT NULL,
     "date"    DATE NOT NULL,
-    quiz_id   INTEGER NOT NULL,
-    quizes_id INTEGER NOT NULL,
-    users_id  INTEGER NOT NULL
+    quiz_id   INTEGER NOT NULL
 );
 
 ALTER TABLE "Solved Quizes"
     ADD CONSTRAINT solved_quizes_pk PRIMARY KEY ( user_id,
                                                   "date",
-                                                  quiz_id,
-                                                  quizes_id,
-                                                  users_id );
+                                                  quiz_id
+                                                );
 
 CREATE TABLE users (
     id               INTEGER NOT NULL,
@@ -139,26 +130,26 @@ ALTER TABLE "User Settings" ADD CONSTRAINT user_settings_pk PRIMARY KEY ( users_
 
 ALTER TABLE answers
     ADD CONSTRAINT answers_questions_fk FOREIGN KEY ( questions_quizes_id )
-        REFERENCES questions ( quizes_id )
+        REFERENCES questions ( id )
             ON DELETE CASCADE;
 
 ALTER TABLE favourites
-    ADD CONSTRAINT favourites_quizes_fk FOREIGN KEY ( quizes_id )
+    ADD CONSTRAINT favourites_quizes_fk FOREIGN KEY ( quiz_id )
         REFERENCES quizes ( id )
             ON DELETE CASCADE;
 
 ALTER TABLE favourites
-    ADD CONSTRAINT favourites_users_fk FOREIGN KEY ( users_id )
+    ADD CONSTRAINT favourites_users_fk FOREIGN KEY ( user_id )
         REFERENCES users ( id )
             ON DELETE CASCADE;
 
 ALTER TABLE "Friends Requests"
-    ADD CONSTRAINT friends_requests_users_fk FOREIGN KEY ( users_id )
+    ADD CONSTRAINT friends_requests_users_fk FOREIGN KEY ( from_user )
         REFERENCES users ( id )
             ON DELETE CASCADE;
 
 ALTER TABLE "Friends Requests"
-    ADD CONSTRAINT friends_requests_users_fkv1 FOREIGN KEY ( users_id2 )
+    ADD CONSTRAINT friends_requests_users_fkv1 FOREIGN KEY ( to_user )
         REFERENCES users ( id )
             ON DELETE CASCADE;
 
@@ -176,12 +167,12 @@ ALTER TABLE quizes
         REFERENCES Difficulty_Levels ( Difficulty_Levels_ID );
 
 ALTER TABLE "Solved Quizes"
-    ADD CONSTRAINT solved_quizes_quizes_fk FOREIGN KEY ( quizes_id )
+    ADD CONSTRAINT solved_quizes_quizes_fk FOREIGN KEY ( quiz_id )
         REFERENCES quizes ( id )
             ON DELETE CASCADE;
 
 ALTER TABLE "Solved Quizes"
-    ADD CONSTRAINT solved_quizes_users_fk FOREIGN KEY ( users_id )
+    ADD CONSTRAINT solved_quizes_users_fk FOREIGN KEY ( user_id )
         REFERENCES users ( id )
             ON DELETE CASCADE;
 
