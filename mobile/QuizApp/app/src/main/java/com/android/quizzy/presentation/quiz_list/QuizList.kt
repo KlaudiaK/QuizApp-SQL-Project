@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.quizzy.domain.Quiz
 import com.android.quizzy.presentation.components.SegmentedControl
+import com.android.quizzy.presentation.destinations.QuizDetailsDestination
 import com.android.quizzy.ui.theme.black80
 import com.android.quizzy.viewmodel.QuizListViewModel
 import com.android.quizzy.viewmodel.UiViewModel
@@ -58,7 +59,7 @@ fun QuizList(
                                 QuizCard(
                                     item = quiz,
                                     onClick = {
-                                        //navigator.navigate(BookDetailScreenDestination(bookId = book.id))
+                                        navigator.navigate(QuizDetailsDestination)
                                     },
                                 )
 
