@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
-import com.android.quizzy.domain.Categories
-import com.android.quizzy.domain.SharingOption
+import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.presentation.destinations.NewQuestionDestination
 import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.QuizViewModel
@@ -71,7 +71,7 @@ fun AddNewQuizScreen(
     val categories = Categories.values().map {
         it.name
     }
-    val sharingOptions = SharingOption.values().map {
+    val sharingOptions = PrivacySetting.values().map {
         it.name
     }
 
@@ -169,7 +169,7 @@ fun AddNewQuizScreen(
 
 
                 ChipGroup(
-                    list = SharingOption.values().toList(),
+                    list = PrivacySetting.values().toList(),
                     onSelectedChanged = { quizViewModel.onSharingOptionChanged(it) },
                     selectedItem = uiState.value.sharingOption
                 )
@@ -216,7 +216,7 @@ fun AddNewQuizScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChipGroup(
-    list: List<SharingOption>,
+    list: List<PrivacySetting>,
     selectedItem: String,
     onSelectedChanged: (String) -> Unit = {},
 ) {

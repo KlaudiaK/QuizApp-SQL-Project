@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.android.quizzy.domain.Answer
+import com.android.quizzy.domain.model.Answer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

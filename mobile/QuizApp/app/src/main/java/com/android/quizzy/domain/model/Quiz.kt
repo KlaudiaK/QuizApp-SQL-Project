@@ -1,10 +1,5 @@
-package com.android.quizzy.domain
+package com.android.quizzy.domain.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.ui.graphics.vector.ImageVector
 import java.time.LocalDate
 
 data class Quiz(
@@ -19,7 +14,7 @@ data class Quiz(
     val likes: Int? = null,
     val creationDate: LocalDate? = null,
     val modificationDate: LocalDate? = null,
-    val sharing: SharingOption? = null
+    val sharing: PrivacySetting? = null
 ) {
     companion object {
         val adres1 =
@@ -52,9 +47,4 @@ data class Quiz(
             )
         )
     }
-}
-
-
-enum class SharingOption(val icon: ImageVector) {
-    PRIVATE(Icons.Outlined.Lock), PUBLIC(Icons.Outlined.Public), FRIENDS(Icons.Outlined.Group)
 }

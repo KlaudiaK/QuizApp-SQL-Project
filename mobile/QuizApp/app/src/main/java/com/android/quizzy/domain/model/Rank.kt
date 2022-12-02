@@ -1,4 +1,4 @@
-package com.android.quizzy.domain
+package com.android.quizzy.domain.model
 
 import androidx.compose.ui.graphics.Color
 import com.android.quizzy.ui.theme.bronze

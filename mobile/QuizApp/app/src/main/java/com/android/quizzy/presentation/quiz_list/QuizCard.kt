@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.android.quizzy.domain.Categories
-import com.android.quizzy.domain.Quiz
+import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.ui.theme.black60
 
 @Composable

@@ -1,6 +1,6 @@
 package com.android.quizzy.presentation.quiz_list
 
-import com.android.quizzy.domain.Quiz
+import com.android.quizzy.domain.model.Quiz
 
 data class QuizListScreenState (
     var query: String = "",

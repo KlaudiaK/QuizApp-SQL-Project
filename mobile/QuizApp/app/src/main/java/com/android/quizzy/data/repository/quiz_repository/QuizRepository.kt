@@ -1,6 +1,6 @@
 package com.android.quizzy.data.repository.quiz_repository
 
-import com.android.quizzy.domain.Quiz
+import com.android.quizzy.domain.model.Quiz
 
 interface QuizRepository {
     fun getQuizzes(): List<Quiz>

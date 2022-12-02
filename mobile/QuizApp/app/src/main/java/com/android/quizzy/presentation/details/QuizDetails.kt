@@ -44,8 +44,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.android.quizzy.R
-import com.android.quizzy.domain.Categories
-import com.android.quizzy.domain.Quiz
+import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.presentation.destinations.WholeAnswerScreenDestination
 import com.android.quizzy.ui.theme.black80
 import com.android.quizzy.ui.theme.pastelWhite

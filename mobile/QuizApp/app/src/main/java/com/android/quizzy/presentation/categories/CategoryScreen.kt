@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.quizzy.domain.Categories
-import com.android.quizzy.domain.Category
+import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.Category
 import com.android.quizzy.presentation.destinations.QuizListDestination
 import com.android.quizzy.ui.theme.black80
 import com.android.quizzy.ui.theme.pastelWhite

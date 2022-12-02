@@ -1,4 +1,4 @@
-package com.android.quizzy.domain
+package com.android.quizzy.domain.model
 
 import java.time.LocalDate
 

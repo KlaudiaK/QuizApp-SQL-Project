@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.android.quizzy.domain.Categories
-import com.android.quizzy.domain.Rank
+import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.Rank
 import com.android.quizzy.presentation.destinations.AddNewQuizScreenDestination
 import com.android.quizzy.presentation.quiz_list.QuizCard
 import com.android.quizzy.ui.theme.*
