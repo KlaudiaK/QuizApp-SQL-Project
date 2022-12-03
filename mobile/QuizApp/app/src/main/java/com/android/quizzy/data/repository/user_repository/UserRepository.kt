@@ -1,14 +1,8 @@
 package com.android.quizzy.data.repository.user_repository
 
-import com.android.quizzy.utils.Resource
+import com.android.quizzy.domain.model.User
 
 interface UserRepository {
 
-    suspend fun checkIfUserEmailExistsInDB(
-        email: String
-    ): Resource<Boolean>
-
-    suspend fun checkIfUsernameExistsInDB(
-        email: String
-    ): Resource<Boolean>
+    fun getUser(id: Int): User
 }

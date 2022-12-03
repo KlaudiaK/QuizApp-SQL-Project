@@ -17,7 +17,7 @@ data class Quiz(
     val sharing: PrivacySetting? = null
 ) {
     companion object {
-        val adres1 =
+        const val adres1 =
             "https://static.designboom.com/wp-content/uploads/2022/05/strozzi-nft-db-500.jpg"
         val url2 =
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHlPV78oDliBqT3lBJ3OyP5ENC9ixCZYa6cA&usqp=CAU"
@@ -28,23 +28,26 @@ data class Quiz(
             category = Categories.ART.name
         )
 
+        val sampleQuiz1 = Quiz(
+            id = 1, title = "Sample title",
+            image = adres1,
+            author = "Whoever",
+            category = Categories.ART.name
+        )
+        val sampleQuiz2 = Quiz(
+            id = 2, title = "Sample title but another",
+            image = "https://us.123rf.com/450wm/igornelson/igornelson1807/igornelson180700087/114801534-quiz-w-komiksowym-stylu-quiz-m%C4%85dry-projekt-wektor-gry-.jpg?ver=6",
+            author = "Whoever but another",
+            category = Categories.ANIMALS.name
+        )
+        val sampleQuiz3 = Quiz(
+            id = 3, title = "Sample title but another than prev",
+            image = url2,
+            author = "Whoever but another than prev",
+            category = Categories.TRAVEL.name
+        )
         val sampleQuizList = listOf(
-            Quiz(
-                id = 1, title = "Sample title",
-                image = adres1,
-                author = "Whoever",
-                category = Categories.ART.name
-            ), Quiz(
-                id = 2, title = "Sample title but another",
-                image = "https://us.123rf.com/450wm/igornelson/igornelson1807/igornelson180700087/114801534-quiz-w-komiksowym-stylu-quiz-m%C4%85dry-projekt-wektor-gry-.jpg?ver=6",
-                author = "Whoever but another",
-                category = Categories.ANIMALS.name
-            ), Quiz(
-                id = 3, title = "Sample title but another than prev",
-                image = url2,
-                author = "Whoever but another than prev",
-                category = Categories.TRAVEL.name
-            )
+            sampleQuiz1, sampleQuiz2, sampleQuiz3
         )
     }
 }

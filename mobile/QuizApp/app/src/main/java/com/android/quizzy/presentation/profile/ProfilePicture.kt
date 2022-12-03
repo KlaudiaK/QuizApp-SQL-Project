@@ -282,7 +282,7 @@ fun TakePicture(
                     .align(Alignment.CenterHorizontally)
                     .padding(12.dp),
                 textAlign = TextAlign.Center,
-                text = "Username",
+                text = uiState.value.username,
                 style = MaterialTheme.typography.displaySmall
             )
             Divider(
@@ -296,7 +296,7 @@ fun TakePicture(
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp),
                 textAlign = TextAlign.Center,
-                text = uiState.value.username,
+                text = uiState.value.email,
                 style = MaterialTheme.typography.bodyLarge
             )
 

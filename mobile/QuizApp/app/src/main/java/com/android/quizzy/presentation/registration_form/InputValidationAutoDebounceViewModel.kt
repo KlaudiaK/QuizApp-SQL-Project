@@ -28,38 +28,6 @@ class InputValidationAutoDebounceViewModel @Inject constructor(
     private val _uiState = mutableStateOf(OnboardingState())
     val uiState: State<OnboardingState> = _uiState
 
-    private fun checkIfUserEmailExistInDB(email: String)  {
-        viewModelScope.launch {
-            /*
-            userRepositoryImpl.checkIfUserEmailExistsInDB(email).collect{ result ->
-                when(result){
-                    is Resource.Loading ->{}
-                    is Resource.Error -> {}
-                    is Resource.Success -> {
-
-                    }
-                }
-            }
-             */
-        }
-    }
-
-    private fun checkIfUsernameExistInDB(username: String)  {
-        viewModelScope.launch {
-            /*
-            userRepositoryImpl.checkIfUsernameExistsInDB(username).collect{ result ->
-                when(result){
-                    is Resource.Loading ->{}
-                    is Resource.Error -> {}
-                    is Resource.Success -> {
-
-                    }
-                }
-            }
-             */
-        }
-    }
-
     val username = handle.getStateFlow(viewModelScope, "username", InputWrapper())
     val firstname = handle.getStateFlow(viewModelScope, "firstname", InputWrapper())
     val email = handle.getStateFlow(viewModelScope, "email", InputWrapper())
@@ -180,10 +148,9 @@ class InputValidationAutoDebounceViewModel @Inject constructor(
                             repeatedPassword.value = repeatedPassword.value.copy(errorId = errorId)
                         }
                         UserInputEvent.OnContinueButtonClicked -> {
-                            checkIfUserEmailExistInDB(uiState.value.email)
+
                             if(!uiState.value.incorrectEmail){
 
-                                checkIfUsernameExistInDB(uiState.value.username)
                                 if(!uiState.value.incorrectUsername){
                                     Log.i("Username doesn't exist ", uiState.value.incorrectUsername.toString())
                                     /*
