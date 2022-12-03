@@ -34,4 +34,12 @@
     <string name="take_photo">Take photo</string>
     <string name="choose_from_gallery">Choose from gallery</string>
     <string name="category">Category</string>
+    <string name="quiz_title_cannot_be_empty">Title cannot be empty</string>
+    <string name="quiz_title_too_short">Title needs to consist of \n at least 3 characters></string>
+    <string name="quiz_title_cannot_contain_digits">Title cannot contain digits</string>
+    <string name="quiz_category_cannot_be_empty">Category cannot be empty</string>
+    <string name="quiz_points_cannot_be_empty">Points cannot be empty</string>
+    <string name="quiz_points_too_small">Points must be bigger then 10</string>
+    <string name="quiz_points_too_big">Points must be smaller than 300</string>
+    <string name="difficulty_level_cannot_be_empty">Difficulty level cannot be empty</string>
 </resources>

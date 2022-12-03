@@ -46,4 +46,35 @@ object InputValidator {
         }
     }
 
+    fun getTitleErrorIdOrNull(input: String): Int? {
+        return when {
+            input.isEmpty() -> R.string.quiz_title_cannot_be_empty
+            input.length < 2 ->R.string.quiz_title_too_short
+            input.any{it.isDigit()} -> R.string.quiz_title_cannot_contain_digits
+            else -> null
+        }
+    }
+
+    fun getCategoryErrorIdOrNull(input: String): Int? {
+        return when {
+            input.isEmpty() -> R.string.quiz_category_cannot_be_empty
+            else -> null
+        }
+    }
+
+    fun getPointsErrorIdOrNull(input: String): Int? {
+        return when {
+            input.isEmpty() -> R.string.quiz_points_cannot_be_empty
+            input.toInt() < 10 ->R.string.quiz_points_too_small
+            input.toInt() > 300 ->R.string.quiz_points_too_big
+            else -> null
+        }
+    }
+
+    fun getDifficultyLevelIdOrNull(input: String): Int? {
+        return when {
+            input.isEmpty() -> R.string.difficulty_level_cannot_be_empty
+            else -> null
+        }
+    }
 }

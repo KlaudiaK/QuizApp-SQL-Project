@@ -54,3 +54,7 @@ val metalicGold = Color(0xFFD4AF37)
 val silver = Color(	0xFF838996)
 val platinium = Color(0xFFe5e4e2)
 val bronze = Color(0xFFcd7f32)
+
+val easyGreen = Color(0x863DE95A)
+val mediumYellow = Color(0xABE9B83D)
+val hardRed = Color(0xC1E93D3D)

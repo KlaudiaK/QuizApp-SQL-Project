@@ -1,4 +1,4 @@
-package com.android.quizzy.presentation.details
+package com.android.quizzy.presentation.add_new_quiz
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.presentation.destinations.NewQuestionDestination
 import com.android.quizzy.ui.theme.*
@@ -65,13 +67,18 @@ fun AddNewQuizScreen(
     quizViewModel: QuizViewModel = hiltViewModel()
 ) {
     val uiState = quizViewModel.uiState
+    val inputErrors = quizViewModel.inputErrors
     var title by remember { mutableStateOf(TextFieldValue("")) }
 
     viewModel.onBottomBarVisibilityChange(false)
     val categories = Categories.values().map {
         it.name
     }
-    val sharingOptions = PrivacySetting.values().map {
+    val privacySettings = PrivacySetting.values().map {
+        it.name
+    }
+
+    val difficultyLevels = DifficultyLevel.values().map {
         it.name
     }
 
@@ -122,12 +129,17 @@ fun AddNewQuizScreen(
                             onValueChange = { if (it.length < 40) quizViewModel.onTitleChanged(it) },
                             modifier = Modifier
                                 .heightIn(max = 80.dp)
-                                .width(170.dp),
+                                .width(190.dp),
                             label = { Text("Title") },
                             colors = quizDetailsTextFieldColors(),
                             maxLines = 2,
-
-                            )
+                            isError = inputErrors.value.titleErrorId != null,
+                            supportingText = {
+                                inputErrors.value.titleErrorId?.let {
+                                    Text(stringResource(id = it))
+                                }
+                            }
+                        )
                     }
 
                     QuizImage(
@@ -135,6 +147,7 @@ fun AddNewQuizScreen(
                             .align(Alignment.TopEnd)
                             .height(120.dp)
                             .width(130.dp)
+                            .padding(start = 12.dp)
                     )
                 }
 
@@ -146,32 +159,53 @@ fun AddNewQuizScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     label = { Text("Description") },
                     colors = quizDetailsTextFieldColors(),
-
-                    )
+                )
                 CategoryDropDown(
                     optionList = categories,
                     label = "Category",
-                    selectedOption = uiState.value.category
+                    selectedOption = uiState.value.category,
+                    isError = inputErrors.value.categoryErrorId != null,
+                    errorText = inputErrors.value.categoryErrorId
                 ) { quizViewModel.onCategoryChanged(it) }
-                CategoryDropDown(
-                    optionList = sharingOptions,
-                    label = "Sharing option",
-                    selectedOption = uiState.value.sharingOption
-                ) { quizViewModel.onSharingOptionChanged(it) }
-                OutlinedTextField(
-                    value = "", onValueChange = {}, modifier = textFieldModifier,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    label = { Text("Points") },
-                    colors = quizDetailsTextFieldColors(),
-                )
 
+                CategoryDropDown(
+                    optionList = privacySettings,
+                    label = "Sharing option",
+                    selectedOption = uiState.value.privacySettings,
+                ) { quizViewModel.onPrivacySettingsChanged(it) }
+                Row(Modifier.fillMaxWidth()) {
+
+
+                    OutlinedTextField(
+                        value = uiState.value.points.toString(),
+                        onValueChange = { if(it.toInt() < 1000) quizViewModel.onPointsChanged(it.toInt()) },
+                        modifier = Modifier.width(150.dp).padding(end = 10.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        label = { Text("Points") },
+                        colors = quizDetailsTextFieldColors(),
+                        isError = inputErrors.value.pointsErrorId != null,
+                        supportingText = {
+                            inputErrors.value.pointsErrorId?.let {
+                                Text(stringResource(id = it))
+                            }
+                        }
+                    )
+                    CategoryDropDown(
+                        optionList = difficultyLevels,
+                        label = "Difficulty level",
+                        selectedOption = uiState.value.difficulty,
+                        isError = inputErrors.value.difficultyErrorId != null,
+                        errorText = inputErrors.value.difficultyErrorId,
+                        modifier = Modifier.width(200.dp)
+                    ) { quizViewModel.onDifficultyLevelChanged(it) }
+                }
 
 
 
                 ChipGroup(
                     list = PrivacySetting.values().toList(),
-                    onSelectedChanged = { quizViewModel.onSharingOptionChanged(it) },
-                    selectedItem = uiState.value.sharingOption
+                    onSelectedChanged = { quizViewModel.onPrivacySettingsChanged(it) },
+                    selectedItem = uiState.value.privacySettings
                 )
 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -196,7 +230,7 @@ fun AddNewQuizScreen(
 
 
                 OutlinedButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { quizViewModel.onContinueClick() },
                     modifier = Modifier
                         .width(180.dp)
                         .padding(vertical = 24.dp)
@@ -251,7 +285,10 @@ fun CategoryDropDown(
     optionList: List<String>,
     label: String,
     selectedOption: String,
-    onSelectedOptionChanged: (String) -> Unit
+    isError: Boolean = false,
+    errorText: Int? = null,
+    modifier: Modifier = textFieldModifier,
+    onSelectedOptionChanged: (String) -> Unit,
 ) {
 
     var mExpanded by remember { mutableStateOf(false) }
@@ -263,7 +300,7 @@ fun CategoryDropDown(
     else
         Icons.Filled.KeyboardArrowDown
 
-    Column(textFieldModifier) {
+    Column(modifier) {
 
         OutlinedTextField(
 
@@ -281,7 +318,15 @@ fun CategoryDropDown(
                     Modifier.clickable { mExpanded = !mExpanded })
             },
             readOnly = true,
-            colors = quizDetailsTextFieldColors()
+            colors = quizDetailsTextFieldColors(),
+            isError = isError,
+            supportingText = {
+                if (isError) {
+                    errorText?.let {
+                        Text(stringResource(id = it))
+                    }
+                }
+            }
         )
         DropdownMenu(
             expanded = mExpanded,
