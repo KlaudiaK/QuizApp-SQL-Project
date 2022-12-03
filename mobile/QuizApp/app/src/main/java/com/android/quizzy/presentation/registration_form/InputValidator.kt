@@ -77,4 +77,18 @@ object InputValidator {
             else -> null
         }
     }
+
+    fun getQuestionErrorIdOrNull(input: String): Int? {
+        return when {
+            input.isEmpty() -> R.string.question_cannot_be_empty
+            else -> null
+        }
+    }
+
+    fun getAnswerErrorIdOrNull(input: String): Int? {
+        return when {
+            input.isEmpty() -> R.string.answer_cannot_be_empty
+            else -> null
+        }
+    }
 }

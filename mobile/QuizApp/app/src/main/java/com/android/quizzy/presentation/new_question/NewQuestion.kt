@@ -17,12 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
+import com.android.quizzy.R
 import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.QuestionViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -36,6 +38,7 @@ fun NewQuestion(
     questionViewModel: QuestionViewModel = hiltViewModel()
 ) {
     val uiState = questionViewModel.uiState
+    val inputErrors = questionViewModel.inputErrors
     val scrollState = rememberScrollState()
     Scaffold(topBar = {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
@@ -80,8 +83,7 @@ fun NewQuestion(
                     modifier = Modifier
                         .padding(vertical = 12.dp)
                         .wrapContentHeight()
-                        .fillMaxWidth()
-                        ,
+                        .fillMaxWidth(),
                     label = { Text("Question") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         unfocusedBorderColor = lightGreen20,
@@ -89,7 +91,13 @@ fun NewQuestion(
                         focusedBorderColor = darkGreen80,
                         focusedLabelColor = darkGreen80,
                         unfocusedLabelColor = darkGreen80,
-                    )
+                    ),
+                    isError = inputErrors.value.questionErrorId != null,
+                    supportingText = {
+                        inputErrors.value.questionErrorId?.let {
+                            Text(stringResource(id = it))
+                        }
+                    }
                 )
                 questionViewModel.list.forEachIndexed { index, answer ->
 
@@ -99,15 +107,24 @@ fun NewQuestion(
                             questionViewModel.onCorrectAnswerChanged(index)
                         },
                         isSelected = answer.isCorrect,
-                        onValueChanged = { questionViewModel.onAnswerChangedChanged(it, index) })
+                        onValueChanged = { questionViewModel.onAnswerChangedChanged(it, index) },
+                    )
                 }
+
+                if (inputErrors.value.answersErrorId.any { it != null }) {
+                    Text(text = stringResource(id = inputErrors.value.answersErrorId.find { it != null }
+                        ?: R.string.answer_cannot_be_empty),
+                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp),
+                    style = TextStyle(fontSize = 13.sp, color = MaterialTheme.colorScheme.error))
+                }
+
                 Row(
                     Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OutlinedButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { questionViewModel.onSaveClicked() },
                         modifier = Modifier
                             .width(180.dp)
                             .wrapContentHeight()
@@ -121,7 +138,7 @@ fun NewQuestion(
                         )
                     }
 
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = { questionViewModel.onAddNewQuestionClicked() }) {
                         Text(
                             text = "Add another",
                             fontSize = 20.sp,
@@ -130,12 +147,12 @@ fun NewQuestion(
                         )
                     }
                 }
-
             }
-
-
         }
+
     }
+
+
 }
 
 
@@ -216,8 +233,7 @@ fun QuestionItem(
                     .padding(vertical = 6.dp)
                     .align(Alignment.CenterVertically),
                 textStyle = TextStyle(color = white20),
-
-                )
+            )
         }
 
     }

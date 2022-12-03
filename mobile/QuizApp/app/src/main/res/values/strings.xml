@@ -42,4 +42,6 @@
     <string name="quiz_points_too_small">Points must be bigger then 10</string>
     <string name="quiz_points_too_big">Points must be smaller than 300</string>
     <string name="difficulty_level_cannot_be_empty">Difficulty level cannot be empty</string>
+    <string name="question_cannot_be_empty">Question cannot be empty</string>
+    <string name="answer_cannot_be_empty">Answers cannot be empty</string>
 </resources>
