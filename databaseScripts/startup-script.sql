@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP SEQUENCE IF EXISTS "Difficulty Levels_Difficulty L";
 
 CREATE TABLE answers (
-    id                  INTEGER NOT NULL,
+    id                  SERIAL8,
     content             VARCHAR(200) NOT NULL,
     is_correct          bool,
     questions_quizes_id INTEGER NOT NULL
@@ -58,7 +58,7 @@ ALTER TABLE "Friends Requests"
                                                      );
 
 CREATE TABLE questions (
-    id               INTEGER NOT NULL,
+    id               SERIAL8,
     content          VARCHAR(200) NOT NULL,
     image            VARCHAR(100),
     creation_date    DATE NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE questions (
 ALTER TABLE questions ADD CONSTRAINT questions_pk PRIMARY KEY ( id );
 
 CREATE TABLE quizes (
-    id                                       INTEGER NOT NULL,
+    id                                       SERIAL8,
     name                                     VARCHAR(100) NOT NULL,
     description                              VARCHAR(200),
     image                                    VARCHAR(100),
@@ -90,8 +90,7 @@ CREATE TABLE ranks (
     name       VARCHAR(100)
 );
 
-ALTER TABLE ranks ADD CONSTRAINT ranks_pk PRIMARY KEY ( min_points,
-                                                        max_pints );
+ALTER TABLE ranks ADD CONSTRAINT ranks_pk PRIMARY KEY ( name );
 
 CREATE TABLE "Solved Quizes" (
     user_id   INTEGER NOT NULL,
@@ -106,7 +105,7 @@ ALTER TABLE "Solved Quizes"
                                                 );
 
 CREATE TABLE users (
-    id               INTEGER NOT NULL,
+    id               SERIAL8,
     username         VARCHAR(100) NOT NULL,
     email            VARCHAR(100) NOT NULL,
     name             VARCHAR(100) NOT NULL,
@@ -114,8 +113,7 @@ CREATE TABLE users (
     total_points     INTEGER,
     solved_quizes    INTEGER,
     created_quizes   INTEGER,
-    ranks_min_points INTEGER NOT NULL,
-    ranks_max_pints  INTEGER NOT NULL
+    rank             VARCHAR(100)
 );
 
 ALTER TABLE users ADD CONSTRAINT users_pk PRIMARY KEY ( id );
@@ -181,9 +179,7 @@ ALTER TABLE "User Settings"
         REFERENCES users ( id );
 
 ALTER TABLE users
-    ADD CONSTRAINT users_ranks_fk FOREIGN KEY ( ranks_min_points,
-                                                ranks_max_pints )
-        REFERENCES ranks ( min_points,
-                           max_pints );
+    ADD CONSTRAINT users_ranks_fk FOREIGN KEY ( rank )
+        REFERENCES ranks ( name );
 
 CREATE SEQUENCE "Difficulty Levels_Difficulty L" START WITH 1 increment by 1;
