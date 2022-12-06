@@ -7,7 +7,7 @@ import kotlin.jvm.optionals.getOrNull
 
 @Service
 @RequiredArgsConstructor
-class UserService constructor(
+class UserService(
     private val userRepository: UserRepository
 ) {
     fun getAllUsers() : List<User>? {

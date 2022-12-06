@@ -1,7 +1,6 @@
 package pl.poznan.put.quizzy.users
 
 import lombok.RequiredArgsConstructor
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import pl.poznan.put.quizzy.users.model.User
 import org.springframework.http.HttpStatus
@@ -10,19 +9,17 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequiredArgsConstructor
-class UserController @Autowired constructor(
+class UserController(
    private val userService: UserService
 ) {
     @GetMapping("/api/users")
     fun getAllUsers(): List<User>? {
         val result = userService.getAllUsers()
-        println(result)
         return result
     }
     @GetMapping("/api/users/id={id}")
     fun getUser(@PathVariable id: Long): User? {
         val result = userService.getUserById(id)
-        println(result)
         return result
     }
 
