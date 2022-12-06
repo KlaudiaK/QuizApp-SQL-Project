@@ -13,7 +13,6 @@ fun UserDto.toEntity() : User {
         totalPoints = totalPoints,
         solvedQuizes = solvedQuizes,
         createdQuizes = createdQuizes,
-        ranksMinPoints = ranksMinPoints,
-        ranksMaxPoints = ranksMaxPoints
+        rank = rank
     )
 }

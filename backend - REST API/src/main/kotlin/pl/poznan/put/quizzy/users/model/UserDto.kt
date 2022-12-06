@@ -35,9 +35,6 @@ data class UserDto (
     @JsonProperty("created_quizes")
     val createdQuizes: Int?,
 
-    @JsonProperty("ranks_min_points")
-    val ranksMinPoints: Int?,
-
-    @JsonProperty("ranks_max_points")
-    val ranksMaxPoints: Int?
+    @JsonProperty("rank")
+    val rank: String?
     )

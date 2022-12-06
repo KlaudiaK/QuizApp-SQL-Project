@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name="id")
     val id: Int,
 
     @Column(name="username")
@@ -39,9 +39,6 @@ data class User(
     @Column(name = "created_quizes")
     val createdQuizes: Int?,
 
-    @Column(name = "ranks_min_points")
-    val ranksMinPoints: Int?,
-
-    @Column(name = "ranks_max_points")
-    val ranksMaxPoints: Int?
+    @Column(name = "rank")
+    val rank: String?
 )
