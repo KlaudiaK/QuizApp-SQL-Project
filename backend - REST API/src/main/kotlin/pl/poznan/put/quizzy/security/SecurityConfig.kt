@@ -19,7 +19,7 @@ class SecurityConfig {
             .authorizeHttpRequests()
                 .anyRequest().permitAll()
                 .and()
-            .httpBasic().disable();
+            .httpBasic().and().cors().and().csrf().disable();
         return http.build()
     }
 }
