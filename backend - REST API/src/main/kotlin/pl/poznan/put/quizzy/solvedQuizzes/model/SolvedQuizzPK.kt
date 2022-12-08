@@ -1,6 +1,6 @@
 package pl.poznan.put.quizzy.solvedQuizzes.model
 
-import jakarta.persistence.Table
+import javax.persistence.Table
 import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.Data

@@ -1,6 +1,5 @@
 package pl.poznan.put.quizzy.favorites
 
-import com.azure.core.annotation.Delete
 import lombok.RequiredArgsConstructor
 import org.springframework.web.bind.annotation.*
 import pl.poznan.put.quizzy.favorites.model.FavoriteItem

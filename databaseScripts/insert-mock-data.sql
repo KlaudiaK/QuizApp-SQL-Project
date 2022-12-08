@@ -99,7 +99,7 @@ insert into difficulty_levels (name, stars, description, difficulty_levels_id)
             3
            );
 
-insert into quizes(name, description, image, points, likes, creation_date, modification_date, privacy_settings, categories_name, difficulty_levels_difficulty_levels_id)
+insert into quizes(name, description, image, points, likes, creation_date, modification_date, privacy_settings, categories_name, difficulty_levels_difficulty_levels_id, creator_user_id)
     values (
             'Quiz testowy',
             'Testowy quiz',
@@ -110,6 +110,7 @@ insert into quizes(name, description, image, points, likes, creation_date, modif
             current_date,
             'PUBLIC',
             'Sport',
+            1,
             1
            );
 insert into questions(content, image, creation_date, modiciation_date, quizes_id)
@@ -153,7 +154,7 @@ insert into answers(content, is_correct, questions_quizes_id)
             2
            );
 
-insert into quizes( name, description, image, points, likes, creation_date, modification_date, privacy_settings, categories_name, difficulty_levels_difficulty_levels_id)
+insert into quizes( name, description, image, points, likes, creation_date, modification_date, privacy_settings, categories_name, difficulty_levels_difficulty_levels_id, creator_user_id)
     values (
             'Quiz o zwieretach',
             'Testowy quiz o zwierzetach',
@@ -164,7 +165,8 @@ insert into quizes( name, description, image, points, likes, creation_date, modi
             current_date,
             'PUBLIC',
             'Zwierzęta',
-            3
+            3,
+            1
            );
 insert into questions(content, image, creation_date, modiciation_date, quizes_id)
     values (

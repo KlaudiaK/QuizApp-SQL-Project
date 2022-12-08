@@ -79,14 +79,15 @@ CREATE TABLE quizes (
     modification_date                        DATE,
     privacy_settings                         VARCHAR,
     categories_name                          VARCHAR(50) NOT NULL,
-    Difficulty_Levels_Difficulty_Levels_ID INTEGER NOT NULL
+    Difficulty_Levels_Difficulty_Levels_ID INTEGER NOT NULL,
+    creator_user_id                           INTEGER NOT NULL
 );
 
 ALTER TABLE quizes ADD CONSTRAINT quizes_pk PRIMARY KEY ( id );
 
 CREATE TABLE ranks (
     min_points INTEGER NOT NULL,
-    max_pints  INTEGER NOT NULL,
+    max_points  INTEGER NOT NULL,
     name       VARCHAR(100)
 );
 
@@ -181,5 +182,7 @@ ALTER TABLE "User Settings"
 ALTER TABLE users
     ADD CONSTRAINT users_ranks_fk FOREIGN KEY ( rank )
         REFERENCES ranks ( name );
+
+ALTER TABLE quizes ADD CONSTRAINT quizes_creator_fk FOREIGN KEY ( creator_user_id ) references users(id);
 
 CREATE SEQUENCE "Difficulty Levels_Difficulty L" START WITH 1 increment by 1;

@@ -1,9 +1,7 @@
 package pl.poznan.put.quizzy.quizzes
 
-import com.azure.core.annotation.Put
 import lombok.RequiredArgsConstructor
 import org.springframework.web.bind.annotation.*
-import pl.poznan.put.quizzy.difficultyLevels.model.DifficultyLevel
 import pl.poznan.put.quizzy.quizzes.model.Quizz
 
 @RestController
