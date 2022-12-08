@@ -1,5 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
+buildscript {
+	repositories {
+		maven {
+			url = uri("https://plugins.gradle.org/m2/")
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.6")
+	}
+}
+
 plugins {
 	id("org.springframework.boot") version "2.7.6"
 	id("io.spring.dependency-management") version "1.1.0"
@@ -22,13 +34,12 @@ configurations {
 		extendsFrom(configurations.annotationProcessor.get())
 	}
 }
-tasks.jar {
-	manifest.attributes["Main-Class"] = "pl.poznan.put.quizzy.BackendRestApiApplication"
-}
 
 repositories {
 	mavenCentral()
 }
+
+apply(plugin = "org.springframework.boot")
 
 extra["snippetsDir"] = file("build/generated-snippets")
 extra["testcontainersVersion"] = "1.17.6"
@@ -84,4 +95,8 @@ tasks.test {
 }
 
 tasks.asciidoctor {
+}
+
+tasks.getByName<Jar>("jar") {
+	enabled = false
 }
