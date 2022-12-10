@@ -1,6 +1,19 @@
 version: '3.1'
 
 services:
+  rest:
+    image: quizzy/rest-api
+    container_name: rest-api
+    build: ../backend - REST API/
+    ports:
+      - 8080:8080
+    environment:
+      -SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/test
+      -SPRING_DATASOURCE_USERNAME: test
+      -SPRING_DATASOURCE_PASSWORD: test
+    depends_on:
+      - db
+
   db:
     image: postgres:${POSTGRES_TAG}
     container_name: postgres

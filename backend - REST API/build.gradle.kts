@@ -1,12 +1,28 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
+buildscript {
+	repositories {
+		maven {
+			url = uri("https://plugins.gradle.org/m2/")
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.6")
+	}
+}
+
 plugins {
-	id("org.springframework.boot") version "3.0.0"
+	id("org.springframework.boot") version "2.7.6"
 	id("io.spring.dependency-management") version "1.1.0"
 	id("org.asciidoctor.convert") version "1.5.8"
 	kotlin("jvm") version "1.7.21"
 	kotlin("plugin.spring") version "1.7.21"
 	kotlin("plugin.jpa") version "1.7.21"
+}
+
+springBoot {
+	mainClass.set("pl.poznan.put.quizzy.BackendRestApiApplication")
 }
 
 group = "pl.poznan.put.quizyy"
@@ -23,12 +39,12 @@ repositories {
 	mavenCentral()
 }
 
+apply(plugin = "org.springframework.boot")
+
 extra["snippetsDir"] = file("build/generated-snippets")
-extra["springCloudAzureVersion"] = "6.0.0-beta.3"
 extra["testcontainersVersion"] = "1.17.6"
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
@@ -38,15 +54,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.azure.spring:spring-cloud-azure-starter")
-	implementation("com.azure.spring:spring-cloud-azure-starter-active-directory")
-	implementation("com.azure.spring:spring-cloud-azure-starter-actuator")
-	implementation("com.azure.spring:spring-cloud-azure-starter-keyvault")
-	implementation("com.azure.spring:spring-cloud-azure-starter-storage")
+	implementation("org.springframework.boot:spring-boot-starter-tomcat")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.springframework.session:spring-session-jdbc")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
@@ -62,7 +76,6 @@ dependencies {
 
 dependencyManagement {
 	imports {
-		mavenBom("com.azure.spring:spring-cloud-azure-dependencies:${property("springCloudAzureVersion")}")
 		mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
 	}
 }
@@ -82,4 +95,8 @@ tasks.test {
 }
 
 tasks.asciidoctor {
+}
+
+tasks.getByName<Jar>("jar") {
+	enabled = false
 }
