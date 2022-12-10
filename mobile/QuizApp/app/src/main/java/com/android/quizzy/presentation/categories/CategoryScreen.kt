@@ -43,8 +43,8 @@ fun CategoriesScreen(
 
             Text(
                 text = "Choose category",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.W600,
+                fontSize = 36.sp,
+                fontWeight = FontWeight.W400,
                 color = pastelWhite,
                 modifier = Modifier.padding(start = 12.dp, top = 12.dp, bottom = 12.dp)
             )
