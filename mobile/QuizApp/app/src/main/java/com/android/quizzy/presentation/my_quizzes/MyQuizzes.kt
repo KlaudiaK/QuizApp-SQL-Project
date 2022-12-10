@@ -55,7 +55,9 @@ fun MyQuizesScreen(
                     navigator.navigate(
                         AddNewQuizScreenDestination
                     )
-                }, elevation = FloatingActionButtonDefaults.elevation(12.dp),
+                },
+                elevation = FloatingActionButtonDefaults.elevation(12.dp),
+                containerColor = pastelBlue,
                 shape = CircleShape
 
             ) {

@@ -1,5 +1,6 @@
 package com.android.quizzy.presentation.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,9 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
 import com.android.quizzy.presentation.destinations.InputValidationAutoDebounceScreenDestination
-import com.android.quizzy.ui.theme.green60
-import com.android.quizzy.ui.theme.orange20
-import com.android.quizzy.ui.theme.pastelBlack
+import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.AppViewModel
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -43,6 +42,7 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(black80)
             .padding(32.dp)
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
@@ -55,7 +55,7 @@ fun LoginScreen(
             text = "Login to your Account",
             style = MaterialTheme.typography.displayLarge,
             modifier = Modifier.padding(bottom = 40.dp),
-            color = pastelBlack
+            color = pastelBlue60
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(

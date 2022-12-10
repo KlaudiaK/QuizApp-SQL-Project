@@ -36,6 +36,7 @@ import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.presentation.destinations.NewQuestionDestination
+import com.android.quizzy.presentation.destinations.QuestionListDestination
 import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.QuizViewModel
 import com.android.quizzy.viewmodel.UiViewModel
@@ -219,7 +220,7 @@ fun AddNewQuizScreen(
 
 
                     )
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(start = 50.dp)) {
+                    IconButton(onClick = { navigator.navigate(QuestionListDestination(quizId = "1")) }, modifier = Modifier.padding(start = 50.dp)) {
                         Icon(Icons.Filled.Visibility, null)
                     }
                     IconButton(onClick = { navigator.navigate(NewQuestionDestination) }) {
@@ -232,14 +233,14 @@ fun AddNewQuizScreen(
                 OutlinedButton(
                     onClick = { quizViewModel.onContinueClick() },
                     modifier = Modifier
-                        .width(180.dp)
+                        .fillMaxWidth(0.8F)
                         .padding(vertical = 24.dp)
                 ) {
                     Text(
                         text = "Submit",
                         fontSize = 26.sp,
                         fontWeight = FontWeight.W500,
-                        color = lightPastelBlue20
+                        color = pastelBlue20
                     )
                 }
             }
@@ -269,7 +270,7 @@ fun ChipGroup(
                     onClick = { onSelectedChanged(it.name) },
                     leadingIcon = { Icon(it.icon, null, Modifier.alpha(0.7F)) },
                     label = { Text(text = it.name, fontSize = 12.sp) },
-                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = darkGreen80),
+                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = pastelBlue60),
                     shape = RoundedCornerShape(12.dp),
                     elevation = FilterChipDefaults.filterChipElevation(10.dp)
                 )

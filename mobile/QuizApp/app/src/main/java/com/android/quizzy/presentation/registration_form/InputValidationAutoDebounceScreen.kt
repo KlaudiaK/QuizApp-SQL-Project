@@ -1,6 +1,7 @@
 package com.android.quizzy.presentation.registration_form
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,8 +30,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.android.quizzy.R
 import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
-import com.android.quizzy.ui.theme.pastelBlack
-import com.android.quizzy.ui.theme.pastelBlue20
+import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -47,8 +47,6 @@ fun InputValidationAutoDebounceScreen(
     LaunchedEffect(key1 = Unit) {
 
     }
-
-    Log.i("VISIBILITY View", UIviewModel.uiState.value.toString())
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -103,6 +101,7 @@ fun InputValidationAutoDebounceScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(black80)
             .padding(32.dp)
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
@@ -114,7 +113,7 @@ fun InputValidationAutoDebounceScreen(
     ) {
         Text(
             text = "Register",
-            color = pastelBlack,
+            color = pastelBlue60,
             style = MaterialTheme.typography.displayLarge,
             modifier = Modifier.padding(bottom = 40.dp),
         )
