@@ -9,7 +9,7 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     //TODO Change method to be called on service
-    override suspend fun getUser(id: Int): User = User(
+    override suspend fun getUser(id: String): User = User(
         username = "Katiexxx123",
         firstname = "Katie",
         email = "katie.inetresting@mail.com"

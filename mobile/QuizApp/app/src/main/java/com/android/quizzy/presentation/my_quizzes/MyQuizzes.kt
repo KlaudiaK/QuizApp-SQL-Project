@@ -29,6 +29,7 @@ import coil.request.ImageRequest
 import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.Rank
 import com.android.quizzy.presentation.destinations.AddNewQuizScreenDestination
+import com.android.quizzy.presentation.destinations.QuizDetailsDestination
 import com.android.quizzy.presentation.quiz_list.QuizCard
 import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.QuizListViewModel
@@ -191,14 +192,14 @@ fun MyQuizesScreen(
                 content = {
 
                     uiState.value.quizItems?.let { item ->
-                        items(item) { i ->
+                        items(item) { quiz ->
                             QuizCard(
-                                item = i,
+                                item = quiz,
                                 onClick = {
-                                    //navigator.navigate(BookDetailScreenDestination(bookId = book.id))
+                                    navigator.navigate(QuizDetailsDestination(quizId = quiz.id.toString()))
                                 },
                                 backgroundColor = Categories.values()
-                                    .find { it.name.contentEquals(i.category, true) }?.color
+                                    .find { it.name.contentEquals(quiz.category, true) }?.color
                                     ?: green20
                             )
 

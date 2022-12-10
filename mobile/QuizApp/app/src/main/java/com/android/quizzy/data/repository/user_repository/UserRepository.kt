@@ -4,7 +4,7 @@ import com.android.quizzy.domain.model.User
 
 interface UserRepository {
 
-    suspend fun getUser(id: Int): User
+    suspend fun getUser(id: String): User
 
     suspend fun editUser(user: User)
 

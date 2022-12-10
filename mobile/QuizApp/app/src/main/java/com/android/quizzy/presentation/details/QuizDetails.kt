@@ -52,6 +52,7 @@ import com.android.quizzy.ui.theme.pastelWhite
 import com.android.quizzy.ui.theme.pastelWhite20
 import com.android.quizzy.utils.quizDetailsChipModifier
 import com.android.quizzy.utils.sampleDescription
+import com.android.quizzy.viewmodel.QuizDetailsViewModel
 import com.android.quizzy.viewmodel.QuizViewModel
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -63,13 +64,16 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun QuizDetails(
     viewModel: UiViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
-    quizViewModel: QuizViewModel = hiltViewModel()
+    quizViewModel: QuizViewModel = hiltViewModel(),
+    quizDetailsViewModel: QuizDetailsViewModel,
+    quizId: String
 ) {
     val uiState = quizViewModel.uiState
     val scrollState = rememberScrollState()
     val scrollUpState = viewModel.scrollUp.observeAsState()
     // viewModel.updateScrollPosition(scrollState.firstVisibleItemIndex)
-
+    quizDetailsViewModel.getQuizDetails(quizId)
+    val uiDetailsState = quizDetailsViewModel.uiState
     val lazyListState = rememberLazyListState()
 
     Scaffold(
@@ -115,7 +119,7 @@ fun QuizDetails(
                                 .wrapContentSize()
                                 .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
                         )
-                        Text(text = "47", fontSize = 16.sp)
+                        Text(text = uiDetailsState.value.quiz?.likes.toString(), fontSize = 16.sp)
                     }
                     Chip(
                         onClick = {},
@@ -128,12 +132,19 @@ fun QuizDetails(
                         modifier = quizDetailsChipModifier
                     ) {
                         Icon(
-                            Icons.Outlined.Stairs, contentDescription = null, tint = Color.Red,
+                            Icons.Outlined.Stairs,
+                            contentDescription = null,
+                            tint = quizDetailsViewModel.getDifficultyColor(
+                                uiDetailsState.value.quiz?.difficulty
+                            ),
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
                         )
-                        Text(text = "Hard", fontSize = 16.sp)
+                        Text(
+                            text = uiDetailsState.value.quiz?.difficulty ?: "Easy",
+                            fontSize = 16.sp
+                        )
                     }
 
                     Chip(
@@ -174,7 +185,10 @@ fun QuizDetails(
                 )
                 Spacer(modifier = Modifier.height(200.dp))
                 Button(
-                    onClick = { navigator.navigate(WholeAnswerScreenDestination) },
+                    onClick = {
+                        quizDetailsViewModel.getQuestions(quizId)
+                        navigator.navigate(WholeAnswerScreenDestination(no = 0))
+                    },
                     modifier = Modifier
                         .padding(16.dp)
                         .height(60.dp)

@@ -25,13 +25,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.quizzy.presentation.NavGraphs
 import com.android.quizzy.presentation.add_new_quiz.AddNewQuizScreen
+import com.android.quizzy.presentation.answer.WholeAnswerScreen
 import com.android.quizzy.presentation.categories.CategoriesScreen
 import com.android.quizzy.presentation.destinations.*
+import com.android.quizzy.presentation.details.QuizDetails
 import com.android.quizzy.presentation.login.LoginScreen
 import com.android.quizzy.presentation.my_quizzes.MyQuizesScreen
 import com.android.quizzy.presentation.question_list.QuestionList
 import com.android.quizzy.presentation.quiz_list.QuizList
 import com.android.quizzy.presentation.registration_form.OnboardingViewModel
+import com.android.quizzy.viewmodel.QuizDetailsViewModel
 import com.android.quizzy.viewmodel.QuizViewModel
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -47,6 +50,7 @@ fun ExampleNavigation(
     viewModel: UiViewModel
 ) {
 
+    val quizDetailsViewModel = hiltViewModel<QuizDetailsViewModel>()
 
     DestinationsNavHost(
         modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
@@ -80,7 +84,13 @@ fun ExampleNavigation(
             LoginScreen(navigator = this.destinationsNavigator, uiViewModel = viewModel)
         }
         composable(QuestionListDestination) {
-            QuestionList(navigator = this.destinationsNavigator, uiViewModel = viewModel, quizId = "1")
+            QuestionList(navigator = this.destinationsNavigator, uiViewModel = viewModel, quizId = navArgs.quizId)
+        }
+        composable(WholeAnswerScreenDestination) {
+            WholeAnswerScreen(navigator = this.destinationsNavigator, no = navArgs.no, quizDetailsViewModel = quizDetailsViewModel)
+        }
+        composable(QuizDetailsDestination) {
+            QuizDetails(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel, quizId = navArgs.quizId)
         }
     }
 

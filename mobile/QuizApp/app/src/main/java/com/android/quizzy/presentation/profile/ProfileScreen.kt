@@ -88,7 +88,10 @@ fun ProfileScreen(
                 .wrapContentSize()
                 //.padding(top = 70.dp)
         ) {
-            Achievements()
+            Achievements(
+                points = uiState.value.points,
+                solvedQuizzesNum = uiState.value.solvedQuizzes,
+                createdQuizzesNum = uiState.value.createdQuizzes)
         }
 
         Box(
@@ -114,9 +117,8 @@ fun ProfileScreen(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Achievements() {
+fun Achievements(points: String, createdQuizzesNum: String, solvedQuizzesNum: String,) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
@@ -140,7 +142,7 @@ fun Achievements() {
                     )
                 )
                 Text(
-                    text = "100",
+                    text = points,
                     style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
                 )
             }
@@ -166,7 +168,7 @@ fun Achievements() {
                     ),
                 )
                 Text(
-                    text = "100",
+                    text = createdQuizzesNum,
                     style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
                 )
             }
@@ -192,17 +194,10 @@ fun Achievements() {
                     )
                 )
                 Text(
-                    text = "100",
+                    text = solvedQuizzesNum,
                     style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
                 )
             }
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileContent() {
-    Achievements()
-}
-

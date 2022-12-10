@@ -24,9 +24,10 @@ class ProfileViewModel @Inject constructor(
 
     private fun getUsername() {
         viewModelScope.launch {
+            val user  = userRepository.getUser("1")
             _uiState.value = _uiState.value.copy(
-                username = userRepository.getUser(1).username,
-                email = userRepository.getUser(1).email
+                username = user.username,
+                email = user.email
             )
         }
     }

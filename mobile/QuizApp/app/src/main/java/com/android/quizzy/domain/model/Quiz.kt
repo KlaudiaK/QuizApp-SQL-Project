@@ -26,7 +26,8 @@ data class Quiz(
             id = 12, title = "Sample title",
             image = "https://us.123rf.com/450wm/igornelson/igornelson1807/igornelson180700087/114801534-quiz-w-komiksowym-stylu-quiz-m%C4%85dry-projekt-wektor-gry-.jpg?ver=6",
             author = "Whoever",
-            category = Categories.ART.name
+            category = Categories.ART.name,
+            likes = 12
         )
 
         val sampleQuiz1 = Quiz(

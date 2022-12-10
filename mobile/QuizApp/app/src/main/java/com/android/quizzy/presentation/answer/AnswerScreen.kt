@@ -11,12 +11,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
 import com.android.quizzy.R
+import com.android.quizzy.domain.model.Answer
+import com.android.quizzy.presentation.destinations.WholeAnswerScreenDestination
 import com.android.quizzy.ui.theme.black80
 import com.android.quizzy.ui.theme.lightPastelBlue20
 import com.android.quizzy.ui.theme.yellowPastel
+import com.android.quizzy.viewmodel.QuizDetailsViewModel
+import com.android.quizzy.viewmodel.QuizViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -24,9 +30,11 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnswerScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    answers: List<Answer>, no: Int
 ) {
     var selectedItem by remember { mutableStateOf("") }
+    val nextNo = no+1
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,14 +44,18 @@ fun AnswerScreen(
     ) {
 
         Text(
-            text = "Question ....", modifier = Modifier
+            text = "Question $no", modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp)
+                .padding(14.dp),
+            color = black80.copy(0.5F)
         )
         Text(
             text = "What is ..... ?", modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp)
+                .padding(14.dp),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W400,
+            color = black80
         )
 
         LazyColumn(
@@ -85,14 +97,14 @@ fun AnswerScreen(
         ) {
             TextButton(
                 modifier = Modifier.width(100.dp),
-                onClick = { /*TODO*/ }) {
-                Text(text = "Back")
+                onClick = { navigator.navigateUp() }) {
+                Text(text = "Back", color = black80)
             }
             OutlinedButton(
                 modifier = Modifier.width(150.dp),
-                onClick = { /*TODO*/ }, border = BorderStroke(2.dp, yellowPastel)
+                onClick = { navigator.navigate(WholeAnswerScreenDestination(no = nextNo)) }, border = BorderStroke(2.dp, yellowPastel)
             ) {
-                Text(text = "Next")
+                Text(text = "Next", color = black80)
             }
         }
 
@@ -101,7 +113,7 @@ fun AnswerScreen(
 
 @Destination
 @Composable
-fun WholeAnswerScreen(navigator: DestinationsNavigator) {
+fun WholeAnswerScreen(navigator: DestinationsNavigator, quizDetailsViewModel: QuizDetailsViewModel, no: Int) {
     var isPlaying by remember {
         mutableStateOf(true)
     }
@@ -121,6 +133,9 @@ fun WholeAnswerScreen(navigator: DestinationsNavigator) {
         restartOnPlay = false
 
     )
+    quizDetailsViewModel.getAnswers(quizDetailsViewModel.uiState.value.questions[no].questionId)
+
+    val progressValue: Float = no / quizDetailsViewModel.uiState.value.questions.size.toFloat()
 
     Surface(
         modifier = Modifier
@@ -133,10 +148,12 @@ fun WholeAnswerScreen(navigator: DestinationsNavigator) {
             modifier = Modifier.fillMaxSize()
         )
         LinearProgressIndicator(
-            progress = 0.7f, modifier = Modifier
+            progress = no / quizDetailsViewModel.uiState.value.questions.size.toFloat(), modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 46.dp, vertical = 50.dp)
         )
-        AnswerScreen(navigator)
+
+        //AnswerScreen(navigator, no.let { Answer.listOfAnswers[it] }, no)
+        AnswerScreen(navigator, quizDetailsViewModel.answers , no)
     }
 }
