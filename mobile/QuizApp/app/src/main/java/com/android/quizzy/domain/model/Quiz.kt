@@ -1,5 +1,6 @@
 package com.android.quizzy.domain.model
 
+import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
 data class Quiz(

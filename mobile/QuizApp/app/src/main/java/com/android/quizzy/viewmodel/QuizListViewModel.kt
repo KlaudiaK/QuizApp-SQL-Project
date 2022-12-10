@@ -25,9 +25,8 @@ class QuizListViewModel @Inject constructor(
 
     private fun getQuizzes(){
         viewModelScope.launch {
-            quizRepository.getQuizzes().collect {
-                _uiState.value = _uiState.value.copy(quizItems = it)
-            }
+            val list = quizRepository.getQuizzes()
+            _uiState.value = _uiState.value.copy(quizItems = list)
         }
     }
 

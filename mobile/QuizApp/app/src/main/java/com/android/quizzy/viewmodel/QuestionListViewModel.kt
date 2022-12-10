@@ -21,16 +21,16 @@ class QuestionListViewModel @Inject constructor(
     val uiState: State<QuestionListScreenState> = _uiState
 
     private val _questions = mutableStateListOf<Question>()
-    val questions :List<Question> = _questions
+    val questions: List<Question> = _questions
 
-    fun getQuestions(quizId:String) {
+    fun getQuestions(quizId: String) {
         viewModelScope.launch {
-            quizRepository.getQuestionsForQuiz(quizId).collect {
-                _uiState.value = _uiState.value.copy(questions = it)
-                _questions.apply {
-                    addAll(it)
-                }
+            val quizList = quizRepository.getQuestionsForQuiz(quizId)
+            _uiState.value = _uiState.value.copy(questions = quizList)
+            _questions.apply {
+                addAll(quizList)
             }
+
         }
     }
 

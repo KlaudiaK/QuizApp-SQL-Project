@@ -3,9 +3,11 @@ package com.android.quizzy.viewmodel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.presentation.profile.ProfileScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,9 +23,11 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getUsername() {
-        _uiState.value = _uiState.value.copy(
-            username = userRepository.getUser(1).username,
-            email = userRepository.getUser(1).email
-        )
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                username = userRepository.getUser(1).username,
+                email = userRepository.getUser(1).email
+            )
+        }
     }
 }

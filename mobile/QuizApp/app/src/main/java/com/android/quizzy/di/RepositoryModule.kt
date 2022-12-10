@@ -1,5 +1,6 @@
 package com.android.quizzy.di
 
+import com.android.quizzy.api.NetworkService
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
 import com.android.quizzy.data.repository.quiz_repository.QuizRepositoryImpl
 import com.android.quizzy.data.repository.user_repository.UserRepository
@@ -14,11 +15,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
 
-    @Provides
     @Singleton
-    fun provideQuizRepository() : QuizRepository = QuizRepositoryImpl()
+    @Provides
+    fun provideUserRepository(
+        networkService: NetworkService
+    ): UserRepository = UserRepositoryImpl(networkService)
 
-    @Provides
     @Singleton
-    fun provideUserRepository() : UserRepository = UserRepositoryImpl()
+    @Provides
+    fun provideQuizRepository(
+        networkService: NetworkService
+    ): QuizRepository = QuizRepositoryImpl(networkService)
 }
