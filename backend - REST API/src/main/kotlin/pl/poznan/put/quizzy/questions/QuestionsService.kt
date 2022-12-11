@@ -19,7 +19,7 @@ class QuestionsService(
         return questionsRepository.save(question)
     }
 
-    fun deleteQuestion(question: Question) {
-        return questionsRepository.delete(question)
+    fun deleteQuestion(id: Long) {
+        return questionsRepository.deleteById(id)
     }
 }

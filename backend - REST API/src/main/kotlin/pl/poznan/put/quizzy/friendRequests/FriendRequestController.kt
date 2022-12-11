@@ -15,14 +15,12 @@ class FriendRequestController(
         @RequestParam fromUser: Long?,
         @RequestParam toUser: Long?
     ): List<FriendRequest> {
-        fromUser?.let {
-            return friendRequestService.getSentFriendsRequestsForUser(fromUser)
+        return when{
+            fromUser != null && toUser != null -> friendRequestService.getFriendsRequestForUsersIfExists(fromUser, toUser)
+            fromUser != null -> friendRequestService.getSentFriendsRequestsForUser(fromUser)
+            toUser != null -> friendRequestService.getReceivedFriendsRequestsForUser(toUser)
+            else -> listOf()
         }
-
-        toUser?.let {
-            return friendRequestService.getReceivedFriendsRequestsForUser(toUser)
-        }
-        return listOf()
     }
 
     @PostMapping("/api/requests")

@@ -1,11 +1,9 @@
 package pl.poznan.put.quizzy.quizzes
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import org.springframework.stereotype.Service
-import pl.poznan.put.quizzy.difficultyLevels.model.DifficultyLevel
-import pl.poznan.put.quizzy.quizzes.model.PrivacySettings
 import pl.poznan.put.quizzy.quizzes.model.Quizz
 import java.util.*
-import kotlin.jvm.optionals.getOrNull
 
 @Service
 class QuizzesService(
@@ -48,7 +46,7 @@ class QuizzesService(
         return quizzesRepository.save(quizz)
     }
 
-    fun deleteQuiz(quizz: Quizz) {
-        return quizzesRepository.delete(quizz)
+    fun deleteQuiz(id: Long) {
+        return quizzesRepository.deleteById(id)
     }
 }
