@@ -14,7 +14,8 @@ class QuizzesController(
     fun getAllQuizzes(): List<Quizz> {
         return quizzesService.getAllQuizes()
     }
-    @GetMapping("/api/quizzes/id={id}")
+
+    @GetMapping("/api/quizzes/{id}")
     fun getAllQuizzes(@PathVariable("id") id: Long ): Quizz? {
         return quizzesService.getQuizzById(id)
     }
@@ -57,8 +58,8 @@ class QuizzesController(
         return quizzesService.createQuizz(quizz)
     }
 
-    @DeleteMapping("/api/quizzes")
-    fun deleteQuizz(@RequestBody quizz: Quizz) {
-        return quizzesService.deleteQuiz(quizz)
+    @DeleteMapping("/api/quizzes/{id}")
+    fun deleteQuizz(@PathVariable("id") id: Long) {
+        return quizzesService.deleteQuiz(id)
     }
 }

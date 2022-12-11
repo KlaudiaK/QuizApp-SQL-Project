@@ -1,12 +1,7 @@
 package pl.poznan.put.quizzy.answers
 
 import lombok.RequiredArgsConstructor
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import pl.poznan.put.quizzy.answers.model.Answer
 
 @RestController
@@ -15,22 +10,27 @@ class AnswerController(
     private val answerService: AnswerService
 ) {
 
-    @GetMapping("/api/answers")
-    fun getAnswersForQuiz(@RequestParam questionId: Long): List<Answer> {
-        val result = answerService.getAllAnswersForQuiz(questionId)
-        return result
+    @GetMapping("/api/answers/{id}")
+    fun getAnswersForQuiz(@PathVariable("id") questionId: Long): List<Answer> {
+        return answerService.getAllAnswersForQuiz(questionId)
     }
 
-    @PutMapping("api/answers")
+    @PutMapping("/api/answers")
     fun editAnswer(
         @RequestBody answer: Answer
     ): Answer {
         return answerService.editAnswerForQuiz(answer)
     }
-    @PostMapping("api/answers")
+
+    @PostMapping("/api/answers")
     fun createAnswer(
         @RequestBody answer: Answer
     ): Answer {
         return answerService.createAnswer(answer)
+    }
+
+    @DeleteMapping("/api/answers/{id}")
+    fun deleteAnswer(@PathVariable("id") id: Long) {
+        return answerService.deleteAnswer(id)
     }
 }

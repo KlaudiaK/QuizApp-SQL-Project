@@ -14,17 +14,16 @@ class UserController(
 ) {
     @GetMapping("/api/users")
     fun getAllUsers(): List<User>? {
-        val result = userService.getAllUsers()
-        return result
-    }
-    @GetMapping("/api/users/id={id}")
-    fun getUser(@PathVariable id: Long): User? {
-        val result = userService.getUserById(id)
-        return result
+        return userService.getAllUsers()
     }
 
-    @DeleteMapping("/api/users")
-    fun deleteUser(@RequestParam id: Long) {
+    @GetMapping("/api/users/{id}")
+    fun getUser(@PathVariable id: Long): User? {
+        return userService.getUserById(id)
+    }
+
+    @DeleteMapping("/api/users/{id}")
+    fun deleteUser(@PathVariable("id") id: Long) {
         userService.deleteUser(id)
     }
 
