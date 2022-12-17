@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor
 data class FavoriteItem (
     @Id
     @Column(name = "user_id")
-    val userReferenceId: Int,
+    val userReferenceId: Long,
 
     @Id
     @Column(name = "quiz_id")
-    val quizReferenceId: Int
+    val quizReferenceId: Long
 )

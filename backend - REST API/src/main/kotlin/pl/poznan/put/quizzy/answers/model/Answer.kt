@@ -17,7 +17,7 @@ data class Answer(
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Long,
 
     @Column
     val content: String,
@@ -26,5 +26,5 @@ data class Answer(
     val isCorrect: Boolean,
 
     @Column(name = "questions_quizes_id")
-    val questionReference: Int
+    val questionReference: Long
 )

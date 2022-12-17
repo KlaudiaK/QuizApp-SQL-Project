@@ -16,7 +16,7 @@ data class DifficultyLevel(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "difficulty_levels_id")
-    val id: Int,
+    val id: Long,
 
     @Column
     val name: String,
