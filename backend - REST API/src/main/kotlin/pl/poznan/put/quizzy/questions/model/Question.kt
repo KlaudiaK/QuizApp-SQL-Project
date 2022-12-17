@@ -17,7 +17,7 @@ data class Question(
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Long,
 
     @Column
     val content: String,
@@ -32,5 +32,5 @@ data class Question(
     val modificationDate: LocalDate = LocalDate.now(),
 
     @Column(name = "quizes_id")
-    val quizReferenceId: Int
+    val quizReferenceId: Long
 )

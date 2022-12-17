@@ -19,4 +19,8 @@ class AnswerService(
     fun createAnswer(answer: Answer): Answer {
         return answerRepository.save(answer)
     }
+
+    fun deleteAnswer(id: Long) {
+        return answerRepository.deleteById(id)
+    }
 }

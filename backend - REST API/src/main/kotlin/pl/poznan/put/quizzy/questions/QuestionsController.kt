@@ -10,8 +10,8 @@ class QuestionsController(
     private val questionsService: QuestionsService
 ) {
 
-    @GetMapping("/api/questions")
-    fun getQuestions(@RequestParam quizId: Long): List<Question> {
+    @GetMapping("/api/questions/{id}")
+    fun getQuestions(@PathVariable("id") quizId: Long): List<Question> {
         return questionsService.getAllQuestionsForQuiz(quizId)
     }
 
@@ -24,8 +24,8 @@ class QuestionsController(
         return questionsService.addQuestion(question)
     }
 
-    @DeleteMapping("/api/questions")
-    fun deleteQuestion(@RequestBody question: Question) {
-        return questionsService.deleteQuestion(question)
+    @DeleteMapping("/api/questions/{id}")
+    fun deleteQuestion(@PathVariable("id") id: Long) {
+        return questionsService.deleteQuestion(id)
     }
 }

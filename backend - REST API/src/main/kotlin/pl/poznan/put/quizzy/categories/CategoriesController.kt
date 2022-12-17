@@ -13,7 +13,6 @@ class CategoriesController(
 
     @GetMapping("/api/categories")
     fun getAllCategories(): List<Category> {
-        val result = categoriesService.getAllCategories()
-        return result
+        return categoriesService.getAllCategories()
     }
 }

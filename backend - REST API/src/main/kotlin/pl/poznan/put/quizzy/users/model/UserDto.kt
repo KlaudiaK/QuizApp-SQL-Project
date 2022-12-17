@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor
 @NoArgsConstructor
 data class UserDto (
     @JsonProperty("id")
-    val id: Int,
+    val id: Long,
 
     @JsonProperty("username")
     val userName: String,

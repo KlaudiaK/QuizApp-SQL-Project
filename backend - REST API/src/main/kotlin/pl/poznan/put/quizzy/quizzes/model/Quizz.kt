@@ -17,7 +17,7 @@ data class Quizz(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    val id : Int,
+    val id : Long,
 
     @Column
     val name: String,
@@ -35,13 +35,13 @@ data class Quizz(
     val likes: Int = 0,
 
     @Column(name = "creation_date")
-    val creationDate: LocalDate = LocalDate.now(),
+    val creationDate: String = LocalDate.now().toString(),
 
     @Column(name= "modification_date")
-    val modificationDate: LocalDate = LocalDate.now(),
+    val modificationDate: String = LocalDate.now().toString(),
 
     @Column(name="privacy_settings")
-    val privacySettings: PrivacySettings = PrivacySettings.PRIVATE,
+    val privacySettings: String = PrivacySettings.PRIVATE.name,
 
     @Column(name="categories_name")
     val categoryName: String,

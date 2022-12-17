@@ -22,7 +22,7 @@ import java.time.LocalDate
 data class SolvedQuizz (
     @Id
     @Column(name = "user_id")
-    val userReferenceId: Int,
+    val userReferenceId: Long,
 
     @Id
     @Column(name = "date")
@@ -30,6 +30,6 @@ data class SolvedQuizz (
 
     @Id
     @Column(name = "quiz_id")
-    val quizReferenceId: Int
+    val quizReferenceId: Long
 ): Serializable
 
