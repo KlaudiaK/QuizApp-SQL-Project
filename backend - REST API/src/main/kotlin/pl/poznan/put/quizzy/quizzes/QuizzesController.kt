@@ -16,8 +16,8 @@ class QuizzesController(
     }
 
     @GetMapping("/api/quizzes/{id}")
-    fun getAllQuizzes(@PathVariable("id") id: Long ): Quizz? {
-        return quizzesService.getQuizzById(id)
+    fun getQuizById(@PathVariable("id") id: Long): Quizz? {
+        return quizzesService.getQuizById(id)
     }
 
     @GetMapping("/api/quizzes/filtered")

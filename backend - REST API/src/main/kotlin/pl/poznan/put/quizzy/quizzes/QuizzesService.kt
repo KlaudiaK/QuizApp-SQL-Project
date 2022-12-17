@@ -1,9 +1,9 @@
 package pl.poznan.put.quizzy.quizzes
 
-import org.springframework.data.rest.webmvc.ResourceNotFoundException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import pl.poznan.put.quizzy.quizzes.model.Quizz
-import java.util.*
 
 @Service
 class QuizzesService(
@@ -14,9 +14,13 @@ class QuizzesService(
         return quizzesRepository.findAll()
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    fun getQuizzById(quizId: Long): Quizz? {
-        return quizzesRepository.findById(quizId).getOrNull()
+    fun getQuizById(quizId: Long): Quizz? {
+        return quizzesRepository.findById(quizId).orElseThrow {
+            ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "User with id $quizId not found"
+            )
+        }
     }
 
     fun getQuizzesForUser(userId: Long): List<Quizz> {
@@ -27,8 +31,8 @@ class QuizzesService(
         return quizzesRepository.getQuizzesByPrivacySettingsForUser(privacySettingsLevel, userId)
     }
 
-    fun getQuizzesByPrivacySettings(privacySettingsLevel: String): List<Quizz> {
-        return quizzesRepository.getQuizzesByPrivacySettings(privacySettingsLevel)
+    fun getQuizzesByPrivacySettings(privacySettings: String): List<Quizz> {
+        return quizzesRepository.getQuizzesByPrivacySettings(privacySettings)
     }
 
     fun getQuizzesByDifficultyLevel(difficultyLevel: Int): List<Quizz> {
@@ -42,6 +46,7 @@ class QuizzesService(
     fun createQuizz(quizz: Quizz): Quizz {
         return quizzesRepository.save(quizz)
     }
+
     fun updateQuiz(quizz: Quizz): Quizz {
         return quizzesRepository.save(quizz)
     }
