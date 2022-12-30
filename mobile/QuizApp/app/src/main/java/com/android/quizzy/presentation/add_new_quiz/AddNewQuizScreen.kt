@@ -253,12 +253,15 @@ fun AddNewQuizScreen(
                         modifier = Modifier
                             .padding(horizontal = 6.dp)
                     )
-                    IconButton(
-                        onClick = { navigator.navigate(QuestionListDestination(quizId = "1")) },
-                        modifier = Modifier.padding(start = 50.dp)
-                    ) {
-                        Icon(Icons.Filled.Visibility, null)
+                    quizToEditID?.let{
+                        IconButton(
+                            onClick = { navigator.navigate(QuestionListDestination(quizId = it)) },
+                            modifier = Modifier.padding(start = 50.dp)
+                        ) {
+                            Icon(Icons.Filled.Visibility, null)
+                        }
                     }
+
                     IconButton(onClick = { navigator.navigate(NewQuestionDestination) }) {
                         Icon(Icons.Filled.Add, null)
                     }

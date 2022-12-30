@@ -1,6 +1,8 @@
 package com.android.quizzy.presentation.new_question
 
+import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -10,6 +12,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.AddCircleOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,16 +20,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.android.quizzy.R
 import com.android.quizzy.ui.theme.*
 import com.android.quizzy.viewmodel.QuestionViewModel
+import com.android.quizzy.viewmodel.QuizViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -35,11 +43,16 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun NewQuestion(
     navigator: DestinationsNavigator,
-    questionViewModel: QuestionViewModel = hiltViewModel()
+    questionViewModel: QuestionViewModel = hiltViewModel(),
+    uizViewModel: QuizViewModel = hiltViewModel()
 ) {
-    val uiState = questionViewModel.uiState
+    val uiState by remember{ questionViewModel.uiState }
     val inputErrors = questionViewModel.inputErrors
     val scrollState = rememberScrollState()
+
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
+    val context = LocalContext.current
+
     Scaffold(topBar = {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { navigator.navigateUp() }) {
@@ -71,10 +84,62 @@ fun NewQuestion(
                         .align(Alignment.Start)
                 )
 
-                QuestionImage(modifier = Modifier.height(130.dp))
+                //QuestionImage(modifier = Modifier.height(130.dp))
+                Card(
+                    border = BorderStroke(0.3.dp, black60),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
+                    colors = CardDefaults.cardColors(containerColor = green60)
+                ) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(uiState.image.replace("http://", "https://")
+                           )
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "thumbnail",
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier
+                            .fillMaxHeight()
 
+                            .padding(2.dp),
+                        alpha = 0.95f,
+                        onLoading = { Log.i("Load", "Loading") },
+                        onSuccess = { Log.i("Load", "Success") },
+                        onError = { Log.i("Load", "Error") },
+                    )
+                }
                 OutlinedTextField(
-                    value = uiState.value.question,
+                    value = uiState.image,
+                    onValueChange = { questionViewModel.onImageChanged(it) },
+                    label = { Text("Image URL") },
+                    placeholder = { Text("Paste here image URL to display it above :)") },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = lightGreen20,
+                        textColor = white20,
+                        focusedBorderColor = darkGreen80,
+                        focusedLabelColor = darkGreen80,
+                        unfocusedLabelColor = darkGreen80,
+                    ),
+                    modifier = Modifier
+                        .heightIn(max = 60.dp)
+                        .fillMaxWidth(),
+                    trailingIcon = {
+                        IconButton(onClick = { ContextCompat.startActivity(context, intent, null) }) {
+                            Icon(Icons.Filled.Search, contentDescription = null)
+                        }
+                    },
+                    isError = inputErrors.value.imageErrorId != null,
+                    supportingText = {
+                        inputErrors.value.imageErrorId?.let {
+                            Text(stringResource(id = it))
+                        }
+                    }
+                )
+                OutlinedTextField(
+                    value = uiState.question,
                     onValueChange = {
                         if (it.length < 100) questionViewModel.onQuestionChanged(
                             it
@@ -114,7 +179,9 @@ fun NewQuestion(
                 if (inputErrors.value.answersErrorId.any { it != null }) {
                     Text(text = stringResource(id = inputErrors.value.answersErrorId.find { it != null }
                         ?: R.string.answer_cannot_be_empty),
-                    modifier = Modifier.align(Alignment.Start).padding(start = 16.dp),
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(start = 16.dp),
                     style = TextStyle(fontSize = 13.sp, color = MaterialTheme.colorScheme.error))
                 }
 

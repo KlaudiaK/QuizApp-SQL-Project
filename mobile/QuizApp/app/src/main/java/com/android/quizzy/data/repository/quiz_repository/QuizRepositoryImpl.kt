@@ -79,7 +79,7 @@ class QuizRepositoryImpl @Inject constructor(
 
     override suspend fun editAnswerForQuestion(answer: Answer) = networkService.editAnswer(answer)
 
-    override suspend  fun getAnswersForQuestion(questionId: String): List<Answer> = Answer.listOfAnswers//networkService.getAnswersForQuestion(questionId)
+    override suspend  fun getAnswersForQuestion(questionId: String): List<Answer> = networkService.getAnswersForQuestion(questionId) //Answer.listOfAnswers//
 
     override suspend fun deleteQuestionFromQuiz(id: String) = networkService.deleteQuestion(id)
 

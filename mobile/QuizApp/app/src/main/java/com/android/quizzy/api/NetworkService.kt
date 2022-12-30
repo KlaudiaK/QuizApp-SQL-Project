@@ -42,8 +42,8 @@ interface NetworkService {
     @GET("/api/categories")
     suspend fun getCategories(): List<Category>
 
-    @GET("/api/answers")
-    suspend fun getAnswersForQuestion(@Query("questionId") id: String): List<Answer>
+    @GET("/api/answers/{id}")
+    suspend fun getAnswersForQuestion(@Path("id") id: String): List<Answer>
 
     @PUT("/api/answers")
     suspend fun editAnswer(@Body answer: Answer)
