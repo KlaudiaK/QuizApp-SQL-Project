@@ -91,4 +91,11 @@ object InputValidator {
             else -> null
         }
     }
+
+    fun getImageIdOrNull(input: String): Int? {
+        return when {
+            !Patterns.WEB_URL.matcher(input).matches() -> R.string.incorrect_image_url
+            else -> null
+        }
+    }
 }

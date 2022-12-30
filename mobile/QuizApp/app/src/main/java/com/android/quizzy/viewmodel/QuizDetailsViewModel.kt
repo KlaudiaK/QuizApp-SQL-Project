@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
 import com.android.quizzy.data.repository.user_repository.UserRepository
+import com.android.quizzy.domain.mapToQuestion
 import com.android.quizzy.domain.model.Answer
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.presentation.details.QuizDetailsScreenState
@@ -45,7 +46,7 @@ class QuizDetailsViewModel @Inject constructor(
 
     fun getQuestions(quizId: String) {
         viewModelScope.launch{
-            val questions  = quizRepository.getQuestionsForQuiz(quizId)
+            val questions  = quizRepository.getQuestionsForQuiz(quizId).map { it.mapToQuestion() }
             _uiState.value = _uiState.value.copy(questions = questions)
         }
     }
@@ -53,6 +54,12 @@ class QuizDetailsViewModel @Inject constructor(
     fun getAnswers(questionId: Int) {
         viewModelScope.launch {
             answers.addAll(quizRepository.getAnswersForQuestion(questionId.toString()))
+        }
+    }
+
+    fun deleteQuiz(quizId: String) {
+        viewModelScope.launch {
+            quizRepository.deleteQuiz(quizId)
         }
     }
 }

@@ -4,28 +4,30 @@ import com.android.quizzy.domain.model.Answer
 import com.android.quizzy.domain.model.Question
 import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.domain.model.User
-import kotlinx.coroutines.flow.Flow
+import com.android.quizzy.domain.reponse.DifficultyLevelResponse
+import com.android.quizzy.domain.reponse.QuestionResponse
+import com.android.quizzy.domain.reponse.QuizResponse
 
 interface QuizRepository {
     suspend fun getQuizzes(): List<Quiz>
 
     suspend fun getQuizById(id: String): Quiz
 
-    suspend fun addNewQuiz(quiz: Quiz)
+    suspend fun addNewQuiz(quiz: QuizResponse)
 
     suspend fun updateQuiz(quiz: Quiz)
 
-    suspend fun deleteQuiz(quiz: Quiz)
+    suspend fun deleteQuiz(quizId: String)
 
     suspend fun addQuizToFavourites(quiz: Quiz)
 
     suspend fun getFavouriteQuizzes(user: User): List<Quiz>
 
-    suspend fun addQuestionForQuiz(question: Question)
+    suspend fun addQuestionForQuiz(question: QuestionResponse)
 
-    suspend fun updateQuestionForQuiz(question: Question)
+    suspend fun updateQuestionForQuiz(question: QuestionResponse)
 
-    suspend fun getQuestionsForQuiz(quizId: String): List<Question>
+    suspend fun getQuestionsForQuiz(quizId: String): List<QuestionResponse>
 
     suspend fun addAnswerForQuestion(answer: Answer)
 
@@ -34,4 +36,6 @@ interface QuizRepository {
     suspend fun getAnswersForQuestion(questionId: String): List<Answer>
 
     suspend fun deleteQuestionFromQuiz(id: String)
+
+    suspend fun getDifficultyLevels(): List<DifficultyLevelResponse>
 }

@@ -54,7 +54,7 @@ fun MyQuizesScreen(
             FloatingActionButton(
                 onClick = {
                     navigator.navigate(
-                        AddNewQuizScreenDestination
+                        AddNewQuizScreenDestination()
                     )
                 },
                 elevation = FloatingActionButtonDefaults.elevation(12.dp),

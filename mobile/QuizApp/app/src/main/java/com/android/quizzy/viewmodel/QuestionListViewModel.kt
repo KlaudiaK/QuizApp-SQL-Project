@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
+import com.android.quizzy.domain.mapToQuestion
 import com.android.quizzy.domain.model.Question
 import com.android.quizzy.presentation.question_list.QuestionListScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,7 @@ class QuestionListViewModel @Inject constructor(
 
     fun getQuestions(quizId: String) {
         viewModelScope.launch {
-            val quizList = quizRepository.getQuestionsForQuiz(quizId)
+            val quizList = quizRepository.getQuestionsForQuiz(quizId).map { it.mapToQuestion() }
             _uiState.value = _uiState.value.copy(questions = quizList)
             _questions.apply {
                 addAll(quizList)
@@ -34,7 +35,7 @@ class QuestionListViewModel @Inject constructor(
         }
     }
 
-    fun deleteQuestion(questionId: Int) {
+    fun deleteQuestion(questionId: Long) {
         var list = _uiState.value.questions
         list = list.toMutableList().apply {
             remove(list.find { it.questionId == questionId })

@@ -75,7 +75,7 @@ fun ExampleNavigation(
             )
         }
         composable(AddNewQuizScreenDestination) {
-            AddNewQuizScreen(navigator = this.destinationsNavigator, viewModel = viewModel, quizViewModel = hiltViewModel<QuizViewModel>())
+            AddNewQuizScreen(navigator = this.destinationsNavigator, viewModel = viewModel, quizViewModel = hiltViewModel<QuizViewModel>(), isEditMode = navArgs.isEditMode, quizToEditID = navArgs.quizToEditID)
         }
         composable(MyQuizesScreenDestination) {
             MyQuizesScreen(navigator = this.destinationsNavigator, viewModel = viewModel)
@@ -90,7 +90,7 @@ fun ExampleNavigation(
             WholeAnswerScreen(navigator = this.destinationsNavigator, no = navArgs.no, quizDetailsViewModel = quizDetailsViewModel)
         }
         composable(QuizDetailsDestination) {
-            QuizDetails(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel, quizId = navArgs.quizId)
+            QuizDetails(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel, quizId = navArgs.quizId, uiViewModel = viewModel, profileViewModel = hiltViewModel())
         }
     }
 

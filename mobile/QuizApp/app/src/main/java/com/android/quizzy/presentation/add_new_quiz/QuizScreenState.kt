@@ -10,4 +10,6 @@ data class QuizScreenState(
     val points: Int = 0,
     val privacySettings: String = PrivacySetting.PRIVATE.name,
     val description: String = "",
+    val image: String = "",
+    val numberOfQuestions: Int = 0
 )

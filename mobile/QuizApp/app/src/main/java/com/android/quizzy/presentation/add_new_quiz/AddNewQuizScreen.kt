@@ -1,5 +1,6 @@
 package com.android.quizzy.presentation.add_new_quiz
 
+import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,13 +24,14 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.android.quizzy.domain.model.Categories
@@ -65,11 +67,18 @@ fun quizDetailsTextFieldColors() = TextFieldDefaults.outlinedTextFieldColors(
 fun AddNewQuizScreen(
     navigator: DestinationsNavigator,
     viewModel: UiViewModel,
-    quizViewModel: QuizViewModel = hiltViewModel()
+    quizViewModel: QuizViewModel = hiltViewModel(),
+    isEditMode: Boolean = false,
+    quizToEditID: String? = null
 ) {
+    if (isEditMode) {
+        quizToEditID?.let { quizViewModel.getQuizInEditMode(it) }
+        if (quizToEditID != null) {
+            quizViewModel.getNumberOfQuestions(quizToEditID)
+        }
+    }
     val uiState = quizViewModel.uiState
     val inputErrors = quizViewModel.inputErrors
-    var title by remember { mutableStateOf(TextFieldValue("")) }
 
     viewModel.onBottomBarVisibilityChange(false)
     val categories = Categories.values().map {
@@ -84,6 +93,9 @@ fun AddNewQuizScreen(
     }
 
     val scrollState = rememberScrollState()
+
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
+    val context = LocalContext.current
 
     viewModel.onBottomBarVisibilityChange(false)
     Scaffold(topBar = {
@@ -125,31 +137,49 @@ fun AddNewQuizScreen(
                                 .padding(top = 12.dp, bottom = 16.dp, end = 20.dp)
                                 .align(Alignment.Start)
                         )
-                        OutlinedTextField(
-                            value = uiState.value.title,
-                            onValueChange = { if (it.length < 40) quizViewModel.onTitleChanged(it) },
-                            modifier = Modifier
-                                .heightIn(max = 80.dp)
-                                .width(190.dp),
-                            label = { Text("Title") },
-                            colors = quizDetailsTextFieldColors(),
-                            maxLines = 2,
-                            isError = inputErrors.value.titleErrorId != null,
-                            supportingText = {
-                                inputErrors.value.titleErrorId?.let {
-                                    Text(stringResource(id = it))
+                        Row {
+                            OutlinedTextField(
+                                value = uiState.value.title,
+                                onValueChange = {
+                                    if (it.length < 40) quizViewModel.onTitleChanged(
+                                        it
+                                    )
+                                },
+                                modifier = Modifier
+                                    .heightIn(max = 80.dp)
+                                    .width(190.dp),
+                                label = { Text("Title") },
+                                colors = quizDetailsTextFieldColors(),
+                                maxLines = 2,
+                                isError = inputErrors.value.titleErrorId != null,
+                                supportingText = {
+                                    inputErrors.value.titleErrorId?.let {
+                                        Text(stringResource(id = it))
+                                    }
                                 }
-                            }
-                        )
+                            )
+                            OutlinedTextField(
+                                value = uiState.value.image,
+                                onValueChange = { quizViewModel.onImageChanged(it) },
+                                label = { Text("Image") },
+                                colors = quizDetailsTextFieldColors(),
+                                modifier = Modifier
+                                    .heightIn(max = 80.dp)
+                                    .padding(start = 8.dp),
+                                trailingIcon = {
+                                    IconButton(onClick = { startActivity(context, intent, null) }) {
+                                        Icon(Icons.Filled.Search, contentDescription = null)
+                                    }
+                                },
+                                isError = inputErrors.value.imageErrorId != null,
+                                supportingText = {
+                                    inputErrors.value.imageErrorId?.let {
+                                        Text(stringResource(id = it))
+                                    }
+                                }
+                            )
+                        }
                     }
-
-                    QuizImage(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .height(120.dp)
-                            .width(130.dp)
-                            .padding(start = 12.dp)
-                    )
                 }
 
                 OutlinedTextField(
@@ -174,13 +204,18 @@ fun AddNewQuizScreen(
                     label = "Sharing option",
                     selectedOption = uiState.value.privacySettings,
                 ) { quizViewModel.onPrivacySettingsChanged(it) }
+
                 Row(Modifier.fillMaxWidth()) {
-
-
                     OutlinedTextField(
                         value = uiState.value.points.toString(),
-                        onValueChange = { if(it.toInt() < 1000) quizViewModel.onPointsChanged(it.toInt()) },
-                        modifier = Modifier.width(150.dp).padding(end = 10.dp),
+                        onValueChange = {
+                            if (it.isNotEmpty() && it.toInt() < 1000) quizViewModel.onPointsChanged(
+                                it.toInt()
+                            )
+                        },
+                        modifier = Modifier
+                            .width(150.dp)
+                            .padding(end = 10.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         label = { Text("Points") },
                         colors = quizDetailsTextFieldColors(),
@@ -211,16 +246,17 @@ fun AddNewQuizScreen(
 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
-                        text = "Questions: 3", //TODO actual number of questions
+                        text = "Questions: ${uiState.value.numberOfQuestions}",
                         fontSize = 32.sp,
                         fontWeight = FontWeight.W300,
                         color = white20,
                         modifier = Modifier
                             .padding(horizontal = 6.dp)
-
-
                     )
-                    IconButton(onClick = { navigator.navigate(QuestionListDestination(quizId = "1")) }, modifier = Modifier.padding(start = 50.dp)) {
+                    IconButton(
+                        onClick = { navigator.navigate(QuestionListDestination(quizId = "1")) },
+                        modifier = Modifier.padding(start = 50.dp)
+                    ) {
                         Icon(Icons.Filled.Visibility, null)
                     }
                     IconButton(onClick = { navigator.navigate(NewQuestionDestination) }) {
@@ -229,9 +265,12 @@ fun AddNewQuizScreen(
 
                 }
 
-
                 OutlinedButton(
-                    onClick = { quizViewModel.onContinueClick() },
+                    onClick = {
+                        quizViewModel.onContinueClick {
+                            navigator.navigateUp()
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth(0.8F)
                         .padding(vertical = 24.dp)
