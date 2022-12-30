@@ -72,10 +72,10 @@ fun QuizCard(
                     .crossfade(true)
                     .build(),
                 contentDescription = "thumbnail",
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(120.dp)
-                    .aspectRatio(0.8f)
+                    .width(140.dp)
                     .align(Alignment.CenterVertically)
                     .clip(RoundedCornerShape(24)),
                 alpha = 0.95f,
