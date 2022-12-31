@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor
 
 @Data
 @Builder
-@Table(name="User Settings")
+@Table(name="user_settings")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

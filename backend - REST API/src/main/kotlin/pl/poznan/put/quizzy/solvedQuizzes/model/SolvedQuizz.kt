@@ -14,7 +14,7 @@ import java.time.LocalDate
 
 @Data
 @Builder
-@Table(name="solved quizes")
+@Table(name="solved_quizes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
