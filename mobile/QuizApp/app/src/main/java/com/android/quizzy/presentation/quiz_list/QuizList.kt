@@ -8,11 +8,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.presentation.components.SegmentedControl
 import com.android.quizzy.presentation.destinations.QuizDetailsDestination
@@ -38,13 +41,23 @@ fun QuizList(
     uiViewModel.onBottomBarVisibilityChange(false)
     val uiState = quizViewModel.uiState
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = uiState.value.isRefreshing)
-
+    quizViewModel.getQuizzes()
+    val listOfQuizItems = mutableStateOf(uiState.value.quizItems)
+    listOfQuizItems.value = quizViewModel.getFilteredQuizes(PrivacySetting.PUBLIC)
     Scaffold(containerColor = black80) {
 
-
-        Box(Modifier.fillMaxSize().padding(16.dp)) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)) {
             SegmentedControl(
-                items = listOf("Community", "Friends"), onItemSelection = {}, modifier = Modifier
+                items = listOf("Community", "Friends"), onItemSelection = {
+                    when(it){
+                        0 -> listOfQuizItems.value = quizViewModel.getFilteredQuizes(PrivacySetting.PUBLIC)
+                        1 -> listOfQuizItems.value = quizViewModel.getFilteredQuizes(PrivacySetting.FRIENDS)
+                    }
+
+                }, modifier = Modifier
                     .align(Alignment.TopCenter)
                     .padding(vertical = 12.dp), useFixedWidth = true, itemWidth = 140.dp
             )
@@ -57,12 +70,12 @@ fun QuizList(
                 LazyColumn(
                     modifier = Modifier.padding(top = 60.dp),
                     content = {
-                        uiState.value.quizItems?.let {
+                        listOfQuizItems.value?.let {
                             items(it) { quiz ->
                                 QuizCard(
                                     item = quiz,
                                     onClick = {
-                                        navigator.navigate(QuizDetailsDestination(quizId = quiz.id.toString()))
+                                        navigator.navigate(QuizDetailsDestination(quizId = quiz.id))
                                     },
                                     backgroundColor = Categories.values()
                                         .find { it.name.contentEquals(quiz.category, true) }?.color

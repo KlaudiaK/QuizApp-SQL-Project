@@ -31,6 +31,7 @@ import com.android.quizzy.presentation.destinations.*
 import com.android.quizzy.presentation.details.QuizDetails
 import com.android.quizzy.presentation.login.LoginScreen
 import com.android.quizzy.presentation.my_quizzes.MyQuizesScreen
+import com.android.quizzy.presentation.new_question.NewQuestion
 import com.android.quizzy.presentation.question_list.QuestionList
 import com.android.quizzy.presentation.quiz_list.QuizList
 import com.android.quizzy.presentation.registration_form.OnboardingViewModel
@@ -75,7 +76,7 @@ fun ExampleNavigation(
             )
         }
         composable(AddNewQuizScreenDestination) {
-            AddNewQuizScreen(navigator = this.destinationsNavigator, viewModel = viewModel, quizViewModel = hiltViewModel<QuizViewModel>())
+            AddNewQuizScreen(navigator = this.destinationsNavigator, viewModel = viewModel, quizViewModel = hiltViewModel<QuizViewModel>(), isEditMode = navArgs.isEditMode, quizToEditID = navArgs.quizToEditID)
         }
         composable(MyQuizesScreenDestination) {
             MyQuizesScreen(navigator = this.destinationsNavigator, viewModel = viewModel)
@@ -90,7 +91,10 @@ fun ExampleNavigation(
             WholeAnswerScreen(navigator = this.destinationsNavigator, no = navArgs.no, quizDetailsViewModel = quizDetailsViewModel)
         }
         composable(QuizDetailsDestination) {
-            QuizDetails(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel, quizId = navArgs.quizId)
+            QuizDetails(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel, quizId = navArgs.quizId, uiViewModel = viewModel, profileViewModel = hiltViewModel())
+        }
+        composable(NewQuestionDestination) {
+            NewQuestion(navigator = this.destinationsNavigator, questionId = navArgs.questionId, isInEditMode = navArgs.isInEditMode)
         }
     }
 

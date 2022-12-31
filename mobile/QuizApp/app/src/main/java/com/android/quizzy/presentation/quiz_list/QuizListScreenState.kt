@@ -6,7 +6,7 @@ data class QuizListScreenState (
     var query: String = "",
     val category: String = "",
     val selectedCategory:String = "",
-    val quizItems: List<Quiz>? = Quiz.sampleQuizList,
+    val quizItems: List<Quiz>? = emptyList(),
     val isRefreshing: Boolean = false,
     val categoryNamesList: List<String> = listOf(),
     val favouriteChecked: Boolean = false,

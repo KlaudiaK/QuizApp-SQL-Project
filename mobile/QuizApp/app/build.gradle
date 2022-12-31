@@ -162,4 +162,6 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
     implementation ("com.airbnb.android:lottie-compose:5.2.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 }

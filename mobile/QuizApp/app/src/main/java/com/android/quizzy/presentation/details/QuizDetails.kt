@@ -19,6 +19,8 @@ import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Stairs
 import androidx.compose.material3.*
@@ -45,13 +47,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.android.quizzy.R
 import com.android.quizzy.domain.model.Categories
-import com.android.quizzy.domain.model.Quiz
+import com.android.quizzy.presentation.destinations.AddNewQuizScreenDestination
 import com.android.quizzy.presentation.destinations.WholeAnswerScreenDestination
-import com.android.quizzy.ui.theme.black80
-import com.android.quizzy.ui.theme.pastelWhite
-import com.android.quizzy.ui.theme.pastelWhite20
+import com.android.quizzy.ui.theme.*
 import com.android.quizzy.utils.quizDetailsChipModifier
-import com.android.quizzy.utils.sampleDescription
+import com.android.quizzy.viewmodel.ProfileViewModel
 import com.android.quizzy.viewmodel.QuizDetailsViewModel
 import com.android.quizzy.viewmodel.QuizViewModel
 import com.android.quizzy.viewmodel.UiViewModel
@@ -62,25 +62,38 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination
 @Composable
 fun QuizDetails(
-    viewModel: UiViewModel = hiltViewModel(),
+    uiViewModel: UiViewModel,
     navigator: DestinationsNavigator,
     quizViewModel: QuizViewModel = hiltViewModel(),
     quizDetailsViewModel: QuizDetailsViewModel,
-    quizId: String
+    profileViewModel: ProfileViewModel,
+    quizId: Long
 ) {
     val uiState = quizViewModel.uiState
     val scrollState = rememberScrollState()
-    val scrollUpState = viewModel.scrollUp.observeAsState()
+    val scrollUpState = uiViewModel.scrollUp.observeAsState()
     // viewModel.updateScrollPosition(scrollState.firstVisibleItemIndex)
-    quizDetailsViewModel.getQuizDetails(quizId)
+    uiViewModel.onBottomBarVisibilityChange(false)
+    quizDetailsViewModel.getQuizDetails(quizId.toString())
     val uiDetailsState = quizDetailsViewModel.uiState
     val lazyListState = rememberLazyListState()
-
+    val user = profileViewModel.uiState.value
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            MotionAppBar(lazyListState)
+            MotionAppBar(lazyListState, uiDetailsState.value.quiz?.image ?: "", onDeleteClick = {
+                quizDetailsViewModel.deleteQuiz(
+                    quizId.toString()
+                )
+                navigator.navigateUp()
+            },
+            onEditClicked = {
+                            navigator.navigate(AddNewQuizScreenDestination(quizToEditID = quizId, isEditMode = true))
+            },
+            isAuthorized = true, //TODO check if quiz author is current logged in user
+            username = user.username
+            )
         }
     ) {
         LazyColumn(
@@ -165,19 +178,24 @@ fun QuizDetails(
                                 .wrapContentSize()
                                 .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
                         )
-                        Text(text = "Science", fontSize = 16.sp)
+                        uiDetailsState.value.quiz?.category?.let { category ->
+                            Text(
+                                text = category,
+                                fontSize = 16.sp
+                            )
+                        }
                     }
                 }
 
                 Text(
-                    Quiz.sampleQuiz.title,
+                    uiDetailsState.value.quiz?.title ?: "",
                     fontSize = 36.sp, color = pastelWhite,
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(vertical = 16.dp, horizontal = 12.dp)
                 )
                 Text(
-                    Quiz.sampleQuiz.description ?: sampleDescription,
+                    uiDetailsState.value.quiz?.description ?: "",
                     fontSize = 16.sp, color = pastelWhite, fontWeight = FontWeight.W200,
                     modifier = Modifier
                         .wrapContentSize()
@@ -186,7 +204,7 @@ fun QuizDetails(
                 Spacer(modifier = Modifier.height(200.dp))
                 Button(
                     onClick = {
-                        quizDetailsViewModel.getQuestions(quizId)
+                        quizDetailsViewModel.getQuestions(quizId.toString())
                         navigator.navigate(WholeAnswerScreenDestination(no = 0))
                     },
                     modifier = Modifier
@@ -205,7 +223,13 @@ fun QuizDetails(
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
-fun MotionAppBar(lazyScrollState: LazyListState) {
+fun MotionAppBar(
+    lazyScrollState: LazyListState, imageUrl: String,
+    onDeleteClick: () -> Unit,
+    onEditClicked: () -> Unit,
+    isAuthorized: Boolean,
+    username: String
+) {
 
     val context = LocalContext.current
     val motionScene = remember {
@@ -251,7 +275,7 @@ fun MotionAppBar(lazyScrollState: LazyListState) {
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(Quiz.adres1)
+                        .data(imageUrl)
                         .crossfade(true)
                         .build(),
                     contentDescription = "thumbnail",
@@ -265,10 +289,33 @@ fun MotionAppBar(lazyScrollState: LazyListState) {
                     onSuccess = { Log.i("Load", "Success") },
                     onError = { Log.i("Load", "Error") },
                 )
+                if (isAuthorized) {
+                    IconButton(
+                        onClick = { onDeleteClick() },
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = null,
+                            tint = redLight
+                        )
+                    }
+                    IconButton(onClick = { onEditClicked() },
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(end = 30.dp)) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = null,
+                            tint = lightPastelBlue40
+                        )
+                    }
+                }
+
             }
 
             Text(
-                text = "Katie",
+                text = username,
                 fontSize = 24.sp,
                 fontWeight = if (progress == 1f) FontWeight.Light else FontWeight.Bold,
                 color = Color.White,
@@ -276,7 +323,7 @@ fun MotionAppBar(lazyScrollState: LazyListState) {
             )
 
             Image(
-                painter = painterResource(id = R.drawable.profile_pic),
+                painter = painterResource(id = R.drawable.profile_pic), //TODO User avatar
                 contentDescription = null,
                 modifier = Modifier
                     .clip(CircleShape)

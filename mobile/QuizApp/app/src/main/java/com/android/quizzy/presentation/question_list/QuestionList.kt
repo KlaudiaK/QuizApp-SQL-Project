@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +31,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination(route = "question_list")
 @Composable
 fun QuestionList(
-    quizId: String,
+    quizId: Long,
     navigator: DestinationsNavigator,
     quizViewModel: QuizListViewModel = hiltViewModel(),
     questionListViewModel: QuestionListViewModel = hiltViewModel(),
@@ -38,12 +39,14 @@ fun QuestionList(
 ) {
 
     uiViewModel.onBottomBarVisibilityChange(false)
-    val uiState = quizViewModel.uiState
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = uiState.value.isRefreshing)
-    val scrollState = rememberLazyListState()
 
-    questionListViewModel.getQuestions(quizId)
-    val questionList = questionListViewModel.questions//.uiState.value.questions
+    val scrollState = rememberLazyListState()
+    //questionListViewModel.getAnswers(quizId)
+    questionListViewModel.getQuestions(quizId.toString())
+    val uiState = remember {
+        questionListViewModel.uiState
+    }
+      //.uiState.value.questions
     Scaffold(topBar = {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { navigator.navigateUp() }) {
@@ -67,20 +70,21 @@ fun QuestionList(
                         .fillMaxSize(), state = scrollState,
                     content = {
 
-                        items(questionListViewModel.questions) { question ->
+                        items(uiState.value.questions) { question ->
                             ExpandableCard(
                                 title = question.content,
                                 content =
                                 {
                                     QuestionCardItem(
-                                        answers = Answer.listOfAnswers,
-                                        onEditClicked = { navigator.navigate(NewQuestionDestination) },
+                                        answers = questionListViewModel.getAnswers(question.questionId),
+                                        onEditClicked = { navigator.navigate(NewQuestionDestination(questionId = question.questionId, isInEditMode = true)) },
                                         onDeleteClicked = {
                                             questionListViewModel.deleteQuestion(
-                                                question.questionId
+                                                question.questionId,
+                                                quizId.toString()
                                             )
                                         },
-                                        questionId = question.questionId
+                                        questionId = question.questionId.toInt()
                                     )
                                 }
 

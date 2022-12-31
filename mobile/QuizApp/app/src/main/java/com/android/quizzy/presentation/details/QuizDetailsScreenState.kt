@@ -5,6 +5,6 @@ import com.android.quizzy.domain.model.Quiz
 
 data class QuizDetailsScreenState(
     val username: String? = "",
-    val quiz: Quiz? = Quiz.sampleQuiz,
+    val quiz: Quiz? = null,
     val questions: List<Question> = listOf()
 )
