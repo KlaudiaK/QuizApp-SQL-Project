@@ -2,6 +2,7 @@ package com.android.quizzy.api
 
 import com.android.quizzy.domain.reponse.QuizResponse
 import com.android.quizzy.domain.model.*
+import com.android.quizzy.domain.reponse.CategoryResponse
 import com.android.quizzy.domain.reponse.DifficultyLevelResponse
 import com.android.quizzy.domain.reponse.QuestionResponse
 import retrofit2.http.*
@@ -40,7 +41,7 @@ interface NetworkService {
     suspend fun deleteUser(@Query("id") id: String)
 
     @GET("/api/categories")
-    suspend fun getCategories(): List<Category>
+    suspend fun getCategories(): List<CategoryResponse>
 
     @GET("/api/answers/{id}")
     suspend fun getAnswersForQuestion(@Path("id") id: String): List<Answer>

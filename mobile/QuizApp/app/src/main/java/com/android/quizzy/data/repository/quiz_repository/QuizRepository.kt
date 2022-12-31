@@ -1,9 +1,7 @@
 package com.android.quizzy.data.repository.quiz_repository
 
-import com.android.quizzy.domain.model.Answer
-import com.android.quizzy.domain.model.Question
-import com.android.quizzy.domain.model.Quiz
-import com.android.quizzy.domain.model.User
+import com.android.quizzy.domain.model.*
+import com.android.quizzy.domain.reponse.CategoryResponse
 import com.android.quizzy.domain.reponse.DifficultyLevelResponse
 import com.android.quizzy.domain.reponse.QuestionResponse
 import com.android.quizzy.domain.reponse.QuizResponse
@@ -40,4 +38,6 @@ interface QuizRepository {
     suspend fun deleteQuestionFromQuiz(id: String)
 
     suspend fun getDifficultyLevels(): List<DifficultyLevelResponse>
+
+    suspend fun getCategories(): List<CategoryResponse>
 }

@@ -192,7 +192,7 @@ fun AddNewQuizScreen(
                     colors = quizDetailsTextFieldColors(),
                 )
                 CategoryDropDown(
-                    optionList = categories,
+                    optionList = uiState.value.categoriesList.map{ it.name },
                     label = "Category",
                     selectedOption = uiState.value.category,
                     isError = inputErrors.value.categoryErrorId != null,

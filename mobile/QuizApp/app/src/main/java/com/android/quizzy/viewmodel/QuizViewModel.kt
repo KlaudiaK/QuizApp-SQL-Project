@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
 import com.android.quizzy.data.repository.user_repository.UserRepository
+import com.android.quizzy.domain.mapper.mapToCategory
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.domain.model.Question
@@ -40,6 +41,7 @@ class QuizViewModel @Inject constructor(
 
     init {
         getUsername()
+        getCategories()
     }
 
     fun addQuestionToList(question: Question) {
@@ -167,6 +169,13 @@ class QuizViewModel @Inject constructor(
                 }
 
             }
+        }
+    }
+
+    private fun getCategories(){
+        viewModelScope.launch {
+            val categories = quizRepository.getCategories().map { it.mapToCategory() }
+            _uiState.value = _uiState.value.copy(categoriesList = categories)
         }
     }
 }
