@@ -1,4 +1,4 @@
-package pl.poznan.put.quizzy.questions.model
+package pl.poznan.put.quizzy.questions.model.db
 
 import javax.persistence.*
 import lombok.AllArgsConstructor
