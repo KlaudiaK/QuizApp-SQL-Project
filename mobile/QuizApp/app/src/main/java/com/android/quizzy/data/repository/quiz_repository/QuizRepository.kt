@@ -15,7 +15,7 @@ interface QuizRepository {
 
     suspend fun addNewQuiz(quiz: QuizResponse)
 
-    suspend fun updateQuiz(quiz: Quiz)
+    suspend fun updateQuiz(quiz: QuizResponse)
 
     suspend fun deleteQuiz(quizId: String)
 

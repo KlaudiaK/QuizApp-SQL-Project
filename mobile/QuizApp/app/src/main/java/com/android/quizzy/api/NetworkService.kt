@@ -15,7 +15,7 @@ interface NetworkService {
     suspend fun getQuizById(@Path("id") id: String): QuizResponse
 
     @PUT("/api/quizzes")
-    suspend fun updateQuiz(@Body quiz: Quiz)
+    suspend fun updateQuiz(@Body quiz: QuizResponse)
 
     @POST("/api/quizzes")
     suspend fun addQuiz(@Body quiz: QuizResponse)

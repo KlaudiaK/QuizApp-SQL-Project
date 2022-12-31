@@ -67,14 +67,14 @@ fun QuizDetails(
     quizViewModel: QuizViewModel = hiltViewModel(),
     quizDetailsViewModel: QuizDetailsViewModel,
     profileViewModel: ProfileViewModel,
-    quizId: String
+    quizId: Long
 ) {
     val uiState = quizViewModel.uiState
     val scrollState = rememberScrollState()
     val scrollUpState = uiViewModel.scrollUp.observeAsState()
     // viewModel.updateScrollPosition(scrollState.firstVisibleItemIndex)
     uiViewModel.onBottomBarVisibilityChange(false)
-    quizDetailsViewModel.getQuizDetails(quizId)
+    quizDetailsViewModel.getQuizDetails(quizId.toString())
     val uiDetailsState = quizDetailsViewModel.uiState
     val lazyListState = rememberLazyListState()
     val user = profileViewModel.uiState.value
@@ -84,7 +84,7 @@ fun QuizDetails(
         topBar = {
             MotionAppBar(lazyListState, uiDetailsState.value.quiz?.image ?: "", onDeleteClick = {
                 quizDetailsViewModel.deleteQuiz(
-                    quizId
+                    quizId.toString()
                 )
                 navigator.navigateUp()
             },
@@ -204,7 +204,7 @@ fun QuizDetails(
                 Spacer(modifier = Modifier.height(200.dp))
                 Button(
                     onClick = {
-                        quizDetailsViewModel.getQuestions(quizId)
+                        quizDetailsViewModel.getQuestions(quizId.toString())
                         navigator.navigate(WholeAnswerScreenDestination(no = 0))
                     },
                     modifier = Modifier

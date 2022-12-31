@@ -31,7 +31,7 @@ class QuizRepositoryImpl @Inject constructor(
 
     override suspend fun getQuizById(id: String): Quiz = with(networkService.getQuizById(id)){
         Quiz(
-            id = id.toInt(),
+            id = id.toLong(),
             title = name,
             author = creatorId.toString(),
             description = description,
@@ -61,7 +61,7 @@ class QuizRepositoryImpl @Inject constructor(
         networkService.addQuiz(quiz)
     }
 
-    override suspend fun updateQuiz(quiz: Quiz) = networkService.updateQuiz(quiz)
+    override suspend fun updateQuiz(quiz: QuizResponse) = networkService.updateQuiz(quiz)
 
     override suspend fun deleteQuiz(id: String) = networkService.deleteQuiz(id)
 

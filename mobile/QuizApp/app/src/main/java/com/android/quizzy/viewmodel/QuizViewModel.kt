@@ -1,6 +1,7 @@
 package com.android.quizzy.viewmodel
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,8 @@ import com.android.quizzy.data.repository.quiz_repository.QuizRepository
 import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
+import com.android.quizzy.domain.model.Question
+import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.domain.reponse.QuizResponse
 import com.android.quizzy.presentation.add_new_quiz.NewQuizInputErrors
 import com.android.quizzy.presentation.add_new_quiz.QuizScreenState
@@ -32,9 +35,15 @@ class QuizViewModel @Inject constructor(
     private val _inputErrors = mutableStateOf(NewQuizInputErrors())
     val inputErrors: State<NewQuizInputErrors> = _inputErrors
 
+    private val _questionList = mutableStateListOf<Question>()
+    val questionList: MutableList<Question> = _questionList
 
     init {
         getUsername()
+    }
+
+    fun addQuestionToList(question: Question) {
+        _questionList.toMutableList().add(question)
     }
 
     private fun getUsername() {}
@@ -70,7 +79,7 @@ class QuizViewModel @Inject constructor(
         viewModelScope.launch {
             with(_uiState.value) {
                 val newQuiz = QuizResponse(
-                    id = Random(100).nextInt(20, 2000),
+                    id = Random(100).nextInt(20, 2000).toLong(),
                     name = title,
                     description = description,
                     points = points,
@@ -127,15 +136,37 @@ class QuizViewModel @Inject constructor(
                     difficulty = difficulty ?: DifficultyLevel.MEDIUM.name
                 )
             }
-
         }
     }
 
-    fun getNumberOfQuestions(id: String){
+    fun getNumberOfQuestions(id: String) {
         viewModelScope.launch {
             val count = quizRepository.getQuestionsForQuiz(id).size
             _uiState.value = _uiState.value.copy(numberOfQuestions = count)
         }
     }
 
+    fun editQuiz(id: Long) {
+        viewModelScope.launch {
+            if (validateAllFields()) {
+                with(_uiState.value) {
+                    quizRepository.updateQuiz(
+                        QuizResponse(
+                            id = id,
+                            name = title,
+                            description = description,
+                            image = image,
+                            modificationDate = LocalDate.now().toString(),
+                            points = points,
+                            categoryName = category,
+                            difficultyLevelReferenceId = quizRepository.getDifficultyLevels().find { it.name == difficulty }?.id ?: 1,
+                            privacySettings = privacySettings,
+                            creatorId = 2314, //TODO current user ID
+                        )
+                    )
+                }
+
+            }
+        }
+    }
 }

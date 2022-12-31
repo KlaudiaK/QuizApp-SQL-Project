@@ -75,7 +75,7 @@ fun QuizList(
                                 QuizCard(
                                     item = quiz,
                                     onClick = {
-                                        navigator.navigate(QuizDetailsDestination(quizId = quiz.id.toString()))
+                                        navigator.navigate(QuizDetailsDestination(quizId = quiz.id))
                                     },
                                     backgroundColor = Categories.values()
                                         .find { it.name.contentEquals(quiz.category, true) }?.color

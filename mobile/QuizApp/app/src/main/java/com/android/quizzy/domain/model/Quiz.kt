@@ -3,7 +3,7 @@ package com.android.quizzy.domain.model
 import java.time.LocalDate
 
 data class Quiz(
-    val id: Int,
+    val id: Long,
     val title: String,
     val image: String?,
     val author: String,

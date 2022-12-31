@@ -31,7 +31,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination(route = "question_list")
 @Composable
 fun QuestionList(
-    quizId: String,
+    quizId: Long,
     navigator: DestinationsNavigator,
     quizViewModel: QuizListViewModel = hiltViewModel(),
     questionListViewModel: QuestionListViewModel = hiltViewModel(),
@@ -42,7 +42,7 @@ fun QuestionList(
 
     val scrollState = rememberLazyListState()
     //questionListViewModel.getAnswers(quizId)
-    questionListViewModel.getQuestions(quizId)
+    questionListViewModel.getQuestions(quizId.toString())
     val uiState = remember {
         questionListViewModel.uiState
     }
@@ -81,7 +81,7 @@ fun QuestionList(
                                         onDeleteClicked = {
                                             questionListViewModel.deleteQuestion(
                                                 question.questionId,
-                                                quizId
+                                                quizId.toString()
                                             )
                                         },
                                         questionId = question.questionId.toInt()

@@ -69,12 +69,12 @@ fun AddNewQuizScreen(
     viewModel: UiViewModel,
     quizViewModel: QuizViewModel = hiltViewModel(),
     isEditMode: Boolean = false,
-    quizToEditID: String? = null
+    quizToEditID: Long? = null
 ) {
     if (isEditMode) {
-        quizToEditID?.let { quizViewModel.getQuizInEditMode(it) }
+        quizToEditID?.let { quizViewModel.getQuizInEditMode(it.toString()) }
         if (quizToEditID != null) {
-            quizViewModel.getNumberOfQuestions(quizToEditID)
+            quizViewModel.getNumberOfQuestions(quizToEditID.toString())
         }
     }
     val uiState = quizViewModel.uiState
@@ -253,7 +253,7 @@ fun AddNewQuizScreen(
                         modifier = Modifier
                             .padding(horizontal = 6.dp)
                     )
-                    quizToEditID?.let{
+                    quizToEditID?.let {
                         IconButton(
                             onClick = { navigator.navigate(QuestionListDestination(quizId = it)) },
                             modifier = Modifier.padding(start = 50.dp)
@@ -270,8 +270,14 @@ fun AddNewQuizScreen(
 
                 OutlinedButton(
                     onClick = {
-                        quizViewModel.onContinueClick {
-                            navigator.navigateUp()
+                        if (isEditMode) {
+                            quizToEditID?.let {
+                                quizViewModel.editQuiz(it)
+                            }
+                        } else {
+                            quizViewModel.onContinueClick {
+                                navigator.navigateUp()
+                            }
                         }
                     },
                     modifier = Modifier
