@@ -51,8 +51,11 @@ interface NetworkService {
     @POST("/api/answer")
     suspend fun createAnswer(@Body answer: Answer)
 
+    @GET("/api/questions")
+    suspend fun getQuestions(@Query("quizId") id: String): List<QuestionResponse>
+
     @GET("/api/questions/{id}")
-    suspend fun getQuestions(@Path("id") id: String): List<QuestionResponse>
+    suspend fun getQuestionById(@Path("id") id: String): QuestionResponse
 
     @PUT("/api/questions")
     suspend fun updateQuestion(@Body question: QuestionResponse)

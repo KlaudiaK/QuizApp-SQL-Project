@@ -1,6 +1,7 @@
 package com.android.quizzy.data.repository.quiz_repository
 
 import com.android.quizzy.api.NetworkService
+import com.android.quizzy.domain.mapToQuestion
 import com.android.quizzy.domain.reponse.QuizResponse
 import com.android.quizzy.domain.model.*
 import com.android.quizzy.domain.reponse.QuestionResponse
@@ -74,6 +75,8 @@ class QuizRepositoryImpl @Inject constructor(
 
     //TODO Change method to be called on service
     override suspend fun getQuestionsForQuiz(quizId: String) = networkService.getQuestions(quizId)//questions //
+
+    override suspend fun getQuestion(id: String) = networkService.getQuestionById(id).mapToQuestion()
 
     override suspend fun addAnswerForQuestion(answer: Answer) = networkService.createAnswer(answer)
 

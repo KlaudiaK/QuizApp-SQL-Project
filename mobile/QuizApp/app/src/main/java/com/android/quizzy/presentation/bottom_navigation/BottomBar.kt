@@ -31,6 +31,7 @@ import com.android.quizzy.presentation.destinations.*
 import com.android.quizzy.presentation.details.QuizDetails
 import com.android.quizzy.presentation.login.LoginScreen
 import com.android.quizzy.presentation.my_quizzes.MyQuizesScreen
+import com.android.quizzy.presentation.new_question.NewQuestion
 import com.android.quizzy.presentation.question_list.QuestionList
 import com.android.quizzy.presentation.quiz_list.QuizList
 import com.android.quizzy.presentation.registration_form.OnboardingViewModel
@@ -91,6 +92,9 @@ fun ExampleNavigation(
         }
         composable(QuizDetailsDestination) {
             QuizDetails(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel, quizId = navArgs.quizId, uiViewModel = viewModel, profileViewModel = hiltViewModel())
+        }
+        composable(NewQuestionDestination) {
+            NewQuestion(navigator = this.destinationsNavigator, questionId = navArgs.questionId, isInEditMode = navArgs.isInEditMode)
         }
     }
 

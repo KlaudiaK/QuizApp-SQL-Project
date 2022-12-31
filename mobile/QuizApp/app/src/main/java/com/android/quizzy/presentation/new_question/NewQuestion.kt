@@ -44,9 +44,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun NewQuestion(
     navigator: DestinationsNavigator,
     questionViewModel: QuestionViewModel = hiltViewModel(),
-    uizViewModel: QuizViewModel = hiltViewModel()
+    uizViewModel: QuizViewModel = hiltViewModel(),
+    questionId: Long? = null,
+    isInEditMode: Boolean = false
 ) {
-    val uiState by remember{ questionViewModel.uiState }
+    if (isInEditMode) questionId?.let { questionViewModel.getQuestion(it) }
+    val uiState by remember { questionViewModel.uiState }
     val inputErrors = questionViewModel.inputErrors
     val scrollState = rememberScrollState()
 
@@ -64,7 +67,6 @@ fun NewQuestion(
         }
     }) {
 
-
         Surface(color = black80) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
@@ -75,7 +77,7 @@ fun NewQuestion(
             ) {
 
                 Text(
-                    text = "Add new question",
+                    text = if (isInEditMode) "Edit question" else "Add new question",
                     fontSize = 32.sp,
                     fontWeight = FontWeight.W400,
                     color = pastelWhite,
@@ -90,20 +92,21 @@ fun NewQuestion(
                     elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
                     modifier = Modifier
                         .fillMaxWidth()
+
                         .padding(vertical = 12.dp),
                     colors = CardDefaults.cardColors(containerColor = green60)
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(uiState.image.replace("http://", "https://")
-                           )
+                            .data(
+                                uiState.image.replace("http://", "https://")
+                            )
                             .crossfade(true)
                             .build(),
                         contentDescription = "thumbnail",
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier
-                            .fillMaxHeight()
-
+                            .fillMaxWidth()
                             .padding(2.dp),
                         alpha = 0.95f,
                         onLoading = { Log.i("Load", "Loading") },
@@ -127,7 +130,13 @@ fun NewQuestion(
                         .heightIn(max = 60.dp)
                         .fillMaxWidth(),
                     trailingIcon = {
-                        IconButton(onClick = { ContextCompat.startActivity(context, intent, null) }) {
+                        IconButton(onClick = {
+                            ContextCompat.startActivity(
+                                context,
+                                intent,
+                                null
+                            )
+                        }) {
                             Icon(Icons.Filled.Search, contentDescription = null)
                         }
                     },
@@ -179,10 +188,13 @@ fun NewQuestion(
                 if (inputErrors.value.answersErrorId.any { it != null }) {
                     Text(text = stringResource(id = inputErrors.value.answersErrorId.find { it != null }
                         ?: R.string.answer_cannot_be_empty),
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(start = 16.dp),
-                    style = TextStyle(fontSize = 13.sp, color = MaterialTheme.colorScheme.error))
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(start = 16.dp),
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.error
+                        ))
                 }
 
                 Row(
@@ -190,29 +202,51 @@ fun NewQuestion(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    OutlinedButton(
-                        onClick = { questionViewModel.onSaveClicked() },
-                        modifier = Modifier
-                            .width(180.dp)
-                            .wrapContentHeight()
-                            .padding(vertical = 24.dp)
-                    ) {
-                        Text(
-                            text = "Save",
-                            fontSize = 26.sp,
-                            fontWeight = FontWeight.W300,
-                            color = lightPastelBlue20
-                        )
+
+                    if (!isInEditMode) {
+                        OutlinedButton(
+                            onClick = { questionViewModel.onSaveClicked() },
+                            modifier = Modifier
+                                .width(180.dp)
+                                .wrapContentHeight()
+                                .padding(vertical = 24.dp)
+                        ) {
+                            Text(
+                                text = "Save",
+                                fontSize = 26.sp,
+                                fontWeight = FontWeight.W300,
+                                color = lightPastelBlue20
+                            )
+                        }
+                        TextButton(onClick = { questionViewModel.onAddNewQuestionClicked() }) {
+                            Text(
+                                text = "Add another",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.W300,
+                                color = orange20
+                            )
+                        }
+                    } else {
+                        OutlinedButton(
+                            onClick = {
+                                questionId?.let {
+                                    questionViewModel.onEditClicked(it)
+                                }
+                            },
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .fillMaxWidth()
+                                .padding(vertical = 24.dp)
+                        ) {
+                            Text(
+                                text = "Save",
+                                fontSize = 26.sp,
+                                fontWeight = FontWeight.W300,
+                                color = lightPastelBlue20
+                            )
+                        }
                     }
 
-                    TextButton(onClick = { questionViewModel.onAddNewQuestionClicked() }) {
-                        Text(
-                            text = "Add another",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.W300,
-                            color = orange20
-                        )
-                    }
                 }
             }
         }

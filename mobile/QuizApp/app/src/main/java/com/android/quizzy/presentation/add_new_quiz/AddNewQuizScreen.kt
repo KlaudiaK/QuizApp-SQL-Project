@@ -262,7 +262,7 @@ fun AddNewQuizScreen(
                         }
                     }
 
-                    IconButton(onClick = { navigator.navigate(NewQuestionDestination) }) {
+                    IconButton(onClick = { navigator.navigate(NewQuestionDestination()) }) {
                         Icon(Icons.Filled.Add, null)
                     }
 

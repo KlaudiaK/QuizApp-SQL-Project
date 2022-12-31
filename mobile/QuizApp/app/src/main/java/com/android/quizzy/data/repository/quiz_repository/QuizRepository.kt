@@ -29,6 +29,8 @@ interface QuizRepository {
 
     suspend fun getQuestionsForQuiz(quizId: String): List<QuestionResponse>
 
+    suspend fun getQuestion(id: String): Question
+
     suspend fun addAnswerForQuestion(answer: Answer)
 
     suspend fun editAnswerForQuestion(answer: Answer)

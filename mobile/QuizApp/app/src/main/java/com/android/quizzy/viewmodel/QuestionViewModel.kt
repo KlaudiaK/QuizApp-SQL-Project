@@ -4,15 +4,24 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.android.quizzy.data.repository.quiz_repository.QuizRepository
+import com.android.quizzy.domain.mapToQuestionResponse
 import com.android.quizzy.domain.model.Answer
+import com.android.quizzy.domain.reponse.QuestionResponse
 import com.android.quizzy.presentation.new_question.NewQuestionInputErrors
 import com.android.quizzy.presentation.new_question.QuestionScreenState
 import com.android.quizzy.presentation.registration_form.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
+import java.time.LocalDate
+import java.util.Collections.addAll
 import javax.inject.Inject
 
 @HiltViewModel
 class QuestionViewModel @Inject constructor(
+    private val quizRepository: QuizRepository
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(QuestionScreenState())
@@ -54,7 +63,7 @@ class QuestionViewModel @Inject constructor(
     private fun validateAllFields() : Boolean {
         val questionErrorId = InputValidator.getQuestionErrorIdOrNull(_uiState.value.question)
         val answersErrorId = mutableListOf<Int?>(null, null, null, null)
-        val imageErrorId = InputValidator.getImageIdOrNull(_uiState.value.image)
+        val imageErrorId = if(_uiState.value.image.isNotEmpty()) InputValidator.getImageIdOrNull(_uiState.value.image) else null
         _list.toList().forEachIndexed { index, answer ->
             answersErrorId[index] = InputValidator.getAnswerErrorIdOrNull(answer.content)
         }
@@ -78,4 +87,43 @@ class QuestionViewModel @Inject constructor(
     fun onImageChanged(image: String) {
         _uiState.value = _uiState.value.copy(image = image)
     }
+
+    fun getQuestion(id: Long) {
+        viewModelScope.launch {
+            val question = quizRepository.getQuestion(id.toString())
+            _uiState.value = _uiState.value.copy(question = question.content, image = question.image ?: "")
+            val answers = quizRepository.getAnswersForQuestion(question.questionId.toString())
+            _list.apply {
+                addAll(answers)
+            }
+        }
+    }
+
+    fun onEditClicked(id: Long) {
+        viewModelScope.launch{
+            if(validateAllFields()) {
+                val question = quizRepository.getQuestion(id.toString())
+                val newQuestion = QuestionResponse(
+                    id = question.questionId,
+                    content = _uiState.value.question,
+                    image = _uiState.value.image,
+                    quizReferenceId = question.quizReferenceId,
+                    modificationDate = LocalDate.now().toString()
+                )
+
+                quizRepository.updateQuestionForQuiz(newQuestion)
+                _list.forEach {
+                    quizRepository.editAnswerForQuestion(
+                        Answer(
+                        id = it.id,
+                        content = it.content,
+                        isCorrect = it.isCorrect,
+                        questionReference = it.questionReference
+                    )
+                    )
+                }
+            }
+        }
+    }
 }
+
