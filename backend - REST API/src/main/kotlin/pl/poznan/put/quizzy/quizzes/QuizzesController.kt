@@ -2,7 +2,9 @@ package pl.poznan.put.quizzy.quizzes
 
 import lombok.RequiredArgsConstructor
 import org.springframework.web.bind.annotation.*
-import pl.poznan.put.quizzy.quizzes.model.Quizz
+import pl.poznan.put.quizzy.quizzes.model.api.QuizzResponse
+import pl.poznan.put.quizzy.quizzes.model.db.Quizz
+import pl.poznan.put.quizzy.quizzes.model.mapper.mapToApiModel
 
 @RestController
 @RequiredArgsConstructor
@@ -11,20 +13,20 @@ class QuizzesController(
 ) {
 
     @GetMapping("/api/quizzes")
-    fun getAllQuizzes(): List<Quizz> {
-        return quizzesService.getAllQuizes()
+    fun getAllQuizzes(): List<QuizzResponse> {
+        return quizzesService.getAllQuizes().map { it.mapToApiModel() }
     }
 
     @GetMapping("/api/quizzes/{id}")
-    fun getQuizById(@PathVariable("id") id: Long): Quizz? {
-        return quizzesService.getQuizById(id)
+    fun getQuizById(@PathVariable("id") id: Long): QuizzResponse? {
+        return quizzesService.getQuizById(id)?.mapToApiModel()
     }
 
     @GetMapping("/api/quizzes/filtered")
     fun getQuizzesFiltered(
         @RequestParam("userId") userId: Long?,
         @RequestParam("privacy") privacy: String?,
-        @RequestParam("difficulty") difficultyLevel: Int?,
+        @RequestParam("difficulty") difficultyLevel: Long?,
         @RequestParam("category") category: String?
     ): List<Quizz> {
         userId?.let {
@@ -50,11 +52,11 @@ class QuizzesController(
     }
 
     @PutMapping("/api/quizzes")
-    fun updateQuizz(@RequestBody quizz: Quizz): Quizz {
+    fun updateQuizz(@RequestBody quizz: QuizzResponse): Quizz {
         return quizzesService.updateQuiz(quizz)
     }
     @PostMapping("/api/quizzes")
-    fun addQuizz(@RequestBody quizz: Quizz): Quizz {
+    fun addQuizz(@RequestBody quizz: QuizzResponse): Quizz {
         return quizzesService.createQuizz(quizz)
     }
 
