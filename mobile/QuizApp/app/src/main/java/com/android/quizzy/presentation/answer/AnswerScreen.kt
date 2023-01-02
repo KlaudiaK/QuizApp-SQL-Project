@@ -133,7 +133,7 @@ fun WholeAnswerScreen(navigator: DestinationsNavigator, quizDetailsViewModel: Qu
         restartOnPlay = false
 
     )
-    quizDetailsViewModel.getAnswers(quizDetailsViewModel.uiState.value.questions[no].questionId)
+    quizDetailsViewModel.getAnswers(quizDetailsViewModel.uiState.value.questions[no].questionId.toString())
 
     val progressValue: Float = no / quizDetailsViewModel.uiState.value.questions.size.toFloat()
 

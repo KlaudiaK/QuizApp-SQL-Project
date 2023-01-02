@@ -135,7 +135,8 @@ class QuizViewModel @Inject constructor(
                     category = category ?: "",
                     privacySettings = sharing?.name ?: PrivacySetting.PUBLIC.name,
                     points = points ?: 0,
-                    difficulty = difficulty ?: DifficultyLevel.MEDIUM.name
+                    difficulty = difficulty ?: DifficultyLevel.MEDIUM.name,
+                    image = image ?: ""
                 )
             }
         }
