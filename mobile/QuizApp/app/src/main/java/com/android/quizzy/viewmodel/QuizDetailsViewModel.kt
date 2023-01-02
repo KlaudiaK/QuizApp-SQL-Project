@@ -51,9 +51,9 @@ class QuizDetailsViewModel @Inject constructor(
         }
     }
 
-    fun getAnswers(questionId: Int) {
+    fun getAnswers(questionId: String) {
         viewModelScope.launch {
-            answers.addAll(quizRepository.getAnswersForQuestion(questionId.toString()))
+            answers.addAll(quizRepository.getAnswersForQuestion(questionId))
         }
     }
 

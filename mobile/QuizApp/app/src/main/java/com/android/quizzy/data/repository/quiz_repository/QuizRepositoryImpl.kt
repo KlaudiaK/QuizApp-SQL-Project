@@ -39,6 +39,7 @@ class QuizRepositoryImpl @Inject constructor(
             sharing = PrivacySetting.PRIVATE,
             image = image,
             category = categoryName,
+            points = points,
             difficulty = networkService.getDifficultyLevel(difficultyLevelReferenceId.toString()).name
         )
     }
