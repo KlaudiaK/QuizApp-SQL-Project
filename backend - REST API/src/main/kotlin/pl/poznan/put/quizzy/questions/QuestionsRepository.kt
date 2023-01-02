@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import pl.poznan.put.quizzy.questions.model.Question
+import pl.poznan.put.quizzy.questions.model.db.Question
 
 @Repository
 interface QuestionsRepository: JpaRepository<Question, Long> {

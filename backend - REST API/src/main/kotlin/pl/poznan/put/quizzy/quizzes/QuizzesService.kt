@@ -3,7 +3,9 @@ package pl.poznan.put.quizzy.quizzes
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import pl.poznan.put.quizzy.quizzes.model.Quizz
+import pl.poznan.put.quizzy.quizzes.model.api.QuizzResponse
+import pl.poznan.put.quizzy.quizzes.model.db.Quizz
+import pl.poznan.put.quizzy.quizzes.model.mapper.mapToDBModel
 
 @Service
 class QuizzesService(
@@ -35,7 +37,7 @@ class QuizzesService(
         return quizzesRepository.getQuizzesByPrivacySettings(privacySettings)
     }
 
-    fun getQuizzesByDifficultyLevel(difficultyLevel: Int): List<Quizz> {
+    fun getQuizzesByDifficultyLevel(difficultyLevel: Long): List<Quizz> {
         return quizzesRepository.getQuizzesByDifficultyLevelReferenceId(difficultyLevel)
     }
 
@@ -43,12 +45,12 @@ class QuizzesService(
         return quizzesRepository.getQuizzesByCategoryName(categoryName)
     }
 
-    fun createQuizz(quizz: Quizz): Quizz {
-        return quizzesRepository.save(quizz)
+    fun createQuizz(quizz: QuizzResponse): Quizz {
+        return quizzesRepository.save(quizz.mapToDBModel())
     }
 
-    fun updateQuiz(quizz: Quizz): Quizz {
-        return quizzesRepository.save(quizz)
+    fun updateQuiz(quizz: QuizzResponse): Quizz {
+        return quizzesRepository.save(quizz.mapToDBModel())
     }
 
     fun deleteQuiz(id: Long) {

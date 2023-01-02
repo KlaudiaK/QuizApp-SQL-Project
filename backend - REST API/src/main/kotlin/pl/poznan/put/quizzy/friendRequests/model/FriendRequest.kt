@@ -14,7 +14,7 @@ import java.time.LocalDate
 
 @Data
 @Builder
-@Table(name="friends requests")
+@Table(name="friends_requests")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
