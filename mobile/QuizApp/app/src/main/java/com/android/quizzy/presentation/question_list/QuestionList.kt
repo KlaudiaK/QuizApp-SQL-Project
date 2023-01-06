@@ -77,7 +77,7 @@ fun QuestionList(
                                 {
                                     QuestionCardItem(
                                         answers = questionListViewModel.getAnswers(question.questionId),
-                                        onEditClicked = { navigator.navigate(NewQuestionDestination(questionId = question.questionId, isInEditMode = true)) },
+                                        onEditClicked = { navigator.navigate(NewQuestionDestination(questionId = question.questionId, isInEditMode = true, quizId = quizId)) },
                                         onDeleteClicked = {
                                             questionListViewModel.deleteQuestion(
                                                 question.questionId,
