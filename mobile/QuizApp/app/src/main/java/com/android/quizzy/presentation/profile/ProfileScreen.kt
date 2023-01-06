@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.android.quizzy.presentation.destinations.CategoriesListInfoDestination
 import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
 import com.android.quizzy.presentation.destinations.LoginScreenDestination
 import com.android.quizzy.presentation.destinations.RanksListInfoDestination
@@ -100,6 +101,15 @@ fun ProfileScreen(
                 .padding(top = 250.dp)
         ) {
             Text(text = "See ranks")
+
+        }
+
+        Button(
+            onClick = { navigator.navigate(CategoriesListInfoDestination) }, modifier = Modifier
+                .wrapContentSize()
+                .padding(top = 350.dp)
+        ) {
+            Text(text = "See categories")
 
         }
 
