@@ -23,4 +23,6 @@ class AnswerService(
     fun deleteAnswer(id: Long) {
         return answerRepository.deleteById(id)
     }
+
+    fun getMaxId(): Int = answerRepository.getMaxAnswerId()
 }

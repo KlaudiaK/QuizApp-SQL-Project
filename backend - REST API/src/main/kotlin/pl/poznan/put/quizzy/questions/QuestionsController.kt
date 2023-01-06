@@ -5,6 +5,7 @@ import org.springframework.data.jdbc.repository.query.Query
 
 import org.springframework.web.bind.annotation.*
 import pl.poznan.put.quizzy.questions.model.api.QuestionResponse
+import pl.poznan.put.quizzy.questions.model.api.QuestionWithAnswers
 import pl.poznan.put.quizzy.questions.model.db.Question
 import pl.poznan.put.quizzy.questions.model.mapper.mapToApiModel
 
@@ -37,4 +38,12 @@ class QuestionsController(
     fun deleteQuestion(@PathVariable("id") id: Long) {
         return questionsService.deleteQuestion(id)
     }
+
+    @GetMapping("/api/questions_answers/{id}")
+    fun getQuestionsWithAnswers(@PathVariable("id") quizId: Long): QuestionWithAnswers {
+        return questionsService.getAllQuestionsWithAnswers(quizId)
+    }
+
+    @GetMapping("/api/questions_max_id")
+    fun getMaxId() = questionsService.getMaxId()
 }
