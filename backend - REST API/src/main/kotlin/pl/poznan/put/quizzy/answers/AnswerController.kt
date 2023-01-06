@@ -33,4 +33,7 @@ class AnswerController(
     fun deleteAnswer(@PathVariable("id") id: Long) {
         return answerService.deleteAnswer(id)
     }
+
+    @GetMapping("/api/answers_max_id")
+    fun getMaxId() = answerService.getMaxId()
 }

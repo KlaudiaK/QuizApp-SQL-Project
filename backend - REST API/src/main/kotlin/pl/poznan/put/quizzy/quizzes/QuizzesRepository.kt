@@ -29,4 +29,6 @@ interface QuizzesRepository: JpaRepository<Quizz, Long> {
     ): List<Quizz>
 
 
+    @Query("SELECT MAX(id) FROM  quizes",  nativeQuery = true)
+    fun getMaxQuizId(): Int
 }

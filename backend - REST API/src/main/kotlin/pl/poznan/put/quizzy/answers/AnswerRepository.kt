@@ -11,4 +11,7 @@ interface AnswerRepository: JpaRepository<Answer, Long> {
 
     @Query("SELECT * FROM answers where questions_quizes_id = :questionId", nativeQuery = true)
     fun findAnswersByQuestionReference(@Param("questionId") questionId: Long) : List<Answer>
+
+    @Query("SELECT MAX(id) FROM  answers",  nativeQuery = true)
+    fun getMaxAnswerId(): Int
 }

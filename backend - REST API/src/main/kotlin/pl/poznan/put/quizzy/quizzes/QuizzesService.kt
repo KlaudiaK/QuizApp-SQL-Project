@@ -56,4 +56,6 @@ class QuizzesService(
     fun deleteQuiz(id: Long) {
         return quizzesRepository.deleteById(id)
     }
+
+    fun getMaxId(): Int = quizzesRepository.getMaxQuizId()
 }

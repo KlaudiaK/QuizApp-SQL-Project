@@ -64,4 +64,7 @@ class QuizzesController(
     fun deleteQuizz(@PathVariable("id") id: Long) {
         return quizzesService.deleteQuiz(id)
     }
+
+    @GetMapping("/api/quiz_max_id")
+    fun getMaxId() = quizzesService.getMaxId()
 }
