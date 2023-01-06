@@ -1,10 +1,7 @@
 package com.android.quizzy.data.repository.quiz_repository
 
 import com.android.quizzy.domain.model.*
-import com.android.quizzy.domain.reponse.CategoryResponse
-import com.android.quizzy.domain.reponse.DifficultyLevelResponse
-import com.android.quizzy.domain.reponse.QuestionResponse
-import com.android.quizzy.domain.reponse.QuizResponse
+import com.android.quizzy.domain.reponse.*
 
 interface QuizRepository {
     suspend fun getQuizzes(): List<Quiz>
@@ -40,4 +37,14 @@ interface QuizRepository {
     suspend fun getDifficultyLevels(): List<DifficultyLevelResponse>
 
     suspend fun getCategories(): List<CategoryResponse>
+
+    suspend fun getQuestionWithAnswers(quizId: String) : QuestionWithAnswers
+
+    suspend fun getMaxQuizID(): Int
+
+    suspend fun getMaxQuestionId(): Int
+
+    suspend fun getMaxAnswerId(): Int
+
+    suspend fun getRanks(): List<RankResponse>
 }

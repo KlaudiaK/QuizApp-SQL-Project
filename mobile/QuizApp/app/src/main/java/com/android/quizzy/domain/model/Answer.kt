@@ -4,5 +4,5 @@ data class Answer(
     var id: Long,
     var content: String,
     var isCorrect: Boolean,
-    var questionReference: Long
+    var questionReference: Long? = null
 )

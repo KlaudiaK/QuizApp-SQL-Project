@@ -2,10 +2,8 @@ package com.android.quizzy.data.repository.quiz_repository
 
 import com.android.quizzy.api.NetworkService
 import com.android.quizzy.domain.mapToQuestion
-import com.android.quizzy.domain.reponse.QuizResponse
 import com.android.quizzy.domain.model.*
-import com.android.quizzy.domain.reponse.CategoryResponse
-import com.android.quizzy.domain.reponse.QuestionResponse
+import com.android.quizzy.domain.reponse.*
 import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -91,4 +89,14 @@ class QuizRepositoryImpl @Inject constructor(
     override suspend fun getDifficultyLevels() = networkService.getAllDifficultyLevels()
 
     override suspend fun getCategories(): List<CategoryResponse> = networkService.getCategories()
+
+    override suspend fun getQuestionWithAnswers(quizId: String): QuestionWithAnswers = networkService.getQuestionWithAnswers(quizId)
+
+    override suspend fun getMaxQuizID(): Int = networkService.getQuizMaxId()
+
+    override suspend fun getMaxQuestionId(): Int = networkService.getQuestionsMaxId()
+
+    override suspend fun getMaxAnswerId(): Int = networkService.getAnswersMaxId()
+
+    override suspend fun getRanks(): List<RankResponse> = networkService.getRanks()
 }

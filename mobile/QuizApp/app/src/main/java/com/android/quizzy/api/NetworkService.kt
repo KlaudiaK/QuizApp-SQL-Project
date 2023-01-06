@@ -1,10 +1,7 @@
 package com.android.quizzy.api
 
-import com.android.quizzy.domain.reponse.QuizResponse
 import com.android.quizzy.domain.model.*
-import com.android.quizzy.domain.reponse.CategoryResponse
-import com.android.quizzy.domain.reponse.DifficultyLevelResponse
-import com.android.quizzy.domain.reponse.QuestionResponse
+import com.android.quizzy.domain.reponse.*
 import retrofit2.http.*
 
 interface NetworkService {
@@ -49,7 +46,7 @@ interface NetworkService {
     @PUT("/api/answers")
     suspend fun editAnswer(@Body answer: Answer)
 
-    @POST("/api/answer")
+    @POST("/api/answers")
     suspend fun createAnswer(@Body answer: Answer)
 
     @GET("/api/questions")
@@ -72,4 +69,19 @@ interface NetworkService {
 
     @GET("/api/difficulty_levels")
     suspend fun getAllDifficultyLevels(): List<DifficultyLevelResponse>
+
+    @GET("/api/questions_answers/{id}")
+    suspend fun getQuestionWithAnswers(@Path("id") quizId: String): QuestionWithAnswers
+
+    @GET("/api/answers_max_id")
+    suspend fun getAnswersMaxId(): Int
+
+    @GET("/api/questions_max_id")
+    suspend fun getQuestionsMaxId(): Int
+
+    @GET("/api/quizes_max_id")
+    suspend fun getQuizMaxId(): Int
+
+    @GET("/api/ranks")
+    suspend fun getRanks(): List<RankResponse>
 }
