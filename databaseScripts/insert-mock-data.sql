@@ -168,7 +168,7 @@ insert into quizes( name, description, image, points, likes, creation_date, modi
             3,
             1
            );
-insert into questions(content, image, creation_date, modiciation_date, quizes_id)
+insert into questions(content, image, creation_date, modificition_date, quizes_id)
     values (
             'Pytanie 1',
             null,
@@ -200,7 +200,7 @@ insert into answers(content, is_correct, questions_quizes_id)
             false,
             3
            );
-insert into questions(content, image, creation_date, modiciation_date, quizes_id)
+insert into questions(content, image, creation_date, modification_date, quizes_id)
     values (
             'Drugie pytanie',
             null,
@@ -246,12 +246,12 @@ insert into favourites(user_id, quiz_id)
             3, 2
            );
 
-insert into "Solved Quizes" (user_id, date, quiz_id)
+insert into solved_quizes (user_id, date, quiz_id)
     values (
             1, CURRENT_DATE, 1
            );
 
-INSERT INTO "Friends Requests" (sent, from_user, to_user)
+INSERT INTO friends_requests (sent, from_user, to_user)
     VALUES (
             CURRENT_DATE,
             1,
