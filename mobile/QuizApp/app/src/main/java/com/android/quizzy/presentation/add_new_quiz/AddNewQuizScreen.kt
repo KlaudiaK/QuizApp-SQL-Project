@@ -262,8 +262,10 @@ fun AddNewQuizScreen(
                         }
                     }
 
-                    IconButton(onClick = { navigator.navigate(NewQuestionDestination()) }) {
-                        Icon(Icons.Filled.Add, null)
+                    quizToEditID?.let { it1 ->
+                        IconButton(onClick = { navigator.navigate(NewQuestionDestination(quizId = it1)) }) {
+                            Icon(Icons.Filled.Add, null)
+                        }
                     }
 
                 }

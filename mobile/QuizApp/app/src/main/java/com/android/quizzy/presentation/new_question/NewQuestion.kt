@@ -46,7 +46,8 @@ fun NewQuestion(
     questionViewModel: QuestionViewModel = hiltViewModel(),
     uizViewModel: QuizViewModel = hiltViewModel(),
     questionId: Long? = null,
-    isInEditMode: Boolean = false
+    isInEditMode: Boolean = false,
+    quizId: Long
 ) {
     if (isInEditMode) questionId?.let { questionViewModel.getQuestion(it) }
     val uiState by remember { questionViewModel.uiState }
@@ -205,7 +206,7 @@ fun NewQuestion(
 
                     if (!isInEditMode) {
                         OutlinedButton(
-                            onClick = { questionViewModel.onSaveClicked() },
+                            onClick = { questionViewModel.onSaveClicked(quizId) },
                             modifier = Modifier
                                 .width(180.dp)
                                 .wrapContentHeight()

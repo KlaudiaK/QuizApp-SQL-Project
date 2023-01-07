@@ -29,6 +29,7 @@ import com.android.quizzy.presentation.answer.WholeAnswerScreen
 import com.android.quizzy.presentation.categories.CategoriesScreen
 import com.android.quizzy.presentation.destinations.*
 import com.android.quizzy.presentation.details.QuizDetails
+import com.android.quizzy.presentation.final_score.FinalScoreScreen
 import com.android.quizzy.presentation.login.LoginScreen
 import com.android.quizzy.presentation.my_quizzes.MyQuizesScreen
 import com.android.quizzy.presentation.new_question.NewQuestion
@@ -61,7 +62,7 @@ fun ExampleNavigation(
         startRoute = onboardingViewModel.getStartRoute(),
 
 
-    ) {
+        ) {
         composable(QuizListDestination) {
             QuizList(
                 uiViewModel = viewModel,
@@ -76,7 +77,13 @@ fun ExampleNavigation(
             )
         }
         composable(AddNewQuizScreenDestination) {
-            AddNewQuizScreen(navigator = this.destinationsNavigator, viewModel = viewModel, quizViewModel = hiltViewModel<QuizViewModel>(), isEditMode = navArgs.isEditMode, quizToEditID = navArgs.quizToEditID)
+            AddNewQuizScreen(
+                navigator = this.destinationsNavigator,
+                viewModel = viewModel,
+                quizViewModel = hiltViewModel<QuizViewModel>(),
+                isEditMode = navArgs.isEditMode,
+                quizToEditID = navArgs.quizToEditID
+            )
         }
         composable(MyQuizesScreenDestination) {
             MyQuizesScreen(navigator = this.destinationsNavigator, viewModel = viewModel)
@@ -85,16 +92,40 @@ fun ExampleNavigation(
             LoginScreen(navigator = this.destinationsNavigator, uiViewModel = viewModel)
         }
         composable(QuestionListDestination) {
-            QuestionList(navigator = this.destinationsNavigator, uiViewModel = viewModel, quizId = navArgs.quizId)
+            QuestionList(
+                navigator = this.destinationsNavigator,
+                uiViewModel = viewModel,
+                quizId = navArgs.quizId
+            )
         }
         composable(WholeAnswerScreenDestination) {
-            WholeAnswerScreen(navigator = this.destinationsNavigator, no = navArgs.no, quizDetailsViewModel = quizDetailsViewModel)
+            WholeAnswerScreen(
+                navigator = this.destinationsNavigator,
+                uiViewModel = viewModel,
+                no = navArgs.no,
+                quizDetailsViewModel = quizDetailsViewModel,
+                quizId = navArgs.quizId
+            )
         }
         composable(QuizDetailsDestination) {
-            QuizDetails(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel, quizId = navArgs.quizId, uiViewModel = viewModel, profileViewModel = hiltViewModel())
+            QuizDetails(
+                navigator = this.destinationsNavigator,
+                quizDetailsViewModel = quizDetailsViewModel,
+                quizId = navArgs.quizId,
+                uiViewModel = viewModel,
+                profileViewModel = hiltViewModel()
+            )
         }
         composable(NewQuestionDestination) {
-            NewQuestion(navigator = this.destinationsNavigator, questionId = navArgs.questionId, isInEditMode = navArgs.isInEditMode)
+            NewQuestion(
+                navigator = this.destinationsNavigator,
+                questionId = navArgs.questionId,
+                isInEditMode = navArgs.isInEditMode,
+                quizId = navArgs.quizId
+            )
+        }
+        composable(FinalScoreScreenDestination) {
+            FinalScoreScreen(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel)
         }
     }
 

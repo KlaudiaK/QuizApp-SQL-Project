@@ -59,7 +59,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
-@Destination
+@Destination("details")
 @Composable
 fun QuizDetails(
     uiViewModel: UiViewModel,
@@ -205,7 +205,7 @@ fun QuizDetails(
                 Button(
                     onClick = {
                         quizDetailsViewModel.getQuestions(quizId.toString())
-                        navigator.navigate(WholeAnswerScreenDestination(no = 0))
+                        navigator.navigate(WholeAnswerScreenDestination(no = 0, quizId = quizId.toString()))
                     },
                     modifier = Modifier
                         .padding(16.dp)

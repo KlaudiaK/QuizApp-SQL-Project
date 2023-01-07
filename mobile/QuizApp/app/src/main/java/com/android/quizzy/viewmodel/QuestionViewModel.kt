@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
-import com.android.quizzy.domain.mapToQuestionResponse
 import com.android.quizzy.domain.model.Answer
 import com.android.quizzy.domain.reponse.QuestionResponse
 import com.android.quizzy.presentation.new_question.NewQuestionInputErrors
@@ -14,9 +13,7 @@ import com.android.quizzy.presentation.new_question.QuestionScreenState
 import com.android.quizzy.presentation.registration_form.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.JsonNull.content
 import java.time.LocalDate
-import java.util.Collections.addAll
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,10 +28,9 @@ class QuestionViewModel @Inject constructor(
     val inputErrors: State<NewQuestionInputErrors> = _inputErrors
 
     private val _list = mutableStateListOf<Answer>(
-      //  Answer("", false),
-       // Answer("", false),
-      //  Answer("", false),
-      //  Answer("", false)
+        Answer(1, "", false),
+        Answer(2, "", false), Answer(3, "", false),
+        Answer(4, "", false),
     )
     val list: List<Answer> = _list
 
@@ -60,28 +56,50 @@ class QuestionViewModel @Inject constructor(
         }
     }
 
-    private fun validateAllFields() : Boolean {
+    private fun validateAllFields(): Boolean {
         val questionErrorId = InputValidator.getQuestionErrorIdOrNull(_uiState.value.question)
         val answersErrorId = mutableListOf<Int?>(null, null, null, null)
-        val imageErrorId = if(_uiState.value.image.isNotEmpty()) InputValidator.getImageIdOrNull(_uiState.value.image) else null
+        val imageErrorId =
+            if (_uiState.value.image.isNotEmpty()) InputValidator.getImageIdOrNull(_uiState.value.image) else null
         _list.toList().forEachIndexed { index, answer ->
             answersErrorId[index] = InputValidator.getAnswerErrorIdOrNull(answer.content)
         }
         return if (questionErrorId == null && answersErrorId.all { it == null } && imageErrorId == null) {
             true
         } else {
-            _inputErrors.value = _inputErrors.value.copy(questionErrorId = questionErrorId,
-                answersErrorId = answersErrorId, imageErrorId = imageErrorId)
+            _inputErrors.value = _inputErrors.value.copy(
+                questionErrorId = questionErrorId,
+                answersErrorId = answersErrorId, imageErrorId = imageErrorId
+            )
             false
         }
     }
 
-    fun onAddNewQuestionClicked(){
+    fun onAddNewQuestionClicked() {
         validateAllFields()
     }
 
-    fun onSaveClicked(){
-        validateAllFields()
+    fun onSaveClicked(quizId: Long) {
+        viewModelScope.launch {
+            if (validateAllFields()) {
+                val maxId = quizRepository.getMaxQuestionId() + 1L
+                val question = QuestionResponse(
+                    id = maxId,
+                    content = _uiState.value.question,
+                    image = _uiState.value.image,
+                    modificationDate = LocalDate.now().toString(),
+                    creationDate = LocalDate.now().toString(),
+                    quizReferenceId = quizId
+                )
+                quizRepository.addQuestionForQuiz(question)
+                for (answer in list) {
+                    val answerWithQuestionId = answer.apply {
+                        this.questionReference = question.id
+                    }
+                    quizRepository.addAnswerForQuestion(answerWithQuestionId)
+                }
+            }
+        }
     }
 
     fun onImageChanged(image: String) {
@@ -91,7 +109,8 @@ class QuestionViewModel @Inject constructor(
     fun getQuestion(id: Long) {
         viewModelScope.launch {
             val question = quizRepository.getQuestion(id.toString())
-            _uiState.value = _uiState.value.copy(question = question.content, image = question.image ?: "")
+            _uiState.value =
+                _uiState.value.copy(question = question.content, image = question.image ?: "")
             val answers = quizRepository.getAnswersForQuestion(question.questionId.toString())
             _list.apply {
                 addAll(answers)
@@ -100,8 +119,8 @@ class QuestionViewModel @Inject constructor(
     }
 
     fun onEditClicked(id: Long) {
-        viewModelScope.launch{
-            if(validateAllFields()) {
+        viewModelScope.launch {
+            if (validateAllFields()) {
                 val question = quizRepository.getQuestion(id.toString())
                 val newQuestion = QuestionResponse(
                     id = question.questionId,
@@ -115,11 +134,11 @@ class QuestionViewModel @Inject constructor(
                 _list.forEach {
                     quizRepository.editAnswerForQuestion(
                         Answer(
-                        id = it.id,
-                        content = it.content,
-                        isCorrect = it.isCorrect,
-                        questionReference = it.questionReference
-                    )
+                            id = it.id,
+                            content = it.content,
+                            isCorrect = it.isCorrect,
+                            questionReference = id
+                        )
                     )
                 }
             }

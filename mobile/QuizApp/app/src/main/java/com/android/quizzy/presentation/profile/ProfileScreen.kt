@@ -19,12 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.android.quizzy.presentation.destinations.CategoriesListInfoDestination
 import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
 import com.android.quizzy.presentation.destinations.LoginScreenDestination
+import com.android.quizzy.presentation.destinations.RanksListInfoDestination
 import com.android.quizzy.ui.theme.black80
 import com.android.quizzy.ui.theme.pastelBlue20
 import com.android.quizzy.ui.theme.pastelPink
@@ -86,12 +87,30 @@ fun ProfileScreen(
         Box(
             modifier = Modifier
                 .wrapContentSize()
-                //.padding(top = 70.dp)
         ) {
             Achievements(
                 points = uiState.value.points,
                 solvedQuizzesNum = uiState.value.solvedQuizzes,
-                createdQuizzesNum = uiState.value.createdQuizzes)
+                createdQuizzesNum = uiState.value.createdQuizzes
+            )
+        }
+
+        Button(
+            onClick = { navigator.navigate(RanksListInfoDestination) }, modifier = Modifier
+                .wrapContentSize()
+                .padding(top = 250.dp)
+        ) {
+            Text(text = "See ranks")
+
+        }
+
+        Button(
+            onClick = { navigator.navigate(CategoriesListInfoDestination) }, modifier = Modifier
+                .wrapContentSize()
+                .padding(top = 350.dp)
+        ) {
+            Text(text = "See categories")
+
         }
 
         Box(
@@ -118,7 +137,7 @@ fun ProfileScreen(
 }
 
 @Composable
-fun Achievements(points: String, createdQuizzesNum: String, solvedQuizzesNum: String,) {
+fun Achievements(points: String, createdQuizzesNum: String, solvedQuizzesNum: String) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
