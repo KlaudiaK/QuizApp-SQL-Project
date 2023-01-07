@@ -2,6 +2,9 @@ package com.android.quizzy.presentation.answer
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -35,6 +39,7 @@ import com.android.quizzy.viewmodel.QuizDetailsViewModel
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +53,7 @@ fun AnswerScreen(
     submitAnswer: (Answer) -> Unit,
     quizDetailsViewModel: QuizDetailsViewModel,
 ) {
-    var selectedItem by remember { mutableStateOf( -1) }
+    var selectedItem by remember { mutableStateOf(-1) }
     val nextNo = no + 1
 
     val finalscoree = quizDetailsViewModel.finalScore.value
@@ -157,11 +162,9 @@ fun AnswerScreen(
                         )
                     )
                     else {
-                        
+
                         navigator.navigate(
-                            FinalScoreScreenDestination(
-                                score = finalscoree
-                            )
+                            FinalScoreScreenDestination()
                         )
                     }
                 }, border = BorderStroke(2.dp, yellowPastel),
@@ -174,6 +177,7 @@ fun AnswerScreen(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Destination("solve_quiz")
 @Composable
 fun WholeAnswerScreen(
@@ -187,6 +191,9 @@ fun WholeAnswerScreen(
     val answers by quizDetailsViewModel.getQuestionWithAnswers(quizId)
         .collectAsState(initial = listOf())
 
+    var showInfo by remember {
+        mutableStateOf(false)
+    }
     var isPlaying by remember {
         mutableStateOf(true)
     }
@@ -218,24 +225,49 @@ fun WholeAnswerScreen(
             quizId = quizId,
             answerViewState = answers[no].answers,
             questionNum = answers.size,
-            submitAnswer = {quizDetailsViewModel.submitAnswer(question =answers[no].question.mapToQuestion(),  it) },
+            submitAnswer = {
+                quizDetailsViewModel.submitAnswer(
+                    question = answers[no].question.mapToQuestion(),
+                    it
+                )
+            },
             quizDetailsViewModel = quizDetailsViewModel
         )
     }
 
-    AnimatedVisibility(visible = answers.isEmpty()) {
+    LaunchedEffect(Unit) {
+        delay(300)
+        if (answers.isEmpty()) showInfo = true
+    }
+
+    AnimatedVisibility(
+        visible = showInfo,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly){
-            Text(text = "The author of this quiz hasn't yet added any questions", fontSize = 34.sp, fontWeight = FontWeight.W700, lineHeight = 40.sp)
-            Button(onClick = { navigator.navigate(MyQuizesScreenDestination( )) }) {
-                Text("Finish")
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text(
+                text = "The author of this quiz hasn't yet added any questions",
+                textAlign = TextAlign.Center,
+                fontSize = 34.sp, fontWeight = FontWeight.W700, lineHeight = 40.sp
+            )
+            Button(
+                onClick = { navigator.navigate(MyQuizesScreenDestination()) },
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(130.dp)
+            ) {
+                Text("Finish", fontSize = 20.sp, fontWeight = FontWeight.W500)
             }
         }
     }
+
 }
 
 @Composable
@@ -269,6 +301,15 @@ fun SolveQuiz(
                 .padding(horizontal = 46.dp, vertical = 50.dp)
         )
 
-        AnswerScreen(navigator, answerViewState, no, question, quizId, questionNum, submitAnswer, quizDetailsViewModel)
+        AnswerScreen(
+            navigator,
+            answerViewState,
+            no,
+            question,
+            quizId,
+            questionNum,
+            submitAnswer,
+            quizDetailsViewModel
+        )
     }
 }

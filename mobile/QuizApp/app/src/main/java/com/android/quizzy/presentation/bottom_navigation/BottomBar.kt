@@ -125,7 +125,7 @@ fun ExampleNavigation(
             )
         }
         composable(FinalScoreScreenDestination) {
-            FinalScoreScreen(navigator = this.destinationsNavigator, score = navArgs.score)
+            FinalScoreScreen(navigator = this.destinationsNavigator, quizDetailsViewModel = quizDetailsViewModel)
         }
     }
 

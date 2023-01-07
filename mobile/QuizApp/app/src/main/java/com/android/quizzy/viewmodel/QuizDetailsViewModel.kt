@@ -106,8 +106,7 @@ class QuizDetailsViewModel @Inject constructor(
 
     }
 
-    fun getFinalScore() = flow<Int> {
-
+    fun getFinalScore() = flow {
 
         var final = 0
         val correctAnswers =
@@ -117,16 +116,17 @@ class QuizDetailsViewModel @Inject constructor(
             val answersForQuestion =
                 correctAnswers.find { it.question.id == userAnswer.question.id }?.answers
             if (answersForQuestion?.find { it.id == userAnswer.answers[0].id }?.isCorrect == true) {
-                val newFinalScore = finalScore.value?.plus(1)
-                finalScore.value = newFinalScore
                 final += 1
-
             }
         }
 
         emit(final)
 
     }.distinctUntilChanged()
+
+    fun clearUserAnswers() {
+        userAnswers.value = listOf()
+    }
 }
 
 operator fun <T> MutableLiveData<ArrayList<T>>.plusAssign(values: List<T>) {
