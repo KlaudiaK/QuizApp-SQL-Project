@@ -56,8 +56,6 @@ fun AnswerScreen(
     var selectedItem by remember { mutableStateOf(-1) }
     val nextNo = no + 1
 
-    val finalscoree = quizDetailsViewModel.finalScore.value
-    //val finalscoree by quizDetailsViewModel.getFinalScore().collectAsState(initial = 0)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -104,9 +102,9 @@ fun AnswerScreen(
         Text(
             text = question.content, modifier = Modifier
                 .fillMaxWidth()
-                .padding(14.dp),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W400,
+                .padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 18.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.W500,
             color = black80
         )
         LazyColumn(
@@ -118,8 +116,8 @@ fun AnswerScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp)
-                        .height(50.dp)
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .height(45.dp)
                         .selectable(
                             selected = selectedItem == index,
                             onClick = { selectedItem = index }),
