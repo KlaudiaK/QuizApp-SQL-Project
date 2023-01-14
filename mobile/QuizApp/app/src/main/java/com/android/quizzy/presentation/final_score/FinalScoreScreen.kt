@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,8 +37,9 @@ fun FinalScoreScreen(
         restartOnPlay = false
     )
 
-    val score by quizDetailsViewModel.getFinalScore().collectAsState(initial = 0)
+    quizDetailsViewModel.getFinalScore()
 
+    val score = quizDetailsViewModel.finalScore.value
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
