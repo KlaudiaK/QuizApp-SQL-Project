@@ -103,14 +103,16 @@ CREATE TABLE user_settings (
 
 CREATE TABLE users_passwords (
                                 id INTEGER NOT NULL,
-                                password VARCHAR(100),
+                                username VARCHAR(100) NOT NULL,
+                                password VARCHAR(100) NOT NULL,
                                 last_modified DATE
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS passwords_index on users_passwords(id, password);
+CREATE UNIQUE INDEX IF NOT EXISTS passwords_index on users_passwords(id, username, password);
 
 ALTER TABLE categories ADD CONSTRAINT categories_pk PRIMARY KEY ( name );
 ALTER TABLE users ADD CONSTRAINT users_pk PRIMARY KEY ( id );
+ALTER TABLE users ADD CONSTRAINT users_uk unique ( username );
 ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_pk PRIMARY KEY ( id );
 ALTER TABLE ranks ADD CONSTRAINT ranks_pk PRIMARY KEY ( name );
 ALTER TABLE quizes ADD CONSTRAINT quizes_pk PRIMARY KEY ( id );
@@ -185,7 +187,8 @@ ALTER TABLE user_settings
 ALTER TABLE users
     ADD CONSTRAINT users_ranks_fk FOREIGN KEY ( rank )
         REFERENCES ranks ( name );
-ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk FOREIGN KEY ( id ) references  users(id);
+ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk FOREIGN KEY ( username ) references  users(username);
+ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk2 FOREIGN KEY ( id ) references  users(id);
 
 
 ALTER TABLE quizes ADD CONSTRAINT quizes_creator_fk FOREIGN KEY ( creator_user_id ) references users(id);
@@ -265,8 +268,8 @@ as $$
             values (
                        'N', 'EN', vid
                    );
-            insert into users_passwords(id, password, last_modified)
+            insert into users_passwords(id, username, password, last_modified)
             values (
-                       vid, vpassword, current_date
+                       vid, (select username from users where id = vid), vpassword, current_date
                    );
         END; $$
