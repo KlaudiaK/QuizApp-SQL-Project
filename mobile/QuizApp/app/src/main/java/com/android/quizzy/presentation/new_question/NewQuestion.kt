@@ -33,6 +33,7 @@ import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.android.quizzy.R
 import com.android.quizzy.ui.theme.*
+import com.android.quizzy.utils.showToastMessage
 import com.android.quizzy.viewmodel.QuestionViewModel
 import com.android.quizzy.viewmodel.QuizViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -56,6 +57,14 @@ fun NewQuestion(
 
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        questionViewModel
+            .toastMessage
+            .collect { message ->
+                context.showToastMessage(message)
+            }
+    }
 
     Scaffold(topBar = {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {

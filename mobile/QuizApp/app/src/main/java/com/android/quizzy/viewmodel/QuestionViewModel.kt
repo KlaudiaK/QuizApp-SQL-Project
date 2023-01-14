@@ -12,6 +12,8 @@ import com.android.quizzy.presentation.new_question.NewQuestionInputErrors
 import com.android.quizzy.presentation.new_question.QuestionScreenState
 import com.android.quizzy.presentation.registration_form.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -33,6 +35,9 @@ class QuestionViewModel @Inject constructor(
         Answer(4, "", false),
     )
     val list: List<Answer> = _list
+
+    private val _toastMessage = MutableSharedFlow<String>()
+    val toastMessage = _toastMessage.asSharedFlow()
 
     init {
         getUsername()
@@ -98,6 +103,7 @@ class QuestionViewModel @Inject constructor(
                     }
                     quizRepository.addAnswerForQuestion(answerWithQuestionId)
                 }
+                sendMessage("You've added new question!")
             }
         }
     }
@@ -141,7 +147,14 @@ class QuestionViewModel @Inject constructor(
                         )
                     )
                 }
+                sendMessage("You've edited the question")
             }
+        }
+    }
+
+    private fun sendMessage(message: String) {
+        viewModelScope.launch {
+            _toastMessage.emit(message)
         }
     }
 }
