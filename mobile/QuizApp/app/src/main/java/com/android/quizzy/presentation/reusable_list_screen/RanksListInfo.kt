@@ -47,7 +47,7 @@ fun RanksListInfo(
         item {
             Row(
                 Modifier
-                    .background(pastelBlue)
+                    .background(brown80)
                     .height(80.dp)) {
                 TableCell(text = "Rank name", weight = column1Weight, largeText = false)
                 TableCell(text = "", weight = column2Weight)

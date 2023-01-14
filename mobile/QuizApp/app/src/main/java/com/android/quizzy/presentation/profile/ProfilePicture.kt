@@ -217,7 +217,7 @@ fun TakePicture(
                 .height(340.dp),
             shape = RectangleShape,
 
-            colors = CardDefaults.elevatedCardColors(containerColor = pastelBlue20)
+            colors = CardDefaults.elevatedCardColors(containerColor = brown80.copy(0.8F))
         ) {
             TextButton(
                 modifier = Modifier.align(Alignment.End),
@@ -233,7 +233,7 @@ fun TakePicture(
                     .padding(start = 100.dp, end = 100.dp)
                     .height(140.dp),
 
-                colors = CardDefaults.cardColors(containerColor = pastelBlue20)
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
             ) {
 
 

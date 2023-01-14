@@ -7,6 +7,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Dashboard
+import androidx.compose.material.icons.outlined.MilitaryTech
 import androidx.compose.material.icons.twotone.Create
 import androidx.compose.material.icons.twotone.DoneAll
 import androidx.compose.material.icons.twotone.Star
@@ -27,7 +29,6 @@ import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
 import com.android.quizzy.presentation.destinations.LoginScreenDestination
 import com.android.quizzy.presentation.destinations.RanksListInfoDestination
 import com.android.quizzy.ui.theme.black80
-import com.android.quizzy.ui.theme.pastelBlue20
 import com.android.quizzy.ui.theme.pastelPink
 import com.android.quizzy.viewmodel.ProfileViewModel
 import com.android.quizzy.viewmodel.UiViewModel
@@ -75,7 +76,7 @@ fun ProfileScreen(
                     .fillMaxWidth()
                     .height(340.dp),
                 shape = RectangleShape,
-                colors = CardDefaults.elevatedCardColors(containerColor = pastelBlue20)
+                // colors = CardDefaults.elevatedCardColors(containerColor = brown80)
             ) {
                 TakePicture(
                     uiState = uiState,
@@ -97,20 +98,24 @@ fun ProfileScreen(
 
         Button(
             onClick = { navigator.navigate(RanksListInfoDestination) }, modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 250.dp)
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(top = 250.dp, start = 16.dp, end = 16.dp)
         ) {
-            Text(text = "See ranks")
-
+            Icon(Icons.Outlined.MilitaryTech, contentDescription = null)
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = "See ranks", fontSize = 20.sp,  modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp))
         }
 
         Button(
             onClick = { navigator.navigate(CategoriesListInfoDestination) }, modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 350.dp)
+                .padding(top = 400.dp, start = 16.dp, end = 16.dp)
+                .wrapContentHeight()
+                .fillMaxWidth()
         ) {
-            Text(text = "See categories")
-
+            Icon(Icons.Outlined.Dashboard, contentDescription = null)
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = "See categories", fontSize = 20.sp, modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp))
         }
 
         Box(
@@ -128,7 +133,7 @@ fun ProfileScreen(
                     .width(120.dp)
                     .height(50.dp)
             ) {
-                Text("Log out", fontSize = 18.sp, color = Color.Black)
+                Text("Log out", fontSize = 18.sp, color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }

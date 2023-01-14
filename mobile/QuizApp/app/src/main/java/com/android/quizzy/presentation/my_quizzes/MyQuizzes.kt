@@ -75,11 +75,11 @@ fun MyQuizesScreen(
                     )
                 },
                 elevation = FloatingActionButtonDefaults.elevation(12.dp),
-                containerColor = pastelBlue,
+                containerColor = ecru,
                 shape = CircleShape
 
             ) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new Quiz")
+                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new Quiz", tint = navyDarkBlue60)
             }
         }, floatingActionButtonPosition = FabPosition.End,
         containerColor = black80
