@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS ranks cascade;
 DROP TABLE IF EXISTS solved_quizes CASCADE;
 DROP TABLE IF EXISTS user_settings CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS users_passwords CASCADE;
 
 CREATE TABLE answers (
                          id                  SERIAL8,
@@ -100,8 +101,17 @@ CREATE TABLE user_settings (
                                users_id           INTEGER NOT NULL
 );
 
+CREATE TABLE users_passwords (
+                                id INTEGER NOT NULL,
+                                password VARCHAR(100),
+                                last_modified DATE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS passwords_index on users_passwords(id, password);
+
 ALTER TABLE categories ADD CONSTRAINT categories_pk PRIMARY KEY ( name );
 ALTER TABLE users ADD CONSTRAINT users_pk PRIMARY KEY ( id );
+ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_pk PRIMARY KEY ( id );
 ALTER TABLE ranks ADD CONSTRAINT ranks_pk PRIMARY KEY ( name );
 ALTER TABLE quizes ADD CONSTRAINT quizes_pk PRIMARY KEY ( id );
 ALTER TABLE questions ADD CONSTRAINT questions_pk PRIMARY KEY ( id );
@@ -175,6 +185,8 @@ ALTER TABLE user_settings
 ALTER TABLE users
     ADD CONSTRAINT users_ranks_fk FOREIGN KEY ( rank )
         REFERENCES ranks ( name );
+ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk FOREIGN KEY ( id ) references  users(id);
+
 
 ALTER TABLE quizes ADD CONSTRAINT quizes_creator_fk FOREIGN KEY ( creator_user_id ) references users(id);
 
@@ -230,6 +242,7 @@ CREATE OR REPLACE TRIGGER calculate_ranks
 CREATE OR REPLACE PROCEDURE create_user
     (
     vusername IN        VARCHAR(100),
+    vpassword IN        VARCHAR(100),
     vemail    IN        VARCHAR(100),
     vname     IN        VARCHAR(100),
     vavatar   IN        VARCHAR,
@@ -252,4 +265,8 @@ as $$
             values (
                        'N', 'EN', vid
                    );
-        END create_user; $$
+            insert into users_passwords(id, password, last_modified)
+            values (
+                       vid, vpassword, current_date
+                   );
+        END; $$

@@ -63,6 +63,18 @@ insert into user_settings(dark_mode, preferred_language, users_id)
     values (
             'Y', 'EN', 3
            );
+insert into users_passwords(id, password, last_modified)
+    values (
+            1, 'test', current_date
+           );
+insert into users_passwords(id, password, last_modified)
+    values (
+            2, 'test', current_date
+           );
+insert into users_passwords(id, password, last_modified)
+    values (
+            3, 'test', current_date
+           );
 
 insert into  categories (name, description)
     values (
