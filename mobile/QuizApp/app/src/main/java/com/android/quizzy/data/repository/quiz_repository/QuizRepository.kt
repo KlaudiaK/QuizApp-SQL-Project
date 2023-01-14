@@ -14,9 +14,9 @@ interface QuizRepository {
 
     suspend fun deleteQuiz(quizId: String)
 
-    suspend fun addQuizToFavourites(quiz: Quiz)
+    suspend fun addQuizToFavourites(quizId: Long)
 
-    suspend fun getFavouriteQuizzes(user: User): List<Quiz>
+    suspend fun getFavouriteQuizzes(userId: Long): List<FavouriteItem>
 
     suspend fun addQuestionForQuiz(question: QuestionResponse)
 
@@ -47,4 +47,6 @@ interface QuizRepository {
     suspend fun getMaxAnswerId(): Int
 
     suspend fun getRanks(): List<RankResponse>
+
+    suspend fun deleteQuizFromFavourites(id: Long)
 }

@@ -6,12 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,13 +29,19 @@ import coil.request.ImageRequest
 import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.ui.theme.black60
+import com.android.quizzy.ui.theme.hardRed
+import com.android.quizzy.ui.theme.redLight
 
 @Composable
 fun QuizCard(
     item: Quiz,
     onClick: () -> Unit,
-    backgroundColor: Color = black60
+    backgroundColor: Color = black60,
+    onLikeClicked: (Long) -> Unit,
+    onDislikeClicked: (Long) -> Unit,
+    isLiked: Boolean = false
 ) {
+    var isFavorite by remember { mutableStateOf(isLiked) }
     val title = item.title
     val author = item.author
     var url = item.image
@@ -64,6 +72,7 @@ fun QuizCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(end = 14.dp)
         ) {
 
             AsyncImage(
@@ -111,6 +120,22 @@ fun QuizCard(
                     fontWeight = FontWeight.W300,
                     fontSize = 16.sp
                 )
+            }
+
+            IconToggleButton(
+                checked = isFavorite,
+                onCheckedChange = {
+                    if(isFavorite) onDislikeClicked(item.id) else onLikeClicked(item.id)
+                    isFavorite = !isFavorite
+                },
+                modifier = Modifier.size(60.dp)
+            )  {
+
+                Icon( imageVector = if (isFavorite) {
+                    Icons.Filled.Favorite
+                } else {
+                    Icons.Default.FavoriteBorder
+                }, tint = redLight, contentDescription = "Like Quiz")
             }
         }
     }

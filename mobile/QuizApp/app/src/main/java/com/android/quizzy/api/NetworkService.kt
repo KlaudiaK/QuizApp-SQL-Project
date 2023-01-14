@@ -58,8 +58,8 @@ interface NetworkService {
     @PUT("/api/questions")
     suspend fun updateQuestion(@Body question: QuestionResponse)
 
-    @DELETE("/api/questions")
-    suspend fun deleteQuestion(@Query("id") id: String)
+    @DELETE("/api/questions/{id}")
+    suspend fun deleteQuestion(@Path("id") id: String)
 
     @POST("/api/questions")
     suspend fun addQuestion(@Body question: QuestionResponse)
@@ -84,4 +84,15 @@ interface NetworkService {
 
     @GET("/api/ranks")
     suspend fun getRanks(): List<RankResponse>
+
+    @GET("/api/favorites")
+    suspend fun getFavouritesQuizzes(
+        @Query("userId") userId: Long
+    ): List<FavouriteItem>
+
+    @POST("/api/favorites")
+    suspend fun addFavouriteQuiz(@Body favouriteItem: FavouriteItem)
+
+    @HTTP(method = "DELETE", path = "/api/favorites", hasBody = true)
+    suspend fun deleteFavouriteQuiz(@Body favouriteItem: FavouriteItem)
 }
