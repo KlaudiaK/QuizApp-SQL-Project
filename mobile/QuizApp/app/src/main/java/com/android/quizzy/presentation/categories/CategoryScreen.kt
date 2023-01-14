@@ -30,9 +30,9 @@ fun CategoriesScreen(
     uiViewModel: UiViewModel
 ) {
     uiViewModel.onBottomBarVisibilityChange(true)
-    val categories2 = mutableListOf<Category>()
+    val categoriesList = mutableListOf<Category>()
     Categories.values().forEach {
-        categories2.add(Category(it.name, icon = it.icon, color = it.color))
+        categoriesList.add(Category(it.name, icon = it.icon, color = it.color))
     }
     Surface(color = black80) {
         Column(
@@ -53,7 +53,7 @@ fun CategoriesScreen(
                 contentPadding = PaddingValues(8.dp),
 
             ) {
-                items(categories2) { category ->
+                items(categoriesList) { category ->
                     CategoryCard(category = category, onClick = {
                         navigator.navigate(
                             QuizListDestination(

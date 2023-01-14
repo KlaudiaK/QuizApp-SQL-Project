@@ -18,8 +18,9 @@ enum class Categories(val icon: ImageVector, val color: Color){
     MUSIC(Icons.TwoTone.MusicNote, Color(0xF072C4CF)),
     SCIENCE(Icons.TwoTone.Science, Color(0xF0729CCF)),
     SPORT(Icons.TwoTone.SportsTennis, Color(0xF072CF74)),
-    ANIMALS(Icons.TwoTone.Pets, Color(0xF0CFCA72)),
+    ANIMAL(Icons.TwoTone.Pets, Color(0xF0CFCA72)),
     ART(Icons.TwoTone.ColorLens, Color(0xF0CF7293)),
     TRAVEL(Icons.TwoTone.TravelExplore,Color(0xF0CF9372)),
-    BOOKS(Icons.TwoTone.Book, Color(0xF0A2825B))
+    BOOK(Icons.TwoTone.Book, Color(0xF0A2825B)),
+    OTHER(Icons.TwoTone.QuestionMark, Color(0xF05B62A2))
 }
