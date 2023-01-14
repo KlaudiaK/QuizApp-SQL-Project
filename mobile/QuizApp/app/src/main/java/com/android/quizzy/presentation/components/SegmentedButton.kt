@@ -30,7 +30,7 @@ fun SegmentedControl(
     useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
     cornerRadius : Int = 16,
-    @ColorRes color : Int = R.color.lightGreen,
+    @ColorRes color : Int = R.color.brown_80,
     onItemSelection: (selectedItemIndex: Int) -> Unit,
     modifier: Modifier
 ) {

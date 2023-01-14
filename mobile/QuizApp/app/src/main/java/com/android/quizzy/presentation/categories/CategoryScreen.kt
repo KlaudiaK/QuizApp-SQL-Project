@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.sp
 import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.Category
 import com.android.quizzy.presentation.destinations.QuizListDestination
+import com.android.quizzy.ui.theme.black60
 import com.android.quizzy.ui.theme.black80
-import com.android.quizzy.ui.theme.pastelWhite
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -30,9 +30,9 @@ fun CategoriesScreen(
     uiViewModel: UiViewModel
 ) {
     uiViewModel.onBottomBarVisibilityChange(true)
-    val categories2 = mutableListOf<Category>()
+    val categoriesList = mutableListOf<Category>()
     Categories.values().forEach {
-        categories2.add(Category(it.name, icon = it.icon, color = it.color))
+        categoriesList.add(Category(it.name, icon = it.icon, color = it.color))
     }
     Surface(color = black80) {
         Column(
@@ -45,7 +45,7 @@ fun CategoriesScreen(
                 text = "Choose category",
                 fontSize = 36.sp,
                 fontWeight = FontWeight.W400,
-                color = pastelWhite,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(start = 12.dp, top = 12.dp, bottom = 12.dp)
             )
             LazyVerticalGrid(
@@ -53,7 +53,7 @@ fun CategoriesScreen(
                 contentPadding = PaddingValues(8.dp),
 
             ) {
-                items(categories2) { category ->
+                items(categoriesList) { category ->
                     CategoryCard(category = category, onClick = {
                         navigator.navigate(
                             QuizListDestination(
@@ -71,7 +71,7 @@ fun CategoriesScreen(
 fun CategoryCard(category: Category, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = category.color),
+        colors = CardDefaults.cardColors(containerColor = black60.copy(0.8F)),
         modifier = Modifier
             .width(150.dp)
             .height(130.dp)
@@ -91,9 +91,10 @@ fun CategoryCard(category: Category, onClick: () -> Unit) {
                 contentDescription = category.name,
                 modifier = Modifier
                     .padding(bottom = 10.dp)
-                    .size(34.dp)
+                    .size(34.dp),
+                tint = category.color
             )
-            Text(text = category.name, fontSize = 20.sp, fontWeight = FontWeight.W600)
+            Text(text = category.name, fontSize = 20.sp, fontWeight = FontWeight.W600, color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }

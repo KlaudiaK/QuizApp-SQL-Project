@@ -12,6 +12,9 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.twotone.WorkspacePremium
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +35,7 @@ import com.android.quizzy.presentation.destinations.AddNewQuizScreenDestination
 import com.android.quizzy.presentation.destinations.QuizDetailsDestination
 import com.android.quizzy.presentation.quiz_list.QuizCard
 import com.android.quizzy.ui.theme.*
+import com.android.quizzy.utils.showToastMessage
 import com.android.quizzy.viewmodel.QuizListViewModel
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -49,6 +53,19 @@ fun MyQuizesScreen(
     val uiState = quizViewModel.uiState
     var url = "https://freesvg.org/img/abstract-user-flat-4.png"
 
+    val favourites by quizViewModel.getListOfFavouritesQuizzes(8L)
+        .collectAsState(initial = listOf())
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        quizViewModel
+            .toastMessage
+            .collect { message ->
+                context.showToastMessage(message)
+            }
+    }
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -58,11 +75,11 @@ fun MyQuizesScreen(
                     )
                 },
                 elevation = FloatingActionButtonDefaults.elevation(12.dp),
-                containerColor = pastelBlue,
+                containerColor = ecru,
                 shape = CircleShape
 
             ) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new Quiz")
+                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add new Quiz", tint = navyDarkBlue60)
             }
         }, floatingActionButtonPosition = FabPosition.End,
         containerColor = black80
@@ -200,13 +217,16 @@ fun MyQuizesScreen(
                                 },
                                 backgroundColor = Categories.values()
                                     .find { it.name.contentEquals(quiz.category, true) }?.color
-                                    ?: green20
+                                    ?: green20,
+                                onLikeClicked = { id ->
+                                    quizViewModel.addQuizToFavourites(id)
+                                },
+                                onDislikeClicked = { quizViewModel.deleteQuizFromFavourites(it) },
+                                isLiked = favourites.map { it.quizReferenceId }.contains(quiz.id)
                             )
 
                         }
                     }
-
-
                 })
         }
     }

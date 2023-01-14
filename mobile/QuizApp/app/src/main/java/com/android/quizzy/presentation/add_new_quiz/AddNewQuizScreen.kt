@@ -290,7 +290,7 @@ fun AddNewQuizScreen(
                         text = "Submit",
                         fontSize = 26.sp,
                         fontWeight = FontWeight.W500,
-                        color = pastelBlue20
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

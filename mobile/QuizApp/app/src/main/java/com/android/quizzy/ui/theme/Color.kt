@@ -14,6 +14,13 @@ val green20 = Color(0xFF90a582)
 val lightGreen20 = Color(0xFFc1d6b2)
 val darkGreen80 = Color(0xFF627655)
 
+
+val navyDarkBlue80 = Color(0xFF2C3639)
+val navyDarkBlue60 = Color(0xFF3F4E4F)
+val navyDarkBlue40 = Color(0xFF8B9899)
+val brown80 = Color(0xB2A27B5C)
+val ecru = Color(0xFFDCD7C9)
+
 val white20 = Color(0xFFffffe8)
 val orange20 = Color(0xFFffc96c)
 val yellow20 = Color(0xFFfffc9c)

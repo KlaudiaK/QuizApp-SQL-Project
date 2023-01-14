@@ -22,7 +22,9 @@ class QuizRepositoryImpl @Inject constructor(
                 author = creatorId.toString(),
                 description = description,
                 sharing = PrivacySetting.valueOf(privacySettings),
-                image = image
+                image = image,
+                category = categoryName,
+                difficulty = networkService.getDifficultyLevel(difficultyLevelReferenceId.toString()).name
             )
         }
 
@@ -65,16 +67,17 @@ class QuizRepositoryImpl @Inject constructor(
 
     override suspend fun deleteQuiz(id: String) = networkService.deleteQuiz(id)
 
-    override suspend fun addQuizToFavourites(quiz: Quiz) {}//= networkService.addQuiz(quiz)
+    override suspend fun addQuizToFavourites(quizId: Long) = networkService.addFavouriteQuiz(
+        FavouriteItem(8, quizId)
+    )
 
-    override suspend fun getFavouriteQuizzes(user: User): List<Quiz> = listOf()//networkService.getAllQuizzes()
+    override suspend fun getFavouriteQuizzes(userId: Long) = networkService.getFavouritesQuizzes(userId)
 
     override suspend fun addQuestionForQuiz(question: QuestionResponse) = networkService.addQuestion(question)
 
     override suspend fun updateQuestionForQuiz(question: QuestionResponse) = networkService.updateQuestion(question)
 
-    //TODO Change method to be called on service
-    override suspend fun getQuestionsForQuiz(quizId: String) = networkService.getQuestions(quizId)//questions //
+    override suspend fun getQuestionsForQuiz(quizId: String) = networkService.getQuestions(quizId)
 
     override suspend fun getQuestion(id: String) = networkService.getQuestionById(id).mapToQuestion()
 
@@ -82,7 +85,7 @@ class QuizRepositoryImpl @Inject constructor(
 
     override suspend fun editAnswerForQuestion(answer: Answer) = networkService.editAnswer(answer)
 
-    override suspend  fun getAnswersForQuestion(questionId: String): List<Answer> = networkService.getAnswersForQuestion(questionId) //Answer.listOfAnswers//
+    override suspend  fun getAnswersForQuestion(questionId: String): List<Answer> = networkService.getAnswersForQuestion(questionId)
 
     override suspend fun deleteQuestionFromQuiz(id: String) = networkService.deleteQuestion(id)
 
@@ -99,4 +102,10 @@ class QuizRepositoryImpl @Inject constructor(
     override suspend fun getMaxAnswerId(): Int = networkService.getAnswersMaxId()
 
     override suspend fun getRanks(): List<RankResponse> = networkService.getRanks()
+
+    override suspend fun deleteQuizFromFavourites(id: Long) = networkService.deleteFavouriteQuiz(FavouriteItem(
+        8, id
+    ))
+
+    override suspend fun addQuizToSolved(quiz: SolvedQuizResponse) = networkService.addQuizToSolved(quiz)
 }

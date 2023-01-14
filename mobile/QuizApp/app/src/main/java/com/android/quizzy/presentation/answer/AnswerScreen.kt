@@ -1,10 +1,6 @@
 package com.android.quizzy.presentation.answer
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -35,14 +31,13 @@ import com.android.quizzy.presentation.destinations.FinalScoreScreenDestination
 import com.android.quizzy.presentation.destinations.MyQuizesScreenDestination
 import com.android.quizzy.presentation.destinations.WholeAnswerScreenDestination
 import com.android.quizzy.ui.theme.*
+import com.android.quizzy.viewmodel.QuestionWithAnswersState
 import com.android.quizzy.viewmodel.QuizDetailsViewModel
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.delay
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnswerScreen(
     navigator: DestinationsNavigator,
@@ -70,7 +65,7 @@ fun AnswerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp),
-            colors = CardDefaults.cardColors(containerColor = green60)
+            colors = CardDefaults.cardColors(containerColor = navyDarkBlue60)
         ) {
 
             Text(
@@ -122,10 +117,10 @@ fun AnswerScreen(
                             selected = selectedItem == index,
                             onClick = { selectedItem = index }),
                     colors = CardDefaults.cardColors(
-                        containerColor = if (selectedItem == index) lightPastelBlue20 else
+                        containerColor = if (selectedItem == index) navyDarkBlue40 else
                             Color.White
                     ),
-                    border = BorderStroke(2.dp, lightPastelBlue20)
+                    border = BorderStroke(2.dp, navyDarkBlue40)
                 ) {
 
                     Text(
@@ -160,12 +155,12 @@ fun AnswerScreen(
                         )
                     )
                     else {
-
                         navigator.navigate(
                             FinalScoreScreenDestination()
                         )
+                        quizDetailsViewModel.addQuizToSolved(quizId.toLong())
                     }
-                }, border = BorderStroke(2.dp, yellowPastel),
+                }, border = BorderStroke(2.dp, brown80),
                 enabled = selectedItem != -1
             ) {
                 Text(text = "Next", color = black80)
@@ -175,7 +170,6 @@ fun AnswerScreen(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Destination("solve_quiz")
 @Composable
 fun WholeAnswerScreen(
@@ -186,9 +180,12 @@ fun WholeAnswerScreen(
     uiViewModel: UiViewModel
 ) {
     uiViewModel.onBottomBarVisibilityChange(false)
-    val answers by quizDetailsViewModel.getQuestionWithAnswers(quizId)
-        .collectAsState(initial = listOf())
 
+    LaunchedEffect(Unit) {
+        quizDetailsViewModel.getQuestionWithAnswers(quizId)
+    }
+
+    val answers = quizDetailsViewModel.questionWithAnswers.value
     var showInfo by remember {
         mutableStateOf(false)
     }
@@ -212,38 +209,9 @@ fun WholeAnswerScreen(
 
     )
 
-    AnimatedVisibility(visible = answers.isNotEmpty()) {
-        SolveQuiz(
-            composition = composition,
-            progress = progress,
-            linearProgress = (no + 1) / answers.size.toFloat(),
-            navigator = navigator,
-            no = no,
-            question = answers[no].question.mapToQuestion(),
-            quizId = quizId,
-            answerViewState = answers[no].answers,
-            questionNum = answers.size,
-            submitAnswer = {
-                quizDetailsViewModel.submitAnswer(
-                    question = answers[no].question.mapToQuestion(),
-                    it
-                )
-            },
-            quizDetailsViewModel = quizDetailsViewModel
-        )
-    }
-
-    LaunchedEffect(Unit) {
-        delay(300)
-        if (answers.isEmpty()) showInfo = true
-    }
-
-    AnimatedVisibility(
-        visible = showInfo,
-        enter = fadeIn(),
-        exit = fadeOut()
-    ) {
-        Column(
+    val questionsState = quizDetailsViewModel.questionListState.collectAsState().value
+    when (questionsState) {
+        is QuestionWithAnswersState.NoResult -> Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp),
@@ -264,8 +232,30 @@ fun WholeAnswerScreen(
                 Text("Finish", fontSize = 20.sp, fontWeight = FontWeight.W500)
             }
         }
+        is QuestionWithAnswersState.Success -> answers?.let {
+            SolveQuiz(
+                composition = composition,
+                progress = progress,
+                linearProgress = (no + 1) / it.size.toFloat(),
+                navigator = navigator,
+                no = no,
+                question = answers[no].question.mapToQuestion(),
+                quizId = quizId,
+                answerViewState = answers[no].answers,
+                questionNum = answers.size,
+                submitAnswer = {
+                    quizDetailsViewModel.submitAnswer(
+                        question = answers[no].question.mapToQuestion(),
+                        it
+                    )
+                },
+                quizDetailsViewModel = quizDetailsViewModel
+            )
+        }
+        else -> {
+            CircularProgressIndicator()
+        }
     }
-
 }
 
 @Composable
@@ -296,7 +286,8 @@ fun SolveQuiz(
             progress = linearProgress,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 46.dp, vertical = 50.dp)
+                .padding(horizontal = 46.dp, vertical = 50.dp),
+            trackColor = ecru
         )
 
         AnswerScreen(
