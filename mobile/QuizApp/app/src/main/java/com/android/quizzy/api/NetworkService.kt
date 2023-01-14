@@ -95,4 +95,7 @@ interface NetworkService {
 
     @HTTP(method = "DELETE", path = "/api/favorites", hasBody = true)
     suspend fun deleteFavouriteQuiz(@Body favouriteItem: FavouriteItem)
+
+    @POST("/api/solved_quizzes")
+    suspend fun addQuizToSolved(@Body solvedQuiz: SolvedQuizResponse)
 }

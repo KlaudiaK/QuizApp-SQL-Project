@@ -49,4 +49,6 @@ interface QuizRepository {
     suspend fun getRanks(): List<RankResponse>
 
     suspend fun deleteQuizFromFavourites(id: Long)
+
+    suspend fun addQuizToSolved(quiz: SolvedQuizResponse)
 }

@@ -106,4 +106,6 @@ class QuizRepositoryImpl @Inject constructor(
     override suspend fun deleteQuizFromFavourites(id: Long) = networkService.deleteFavouriteQuiz(FavouriteItem(
         8, id
     ))
+
+    override suspend fun addQuizToSolved(quiz: SolvedQuizResponse) = networkService.addQuizToSolved(quiz)
 }
