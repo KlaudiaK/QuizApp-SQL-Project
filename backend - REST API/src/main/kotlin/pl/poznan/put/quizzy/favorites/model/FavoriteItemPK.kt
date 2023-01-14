@@ -5,12 +5,14 @@ import lombok.Builder
 import lombok.Data
 import lombok.NoArgsConstructor
 import java.io.Serializable
+import javax.persistence.Embeddable
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 data class FavoriteItemPK(
-    val userReferenceId: Int,
-    val quizReferenceId: Int
+    val userReferenceId: Long,
+    val quizReferenceId: Long
 ): Serializable

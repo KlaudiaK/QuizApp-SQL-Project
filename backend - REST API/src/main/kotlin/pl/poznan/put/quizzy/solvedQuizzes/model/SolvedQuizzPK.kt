@@ -7,13 +7,15 @@ import lombok.Data
 import lombok.NoArgsConstructor
 import java.io.Serializable
 import java.time.LocalDate
+import javax.persistence.Embeddable
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 data class SolvedQuizzPK(
-    val userReferenceId: Int,
+    val userReferenceId: Long,
     val date: LocalDate = LocalDate.now(),
-    val quizReferenceId: Int
+    val quizReferenceId: Long
 ) : Serializable
