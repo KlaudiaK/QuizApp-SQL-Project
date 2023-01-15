@@ -15,7 +15,7 @@ import javax.persistence.Embeddable
 @AllArgsConstructor
 @Embeddable
 data class SolvedQuizzPK(
-    val userReferenceId: Long,
-    val date: LocalDate = LocalDate.now(),
-    val quizReferenceId: Long
+    var userReferenceId: Int,
+    var date: LocalDate = LocalDate.now(),
+    var quizReferenceId: Int
 ) : Serializable

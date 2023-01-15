@@ -2,10 +2,10 @@ package pl.poznan.put.quizzy.users
 
 import lombok.RequiredArgsConstructor
 import org.springframework.http.MediaType
-import pl.poznan.put.quizzy.users.model.User
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import pl.poznan.put.quizzy.users.model.User
 
 @RestController
 @RequiredArgsConstructor

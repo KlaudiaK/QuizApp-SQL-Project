@@ -26,5 +26,5 @@ data class Answer(
     val isCorrect: Boolean,
 
     @Column(name = "questions_quizes_id")
-    val questionReference: Long
+    val questionReference: Int
 )

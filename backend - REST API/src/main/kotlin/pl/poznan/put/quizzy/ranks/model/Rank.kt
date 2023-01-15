@@ -21,8 +21,8 @@ data class Rank(
     val name: String,
 
     @Column(name = "min_points")
-    val minPoints: String,
+    val minPoints: Int,
 
     @Column(name = "max_points")
-    val maxPoints: String,
+    val maxPoints: Int,
 )

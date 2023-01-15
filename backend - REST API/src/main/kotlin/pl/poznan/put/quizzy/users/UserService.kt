@@ -1,7 +1,6 @@
 package pl.poznan.put.quizzy.users
 
 import lombok.RequiredArgsConstructor
-import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException

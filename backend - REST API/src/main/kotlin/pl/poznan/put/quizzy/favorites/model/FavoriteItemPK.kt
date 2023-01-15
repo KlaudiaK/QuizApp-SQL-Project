@@ -13,6 +13,6 @@ import javax.persistence.Embeddable
 @AllArgsConstructor
 @Embeddable
 data class FavoriteItemPK(
-    val userReferenceId: Long,
-    val quizReferenceId: Long
+    var userReferenceId: Long,
+    var quizReferenceId: Long
 ): Serializable
