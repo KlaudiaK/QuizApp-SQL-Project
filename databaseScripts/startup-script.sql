@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS solved_quizes CASCADE;
 DROP TABLE IF EXISTS user_settings CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS users_passwords CASCADE;
+DROP FUNCTION IF EXISTS create_user CASCADE;
 
 CREATE TABLE answers (
                          id                  SERIAL8,
@@ -102,10 +103,10 @@ CREATE TABLE user_settings (
 );
 
 CREATE TABLE users_passwords (
-                                id INTEGER NOT NULL,
-                                username VARCHAR(100) NOT NULL,
-                                password VARCHAR(100) NOT NULL,
-                                last_modified DATE
+                                 id INTEGER NOT NULL,
+                                 username VARCHAR(100) NOT NULL,
+                                 password VARCHAR(100) NOT NULL,
+                                 last_modified DATE
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS passwords_index on users_passwords(id, username, password);
@@ -195,81 +196,86 @@ ALTER TABLE quizes ADD CONSTRAINT quizes_creator_fk FOREIGN KEY ( creator_user_i
 
 CREATE OR REPLACE FUNCTION calculate_global_ranks() returns trigger as $calculate_global_ranks$
     DECLARE
-        all_users_count integer;
+all_users_count integer;
         twentyPercentOfUsers float(2);
         thirtyPercentOfUsers float(2);
         cUsers CURSOR FOR
-            SELECT *
-            FROM users
-            ORDER BY total_points DESC
-            FOR UPDATE;
-        vCnt integer := 0;
-    BEGIN
+SELECT *
+FROM users
+ORDER BY total_points DESC
+    FOR UPDATE;
+vCnt integer := 0;
+BEGIN
 
-        select count(*) into all_users_count from users;
-        twentyPercentOfUsers := all_users_count::float * 20 / 100;
+select count(*) into all_users_count from users;
+twentyPercentOfUsers := all_users_count::float * 20 / 100;
         thirtyPercentOfUsers := all_users_count::float * 30 / 100;
 
-        FOR vUser IN cUsers LOOP
+FOR vUser IN cUsers LOOP
 
             IF vCnt < twentyPercentOfUsers then
-                UPDATE users
-                    set rank = 'GOLD'
-                    where current of cUsers;
-            END IF;
+UPDATE users
+set rank = 'GOLD'
+where current of cUsers;
+END IF;
 
             IF vCnt > twentyPercentOfUsers and vCnt <= twentyPercentOfUsers + thirtyPercentOfUsers then
-                UPDATE users
-                    set rank = 'SILVER'
-                    where current of cUsers;
-            END IF;
+UPDATE users
+set rank = 'SILVER'
+where current of cUsers;
+END IF;
 
             IF vCnt > twentyPercentOfUsers + thirtyPercentOfUsers then
-                UPDATE users
-                    set rank = 'BRONZ'
-                    where current of cUsers;
-            END IF;
+UPDATE users
+set rank = 'BRONZ'
+where current of cUsers;
+END IF;
             vCnt := vCnt + 1;
-        END LOOP;
-        return null;
-    END;
+END LOOP;
+return null;
+END;
     $calculate_global_ranks$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE TRIGGER calculate_ranks
     AFTER
 	INSERT OR TRUNCATE OR UPDATE OF total_points
-              ON users
-                  EXECUTE FUNCTION calculate_global_ranks();
+                          ON users
+                              EXECUTE FUNCTION calculate_global_ranks();
 
-CREATE OR REPLACE PROCEDURE create_user
+CREATE OR REPLACE FUNCTION create_user
     (
     vusername IN        VARCHAR(100),
-    vpassword IN        VARCHAR(100),
-    vemail    IN        VARCHAR(100),
+    vpassword IN       VARCHAR(100),
+    vemail    IN       VARCHAR(100),
     vname     IN        VARCHAR(100),
-    vavatar   IN        VARCHAR,
-    vid                 users.id%TYPE
-) language plpgsql
-as $$
-    BEGIN
-            INSERT INTO users(username, email, name, avatar, total_points, solved_quizes, created_quizes, rank)
-            values (
-                   vusername,
-                   vemail,
-                   vname,
-                   vavatar,
-                   0,
-                   0,
-                   0,
-                   'BRONZ'
-                   ) returning id into vid;
-            insert into user_settings(dark_mode, preferred_language, users_id)
-            values (
-                       'N', 'EN', vid
-                   );
-            insert into users_passwords(id, username, password, last_modified)
-            values (
-                       vid, (select username from users where id = vid), vpassword, current_date
-                   );
-        END; $$
+    vavatar   IN        VARCHAR
+    ) returns RECORD
+	language plpgsql
+        as $$
+            DECLARE
+vid users.id%TYPE;
+vUserPass Record;
+BEGIN
+INSERT INTO users(username, email, name, avatar, total_points, solved_quizes, created_quizes, rank)
+values (
+           vusername,
+           vemail,
+           vname,
+           vavatar,
+           0,
+           0,
+           0,
+           'BRONZ'
+       ) returning users.id into vid;
+insert into user_settings(dark_mode, preferred_language, users_id)
+values (
+           'N', 'EN', vid
+       );
+insert into users_passwords(id, username, password, last_modified)
+values (
+           vid, (select users.username from users where users.id = vid), vpassword, current_date
+       );
+  select (up.id, up.username, up.password, up.last_modified) from users_passwords up into vUserPass where up.id = vid;
+    return vUserPass;
+END; $$

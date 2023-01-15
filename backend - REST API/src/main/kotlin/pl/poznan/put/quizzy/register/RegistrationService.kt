@@ -1,9 +1,7 @@
 package pl.poznan.put.quizzy.register
 
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
-import pl.poznan.put.quizzy.userSettings.model.UserSettingsItem
+import pl.poznan.put.quizzy.register.model.UserPassword
 
 @Service
 class RegistrationService(
@@ -14,8 +12,8 @@ class RegistrationService(
         password: String,
         email: String,
         name: String,
-        avatar: String,
-    ) {
+        avatar: String?,
+    ): String? {
         return registrationRepository.registerUser(username, password, email, name, avatar)
     }
 }

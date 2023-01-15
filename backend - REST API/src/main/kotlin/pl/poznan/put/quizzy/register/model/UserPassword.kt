@@ -1,14 +1,12 @@
 package pl.poznan.put.quizzy.register.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
 import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.Data
 import lombok.NoArgsConstructor
+import pl.poznan.put.quizzy.register.model.UserPassword
 import java.time.LocalDate
+import javax.persistence.*
 
 @Data
 @Builder
@@ -25,8 +23,8 @@ data class UserPassword (
     val password: String? = "",
 
     @Column(name = "username")
-    val username: String? = "",
+    val username: String? = null,
 
     @Column(name = "last_modified")
-    val last_modified: LocalDate? = LocalDate.now()
+    val lastModified: LocalDate? = LocalDate.now()
 )

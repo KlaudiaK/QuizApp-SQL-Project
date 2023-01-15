@@ -9,5 +9,5 @@ import pl.poznan.put.quizzy.register.model.UserPassword
 interface LoginRepository : JpaRepository<UserPassword, Int> {
 
     @Query("SELECT * FROM users_passwords WHERE username=:username", nativeQuery = true)
-    fun getUserPasswordClass(@Param("username") username: String): UserPassword
+    fun getUserPasswordClass(@Param("username") username: String): UserPassword?
 }

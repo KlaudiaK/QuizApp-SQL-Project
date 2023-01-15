@@ -18,9 +18,7 @@ class LoginController(
     @GetMapping("/api/login")
     fun login(@RequestParam username: String, @RequestParam password: String): Boolean {
         val result = loginService.validatePassword(username, password)
-        result.let {
-            return@let
-        }
+        result?.let { return it }
         throw ResponseStatusException(
             HttpStatus.NOT_FOUND,
             "Username or password not found"
