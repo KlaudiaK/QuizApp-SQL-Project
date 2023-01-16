@@ -9,6 +9,6 @@ services:
       - 8080:8080
       - 8000:8000
     environment:
-      -SPRING_DATASOURCE_URL: jdbc:postgresql://quizzydb.postgres.database.azure.com:5432/quizzy
-      -SPRING_DATASOURCE_USERNAME: MichalxPZ
-      -SPRING_DATASOURCE_PASSWORD: BazyDanych2023
+      -SPRING_DATASOURCE_URL: 
+      -SPRING_DATASOURCE_USERNAME: 
+      -SPRING_DATASOURCE_PASSWORD: 
