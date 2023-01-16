@@ -141,7 +141,7 @@ class QuizDetailsViewModel @Inject constructor(
             quizRepository.addQuizToSolved(
                 SolvedQuizResponse(
                     quizReferenceId = quizId,
-                    userReferenceId = 8, //TODO current user
+                    userReferenceId = 1, //TODO current user
                     date = LocalDate.now().toString()
                 )
             )

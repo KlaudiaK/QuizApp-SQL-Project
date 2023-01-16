@@ -7,5 +7,5 @@ import com.android.quizzy.ui.theme.platinium
 import com.android.quizzy.ui.theme.silver
 
 enum class Rank(val color: Color) {
-    BRONZE(bronze), SILVER(silver), GOLD(metalicGold), PLATINIUM(platinium)
+    BRONZ(bronze), SILVER(silver), GOLD(metalicGold), PLATINIUM(platinium)
 }

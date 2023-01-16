@@ -88,7 +88,7 @@ class QuizViewModel @Inject constructor(
                     difficultyLevelReferenceId = quizRepository.getDifficultyLevels()
                         .find { it.name == difficulty }?.id ?: 1,
                     categoryName = category,
-                    creatorId = 1289,
+                    creatorId = 1,
                     image = image,
                     likes = 0,
                     privacySettings = privacySettings,
@@ -164,7 +164,7 @@ class QuizViewModel @Inject constructor(
                             categoryName = category,
                             difficultyLevelReferenceId = quizRepository.getDifficultyLevels().find { it.name == difficulty }?.id ?: 1,
                             privacySettings = privacySettings,
-                            creatorId = 2314, //TODO current user ID
+                            creatorId = 1, //TODO current user ID
                         )
                     )
                 }
