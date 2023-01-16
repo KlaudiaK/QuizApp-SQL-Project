@@ -14,14 +14,14 @@ DROP FUNCTION IF EXISTS create_user CASCADE;
 
 CREATE TABLE answers (
                          id                  SERIAL8,
-                         content             VARCHAR(200) NOT NULL,
+                         content             VARCHAR(400) NOT NULL,
                          is_correct          bool,
                          questions_quizes_id INTEGER NOT NULL
 );
 
 CREATE TABLE categories (
-                            name        VARCHAR(50) NOT NULL,
-                            description VARCHAR(200)
+                            name        VARCHAR(100) NOT NULL,
+                            description VARCHAR(400)
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS categories_index on categories(name);
@@ -29,7 +29,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS categories_index on categories(name);
 CREATE TABLE difficulty_levels (
                                    name                   VARCHAR(100),
                                    stars                  INTEGER NOT NULL,
-                                   description            VARCHAR(200),
+                                   description            VARCHAR(400),
                                    Difficulty_Levels_ID   SERIAL8
 );
 
@@ -48,8 +48,8 @@ CREATE TABLE friends_requests (
 
 CREATE TABLE questions (
                            id               SERIAL8,
-                           content          VARCHAR(200) NOT NULL,
-                           image            VARCHAR(100),
+                           content          VARCHAR(400) NOT NULL,
+                           image            VARCHAR(300),
                            creation_date    DATE NOT NULL,
                            modification_date DATE,
                            quizes_id        INTEGER NOT NULL
@@ -57,15 +57,15 @@ CREATE TABLE questions (
 
 CREATE TABLE quizes (
                         id                                       SERIAL8,
-                        name                                     VARCHAR(100) NOT NULL,
-                        description                              VARCHAR(200),
-                        image                                    VARCHAR(100),
+                        name                                     VARCHAR(200) NOT NULL,
+                        description                              VARCHAR(400),
+                        image                                    VARCHAR(300),
                         points                                   INTEGER NOT NULL,
                         likes                                    INTEGER,
                         creation_date                            DATE NOT NULL,
                         modification_date                        DATE,
-                        privacy_settings                         VARCHAR(50),
-                        categories_name                          VARCHAR(50) NOT NULL,
+                        privacy_settings                         VARCHAR(100),
+                        categories_name                          VARCHAR(100) NOT NULL,
                         Difficulty_Levels_Difficulty_Levels_ID   INTEGER NOT NULL,
                         creator_user_id                           INTEGER NOT NULL
 );
@@ -73,7 +73,7 @@ CREATE TABLE quizes (
 CREATE TABLE ranks (
                        min_points INTEGER NOT NULL,
                        max_points  INTEGER NOT NULL,
-                       name       VARCHAR(100)
+                       name       VARCHAR(200)
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS ranks_index on ranks(name);
@@ -86,14 +86,14 @@ CREATE TABLE solved_quizes (
 
 CREATE TABLE users (
                        id               SERIAL8,
-                       username         VARCHAR(100) NOT NULL,
-                       email            VARCHAR(100) NOT NULL,
-                       name             VARCHAR(100) NOT NULL,
+                       username         VARCHAR(200) NOT NULL,
+                       email            VARCHAR(200) NOT NULL,
+                       name             VARCHAR(200) NOT NULL,
                        avatar           VARCHAR,
                        total_points     INTEGER,
                        solved_quizes    INTEGER,
                        created_quizes   INTEGER,
-                       rank             VARCHAR(100)
+                       rank             VARCHAR(200)
 );
 
 CREATE TABLE user_settings (
@@ -245,11 +245,11 @@ CREATE OR REPLACE TRIGGER calculate_ranks
 
 CREATE OR REPLACE FUNCTION create_user
     (
-    vusername IN        VARCHAR(100),
-    vpassword IN       VARCHAR(100),
-    vemail    IN       VARCHAR(100),
-    vname     IN        VARCHAR(100),
-    vavatar   IN        VARCHAR
+    vusername IN        VARCHAR(200),
+    vpassword IN       VARCHAR(200),
+    vemail    IN       VARCHAR(200),
+    vname     IN        VARCHAR(200),
+    vavatar   IN        VARCHAR(300)
     ) returns RECORD
 	language plpgsql
         as $$
