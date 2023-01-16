@@ -1,3 +1,5 @@
+#!/bin/bash
+
 FROM amazoncorretto:17 as builder
 WORKDIR /opt/docker
 USER root

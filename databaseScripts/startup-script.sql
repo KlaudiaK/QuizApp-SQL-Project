@@ -165,11 +165,11 @@ ALTER TABLE questions
 
 ALTER TABLE quizes
     ADD CONSTRAINT quizes_categories_fk FOREIGN KEY ( categories_name )
-        REFERENCES categories ( name );
+        REFERENCES categories ( name ) on delete cascade;
 
 ALTER TABLE quizes
     ADD CONSTRAINT quizes_difficulty_levels_fk FOREIGN KEY ( Difficulty_Levels_Difficulty_Levels_ID )
-        REFERENCES difficulty_levels ( Difficulty_Levels_ID );
+        REFERENCES difficulty_levels ( Difficulty_Levels_ID ) on delete cascade;
 
 ALTER TABLE solved_quizes
     ADD CONSTRAINT solved_quizes_quizes_fk FOREIGN KEY ( quiz_id )
@@ -183,16 +183,16 @@ ALTER TABLE solved_quizes
 
 ALTER TABLE user_settings
     ADD CONSTRAINT user_settings_users_fk FOREIGN KEY ( users_id )
-        REFERENCES users ( id );
+        REFERENCES users ( id ) on delete cascade ;
 
 ALTER TABLE users
     ADD CONSTRAINT users_ranks_fk FOREIGN KEY ( rank )
         REFERENCES ranks ( name );
-ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk FOREIGN KEY ( username ) references  users(username);
-ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk2 FOREIGN KEY ( id ) references  users(id);
+ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk FOREIGN KEY ( username ) references  users(username) on delete cascade ;
+ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk2 FOREIGN KEY ( id ) references  users(id) on delete cascade;
 
 
-ALTER TABLE quizes ADD CONSTRAINT quizes_creator_fk FOREIGN KEY ( creator_user_id ) references users(id);
+ALTER TABLE quizes ADD CONSTRAINT quizes_creator_fk FOREIGN KEY ( creator_user_id ) references users(id) on delete cascade;
 
 CREATE OR REPLACE FUNCTION calculate_global_ranks() returns trigger as $calculate_global_ranks$
     DECLARE

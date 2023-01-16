@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  rest:
+    image: quizzy/rest-api
+    container_name: rest-api
+    build: ../backend - REST API/
+    ports:
+      - 8080:8080
+      - 8000:8000
+    environment:
+      -SPRING_DATASOURCE_URL: jdbc:postgresql://quizzydb.postgres.database.azure.com:5432/quizzy
+      -SPRING_DATASOURCE_USERNAME: MichalxPZ
+      -SPRING_DATASOURCE_PASSWORD: BazyDanych2023
