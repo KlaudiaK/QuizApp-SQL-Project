@@ -1,16 +1,16 @@
-INSERT INTO ranks (min_points, max_pints, name)
+INSERT INTO ranks (min_points, max_points, name)
     values (
             1,
             100,
             'BRONZ'
            );
-INSERT INTO ranks (min_points, max_pints, name)
+INSERT INTO ranks (min_points, max_points, name)
     values (
             101,
             500,
             'SILVER'
            );
-INSERT INTO ranks (min_points, max_pints, name)
+INSERT INTO ranks (min_points, max_points, name)
     values (
             501,
             1000,
@@ -51,17 +51,29 @@ INSERT INTO users(username, email, name, avatar, total_points, solved_quizes, cr
             'GOLD'
             );
 
-insert into "User Settings"(dark_mode, preferred_language, users_id)
+insert into user_settings(dark_mode, preferred_language, users_id)
     values (
             'Y', 'PL', 1
            );
-insert into "User Settings"(dark_mode, preferred_language, users_id)
+insert into user_settings(dark_mode, preferred_language, users_id)
     values (
             'Y', 'PL', 2
            );
-insert into "User Settings"(dark_mode, preferred_language, users_id)
+insert into user_settings(dark_mode, preferred_language, users_id)
     values (
             'Y', 'EN', 3
+           );
+insert into users_passwords(id, username, password, last_modified)
+    values (
+            1, 'Mochal','test', current_date
+           );
+insert into users_passwords(id, username, password, last_modified)
+    values (
+            2,'Klaudia', 'test', current_date
+           );
+insert into users_passwords(id ,username, password, last_modified)
+    values (
+            3, 'Test', 'test', current_date
            );
 
 insert into  categories (name, description)
@@ -77,26 +89,23 @@ insert into  categories (name, description)
             'Polityka', 'Kategoria polityka'
            );
 
-insert into difficulty_levels (name, stars, description, difficulty_levels_id)
+insert into difficulty_levels (name, stars, description)
     values (
             'Łatwy',
             1,
-            'Dla początkujących',
-            1
+            'Dla początkujących'
            );
-insert into difficulty_levels (name, stars, description, difficulty_levels_id)
+insert into difficulty_levels (name, stars, description)
     values (
             'Średni',
             3,
-            'Dla tych co już coś potrafią',
-            2
+            'Dla tych co już coś potrafią'
            );
-insert into difficulty_levels (name, stars, description, difficulty_levels_id)
+insert into difficulty_levels (name, stars, description)
     values (
             'Trudny',
             5,
-            'Dla zaawansowanych',
-            3
+            'Dla zaawansowanych'
            );
 
 insert into quizes(name, description, image, points, likes, creation_date, modification_date, privacy_settings, categories_name, difficulty_levels_difficulty_levels_id, creator_user_id)
@@ -113,7 +122,7 @@ insert into quizes(name, description, image, points, likes, creation_date, modif
             1,
             1
            );
-insert into questions(content, image, creation_date, modiciation_date, quizes_id)
+insert into questions(content, image, creation_date, modification_date, quizes_id)
     values (
             'Czy to jest pierwsze testowe pytanie?',
             null,
@@ -133,7 +142,7 @@ insert into answers(content, is_correct, questions_quizes_id)
             false,
             1
            );
-insert into questions(content, image, creation_date, modiciation_date, quizes_id)
+insert into questions(content, image, creation_date, modification_date, quizes_id)
     values (
             'Czy to jest pierwsze testowe pytanie?',
             null,
@@ -168,7 +177,7 @@ insert into quizes( name, description, image, points, likes, creation_date, modi
             3,
             1
            );
-insert into questions(content, image, creation_date, modificition_date, quizes_id)
+insert into questions(content, image, creation_date, modification_date, quizes_id)
     values (
             'Pytanie 1',
             null,

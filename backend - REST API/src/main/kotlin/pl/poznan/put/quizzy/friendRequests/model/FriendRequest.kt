@@ -26,9 +26,9 @@ data class FriendRequest(
 
     @Id
     @Column(name = "from_user")
-    val fromUserReferenceId: Long,
+    val fromUserReferenceId: Int,
 
     @Id
     @Column(name = "to_user")
-    val toUserReferenceId: Long
+    val toUserReferenceId: Int
 )

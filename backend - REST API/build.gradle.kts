@@ -19,15 +19,28 @@ plugins {
 	kotlin("jvm") version "1.7.21"
 	kotlin("plugin.spring") version "1.7.21"
 	kotlin("plugin.jpa") version "1.7.21"
+	id ("com.microsoft.azure.azurewebapp") version "1.1.0"
 }
 
 springBoot {
 	mainClass.set("pl.poznan.put.quizzy.BackendRestApiApplication")
 }
+azurewebapp {
+	subscription = ""
+	resourceGroup = ""
+	appName = "quizzybackend"
+	pricingTier = "B1"
+	region = "westeurope"
+	setRuntime(closureOf<com.microsoft.azure.gradle.configuration.GradleRuntimeConfig> {
+		os("Linux")
+		webContainer("Java SE")
+		javaVersion("Java 8")
+	})
+}
 
 group = "pl.poznan.put.quizyy"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
 	compileOnly {
@@ -83,7 +96,7 @@ dependencyManagement {
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "17"
+		jvmTarget = "1.8"
 	}
 }
 

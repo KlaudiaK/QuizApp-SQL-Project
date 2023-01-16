@@ -32,5 +32,5 @@ data class Question(
     val modificationDate: LocalDate = LocalDate.now(),
 
     @Column(name = "quizes_id")
-    val quizReferenceId: Long
+    val quizReferenceId: Int
 )

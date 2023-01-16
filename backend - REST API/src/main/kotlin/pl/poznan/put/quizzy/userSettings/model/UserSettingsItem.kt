@@ -21,8 +21,8 @@ data class UserSettingsItem (
     val userReferenceId: Int,
 
     @Column(name = "dark_mode")
-    val darkMode: Boolean? = false,
+    val darkMode: Char? = 'N',
 
-    @Column(name = "preffered_language")
-    val prefferedLanguage: String? = "EN"
+    @Column(name = "preferred_language")
+    val preferredLanguage: String? = "EN"
 )

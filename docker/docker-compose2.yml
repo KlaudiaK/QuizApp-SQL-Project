@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  rest:
+    image: quizzy/rest-api
+    container_name: rest-api
+    build: ../backend - REST API/
+    ports:
+      - 8080:8080
+      - 8000:8000
+    environment:
+      -SPRING_DATASOURCE_URL: 
+      -SPRING_DATASOURCE_USERNAME: 
+      -SPRING_DATASOURCE_PASSWORD: 

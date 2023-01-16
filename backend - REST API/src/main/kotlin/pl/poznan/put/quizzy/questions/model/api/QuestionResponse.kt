@@ -8,5 +8,5 @@ data class QuestionResponse(
     val image: String?,
     val creationDate: String? = LocalDate.now().toString(),
     val modificationDate: String? = LocalDate.now().toString(),
-    val quizReferenceId: Long
+    val quizReferenceId: Int
 )
