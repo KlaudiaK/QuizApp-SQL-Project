@@ -125,6 +125,18 @@ insert into answers(content, is_correct, questions_quizes_id)
            );
 insert into answers(content, is_correct, questions_quizes_id)
     values (
+            'Moze',
+            false,
+            1
+           );
+insert into answers(content, is_correct, questions_quizes_id)
+    values (
+            'Nie wiem',
+            false,
+            1
+           );
+insert into answers(content, is_correct, questions_quizes_id)
+    values (
             'Nie',
             false,
             1
@@ -146,6 +158,18 @@ insert into answers(content, is_correct, questions_quizes_id)
 insert into answers(content, is_correct, questions_quizes_id)
     values (
             'Tak',
+            false,
+            2
+           );
+insert into answers(content, is_correct, questions_quizes_id)
+    values (
+            'Moze',
+            true,
+            2
+           );
+insert into answers(content, is_correct, questions_quizes_id)
+    values (
+            'Nie wiem',
             false,
             2
            );
