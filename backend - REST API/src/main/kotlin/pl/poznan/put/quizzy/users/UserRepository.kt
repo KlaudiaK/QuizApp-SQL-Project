@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository
 import pl.poznan.put.quizzy.users.model.User
 
 @Repository
-interface UserRepository: JpaRepository<User, Long>
+interface UserRepository: JpaRepository<User, Long> {
+
+    fun findUserByUserName(userName: String): User
+}

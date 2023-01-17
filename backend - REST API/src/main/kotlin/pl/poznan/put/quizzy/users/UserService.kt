@@ -23,6 +23,9 @@ class UserService(
             )
         }
     }
+    fun getUserByUserName(userName: String): User? {
+        return userRepository.findUserByUserName(userName)
+    }
 
     fun deleteUser(id: Long) {
         userRepository.deleteById(id)

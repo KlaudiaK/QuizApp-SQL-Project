@@ -21,6 +21,10 @@ class UserController(
     fun getUser(@PathVariable id: Long): User? {
         return userService.getUserById(id)
     }
+    @GetMapping("/api/users/name/{userName}")
+    fun getUserByUserName(@PathVariable userName: String): User? {
+        return userService.getUserByUserName(userName)
+    }
 
     @DeleteMapping("/api/users/{id}")
     fun deleteUser(@PathVariable("id") id: Long) {
