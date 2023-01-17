@@ -76,19 +76,6 @@ insert into users_passwords(id ,username, password, last_modified)
             3, 'Test', 'test', current_date
            );
 
-insert into  categories (name, description)
-    values (
-            'Zwierzęta', 'Kategoria zwierzęta'
-           );
-insert into  categories (name, description)
-    values (
-            'Sport', 'Kategoria sport'
-           );
-insert into  categories (name, description)
-    values (
-            'Polityka', 'Kategoria polityka'
-           );
-
 insert into difficulty_levels (name, stars, description)
     values (
             'Łatwy',
@@ -112,7 +99,7 @@ insert into quizes(name, description, image, points, likes, creation_date, modif
     values (
             'Quiz testowy',
             'Testowy quiz',
-            null,
+            'https://img.fruugo.com/product/8/23/177629238_max.jpg',
             10,
             0,
             current_date,
@@ -167,13 +154,13 @@ insert into quizes( name, description, image, points, likes, creation_date, modi
     values (
             'Quiz o zwieretach',
             'Testowy quiz o zwierzetach',
-            null,
+            'https://fera.pl/images/companies/1/fretka.jpg?1617575016153',
             100,
             10,
             current_date,
             current_date,
             'PUBLIC',
-            'Zwierzęta',
+            'Animal',
             3,
             1
            );

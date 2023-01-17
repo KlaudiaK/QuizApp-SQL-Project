@@ -65,7 +65,7 @@ CREATE TABLE quizes (
                         creation_date                            DATE NOT NULL,
                         modification_date                        DATE,
                         privacy_settings                         VARCHAR(100),
-                        categories_name                          VARCHAR(100) NOT NULL,
+                        categories_name                          VARCHAR(100),
                         Difficulty_Levels_Difficulty_Levels_ID   INTEGER NOT NULL,
                         creator_user_id                           INTEGER NOT NULL
 );
@@ -165,11 +165,11 @@ ALTER TABLE questions
 
 ALTER TABLE quizes
     ADD CONSTRAINT quizes_categories_fk FOREIGN KEY ( categories_name )
-        REFERENCES categories ( name ) on delete cascade;
+        REFERENCES categories ( name ) on delete set null;
 
 ALTER TABLE quizes
     ADD CONSTRAINT quizes_difficulty_levels_fk FOREIGN KEY ( Difficulty_Levels_Difficulty_Levels_ID )
-        REFERENCES difficulty_levels ( Difficulty_Levels_ID ) on delete cascade;
+        REFERENCES difficulty_levels ( Difficulty_Levels_ID ) on delete set null;
 
 ALTER TABLE solved_quizes
     ADD CONSTRAINT solved_quizes_quizes_fk FOREIGN KEY ( quiz_id )
@@ -187,7 +187,8 @@ ALTER TABLE user_settings
 
 ALTER TABLE users
     ADD CONSTRAINT users_ranks_fk FOREIGN KEY ( rank )
-        REFERENCES ranks ( name );
+        REFERENCES ranks ( name ) on delete set null;
+
 ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk FOREIGN KEY ( username ) references  users(username) on delete cascade ;
 ALTER TABLE users_passwords ADD CONSTRAINT users_passwords_fk2 FOREIGN KEY ( id ) references  users(id) on delete cascade;
 
@@ -196,44 +197,40 @@ ALTER TABLE quizes ADD CONSTRAINT quizes_creator_fk FOREIGN KEY ( creator_user_i
 
 CREATE OR REPLACE FUNCTION calculate_global_ranks() returns trigger as $calculate_global_ranks$
     DECLARE
-all_users_count integer;
+        all_users_count integer;
         twentyPercentOfUsers float(2);
         thirtyPercentOfUsers float(2);
         cUsers CURSOR FOR
-SELECT *
-FROM users
-ORDER BY total_points DESC
-    FOR UPDATE;
-vCnt integer := 0;
-BEGIN
+            SELECT *
+            FROM users
+            ORDER BY total_points DESC
+                FOR UPDATE;
+        vCnt integer := 0;
+    BEGIN
+    select count(*) into all_users_count from users;
+    twentyPercentOfUsers := all_users_count::float * 20 / 100;
+    thirtyPercentOfUsers := all_users_count::float * 30 / 100;
 
-select count(*) into all_users_count from users;
-twentyPercentOfUsers := all_users_count::float * 20 / 100;
-        thirtyPercentOfUsers := all_users_count::float * 30 / 100;
-
-FOR vUser IN cUsers LOOP
-
-            IF vCnt < twentyPercentOfUsers then
-UPDATE users
-set rank = 'GOLD'
-where current of cUsers;
-END IF;
-
-            IF vCnt > twentyPercentOfUsers and vCnt <= twentyPercentOfUsers + thirtyPercentOfUsers then
-UPDATE users
-set rank = 'SILVER'
-where current of cUsers;
-END IF;
-
-            IF vCnt > twentyPercentOfUsers + thirtyPercentOfUsers then
-UPDATE users
-set rank = 'BRONZ'
-where current of cUsers;
-END IF;
-            vCnt := vCnt + 1;
-END LOOP;
-return null;
-END;
+    FOR vUser IN cUsers LOOP
+        IF vCnt < twentyPercentOfUsers then
+            UPDATE users
+            set rank = 'GOLD'
+            where current of cUsers;
+        END IF;
+        IF vCnt > twentyPercentOfUsers and vCnt <= twentyPercentOfUsers + thirtyPercentOfUsers then
+            UPDATE users
+            set rank = 'SILVER'
+            where current of cUsers;
+        END IF;
+        IF vCnt > twentyPercentOfUsers + thirtyPercentOfUsers then
+            UPDATE users
+            set rank = 'BRONZ'
+            where current of cUsers;
+        END IF;
+         vCnt := vCnt + 1;
+    END LOOP;
+    return null;
+    END;
     $calculate_global_ranks$ LANGUAGE plpgsql;
 
 
@@ -243,39 +240,40 @@ CREATE OR REPLACE TRIGGER calculate_ranks
                           ON users
                               EXECUTE FUNCTION calculate_global_ranks();
 
-CREATE OR REPLACE FUNCTION create_user
-    (
+CREATE OR REPLACE FUNCTION create_user(
     vusername IN        VARCHAR(200),
     vpassword IN       VARCHAR(200),
     vemail    IN       VARCHAR(200),
     vname     IN        VARCHAR(200),
     vavatar   IN        VARCHAR(300)
-    ) returns RECORD
-	language plpgsql
-        as $$
-            DECLARE
-vid users.id%TYPE;
-vUserPass Record;
-BEGIN
-INSERT INTO users(username, email, name, avatar, total_points, solved_quizes, created_quizes, rank)
-values (
-           vusername,
-           vemail,
-           vname,
-           vavatar,
-           0,
-           0,
-           0,
-           'BRONZ'
-       ) returning users.id into vid;
-insert into user_settings(dark_mode, preferred_language, users_id)
-values (
-           'N', 'EN', vid
-       );
-insert into users_passwords(id, username, password, last_modified)
-values (
-           vid, (select users.username from users where users.id = vid), vpassword, current_date
-       );
-  select (up.id, up.username, up.password, up.last_modified) from users_passwords up into vUserPass where up.id = vid;
-    return vUserPass;
+) returns RECORD language plpgsql
+    as $$
+        DECLARE
+            vid users.id%TYPE;
+            vUserPass Record;
+    BEGIN
+        INSERT INTO users(username, email, name, avatar, total_points, solved_quizes, created_quizes, rank)
+            values (
+                   vusername,
+                   vemail,
+                   vname,
+                   vavatar,
+                   0,
+                   0,
+                   0,
+                   'BRONZ'
+               ) returning users.id into vid;
+
+        insert into user_settings(dark_mode, preferred_language, users_id)
+            values (
+                   'N', 'EN', vid
+               );
+
+        insert into users_passwords(id, username, password, last_modified)
+            values (
+                   vid, (select users.username from users where users.id = vid), vpassword, current_date
+               );
+
+        select (up.id, up.username, up.password, up.last_modified) from users_passwords up into vUserPass where up.id = vid;
+        return vUserPass;
 END; $$
