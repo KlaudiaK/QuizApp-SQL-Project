@@ -308,7 +308,7 @@ fun TakePicture(
     imageUri?.let {
         if (!isCameraSelected) {
             bitmap = if (Build.VERSION.SDK_INT < 28) {
-                Timber.i("imageUri", bitmap.toString()) // TODO
+                Timber.i("imageUri", bitmap.toString())
                 MediaStore.Images.Media.getBitmap(context.contentResolver, it)
             } else {
                 val source = ImageDecoder.createSource(context.contentResolver, it)

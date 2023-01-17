@@ -68,9 +68,6 @@ fun ProfileScreen(
 
          */
 
-
-            //TODO
-
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -92,7 +89,8 @@ fun ProfileScreen(
             Achievements(
                 points = uiState.value.points,
                 solvedQuizzesNum = uiState.value.solvedQuizzes,
-                createdQuizzesNum = uiState.value.createdQuizzes
+                createdQuizzesNum = uiState.value.createdQuizzes,
+                show = !bottomSheetModalState.isVisible
             )
         }
 
@@ -129,6 +127,7 @@ fun ProfileScreen(
                 onClick = {
                     navigator.popBackStack(CategoriesScreenDestination, true)
                     navigator.navigate(LoginScreenDestination)
+                    viewModel.logout()
                 }, modifier = Modifier
                     .width(120.dp)
                     .height(50.dp)
@@ -142,85 +141,90 @@ fun ProfileScreen(
 }
 
 @Composable
-fun Achievements(points: String, createdQuizzesNum: String, solvedQuizzesNum: String) {
-    Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        modifier = Modifier
-            .width(330.dp)
-            .height(100.dp), shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = pastelPink)
-    ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally
+fun Achievements(points: String, createdQuizzesNum: String, solvedQuizzesNum: String, show: Boolean) {
+    if (show) {
+        Card(
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            modifier = Modifier
+                .width(330.dp)
+                .height(100.dp), shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(containerColor = pastelPink)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Icon(Icons.TwoTone.Star, contentDescription = "Created", tint = black80)
-                Text(
-                    text = "Points",
-                    style = TextStyle(
-                        fontWeight = FontWeight.W500,
-                        color = Color.Black,
-                        fontSize = 20.sp
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(Icons.TwoTone.Star, contentDescription = "Created", tint = black80)
+                    Text(
+                        text = "Points",
+                        style = TextStyle(
+                            fontWeight = FontWeight.W500,
+                            color = Color.Black,
+                            fontSize = 20.sp
+                        )
                     )
-                )
-                Text(
-                    text = points,
-                    style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
-                )
-            }
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(0.5.dp)
-                    .padding(vertical = 12.dp),
-                color = Color.Black
-            )
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(Icons.TwoTone.Create, contentDescription = "Created", tint = black80)
-                Text(
-                    text = "Created",
-                    style = TextStyle(
-                        fontWeight = FontWeight.W500,
-                        color = Color.Black,
-                        fontSize = 20.sp
-                    ),
-                )
-                Text(
-                    text = createdQuizzesNum,
-                    style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
-                )
-            }
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(0.5.dp)
-                    .padding(vertical = 12.dp),
-                color = Color.Black
-            )
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(Icons.TwoTone.DoneAll, contentDescription = "Created", tint = black80)
-                Text(
-                    text = "Solved",
-                    style = TextStyle(
-                        fontWeight = FontWeight.W500,
-                        color = Color.Black,
-                        fontSize = 20.sp
+                    Text(
+                        text = points,
+                        style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
                     )
+                }
+                Divider(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(0.5.dp)
+                        .padding(vertical = 12.dp),
+                    color = Color.Black
                 )
-                Text(
-                    text = solvedQuizzesNum,
-                    style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(Icons.TwoTone.Create, contentDescription = "Created", tint = black80)
+                    Text(
+                        text = "Created",
+                        style = TextStyle(
+                            fontWeight = FontWeight.W500,
+                            color = Color.Black,
+                            fontSize = 20.sp
+                        ),
+                    )
+                    Text(
+                        text = createdQuizzesNum,
+                        style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(0.5.dp)
+                        .padding(vertical = 12.dp),
+                    color = Color.Black
                 )
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(Icons.TwoTone.DoneAll, contentDescription = "Created", tint = black80)
+                    Text(
+                        text = "Solved",
+                        style = TextStyle(
+                            fontWeight = FontWeight.W500,
+                            color = Color.Black,
+                            fontSize = 20.sp
+                        )
+                    )
+                    Text(
+                        text = solvedQuizzesNum,
+                        style = TextStyle(fontWeight = FontWeight.W400, color = Color.Black)
+                    )
+                }
             }
         }
     }

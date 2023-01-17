@@ -1,5 +1,6 @@
 package com.android.quizzy.viewmodel
 
+import android.content.SharedPreferences
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +28,8 @@ import kotlin.random.Random
 class QuizViewModel @Inject constructor(
     private val handle: SavedStateHandle,
     private val userRepository: UserRepository,
-    private val quizRepository: QuizRepository
+    private val quizRepository: QuizRepository,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(QuizScreenState())
@@ -152,22 +154,26 @@ class QuizViewModel @Inject constructor(
     fun editQuiz(id: Long) {
         viewModelScope.launch {
             if (validateAllFields()) {
-                with(_uiState.value) {
-                    quizRepository.updateQuiz(
-                        QuizResponse(
-                            id = id,
-                            name = title,
-                            description = description,
-                            image = image,
-                            modificationDate = LocalDate.now().toString(),
-                            points = points,
-                            categoryName = category,
-                            difficultyLevelReferenceId = quizRepository.getDifficultyLevels().find { it.name == difficulty }?.id ?: 1,
-                            privacySettings = privacySettings,
-                            creatorId = 1, //TODO current user ID
+                val userId = sharedPreferences.getString("user_id", "")
+                if (!userId.isNullOrEmpty()) {
+                    with(_uiState.value) {
+                        quizRepository.updateQuiz(
+                            QuizResponse(
+                                id = id,
+                                name = title,
+                                description = description,
+                                image = image,
+                                modificationDate = LocalDate.now().toString(),
+                                points = points,
+                                categoryName = category,
+                                difficultyLevelReferenceId = quizRepository.getDifficultyLevels()
+                                    .find { it.name == difficulty }?.id ?: 1,
+                                privacySettings = privacySettings,
+                                creatorId = userId.toInt(),
+                            )
                         )
-                    )
-                }
+                    }
+            }
 
             }
         }

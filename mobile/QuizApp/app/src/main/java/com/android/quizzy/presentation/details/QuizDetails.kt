@@ -36,6 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -91,7 +92,7 @@ fun QuizDetails(
             onEditClicked = {
                             navigator.navigate(AddNewQuizScreenDestination(quizToEditID = quizId, isEditMode = true))
             },
-            isAuthorized = true, //TODO check if quiz author is current logged in user
+            isAuthorized = quizDetailsViewModel.getAuthorization(),
             username = user.username
             )
         }
@@ -322,13 +323,14 @@ fun MotionAppBar(
                 modifier = Modifier.layoutId("user_name")
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.profile_pic), //TODO User avatar
+            AsyncImage( model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true)
+                .build(),
+                placeholder = painterResource(R.drawable.profile_pic),
                 contentDescription = null,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .layoutId("user_image")
-            )
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.clip(CircleShape).layoutId("user_image"))
         }
     }
 }

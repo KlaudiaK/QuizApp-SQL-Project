@@ -6,14 +6,18 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val networkService: NetworkService
-) : UserRepository {
+    ) : UserRepository {
+    override suspend fun getUser(id: String): User {
+        return networkService.getUserById(id)
+    }
 
-    //TODO Change method to be called on service
-    override suspend fun getUser(id: String): User = User(
-        username = "Katiexxx123",
-        firstname = "Katie",
-        email = "katie.inetresting@mail.com"
-    )
+    override suspend fun getUserByUserName(userName: String): User? {
+        return networkService.getUserByUserName(userName)
+    }
+
+    override suspend fun login(userName: String, password: String): Int? {
+        return networkService.loginUser(userName, password)
+    }
 
     override suspend fun editUser(user: User) = networkService.editUser(user)
 

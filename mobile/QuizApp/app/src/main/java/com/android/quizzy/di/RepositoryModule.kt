@@ -1,5 +1,6 @@
 package com.android.quizzy.di
 
+import android.content.SharedPreferences
 import com.android.quizzy.api.NetworkService
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
 import com.android.quizzy.data.repository.quiz_repository.QuizRepositoryImpl
@@ -24,6 +25,7 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideQuizRepository(
-        networkService: NetworkService
-    ): QuizRepository = QuizRepositoryImpl(networkService)
+        networkService: NetworkService,
+        sharedPreferences: SharedPreferences
+    ): QuizRepository = QuizRepositoryImpl(networkService, sharedPreferences)
 }

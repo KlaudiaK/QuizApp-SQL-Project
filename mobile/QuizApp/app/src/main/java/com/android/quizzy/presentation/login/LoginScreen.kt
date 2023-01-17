@@ -119,7 +119,8 @@ fun LoginScreen(
                 navigator.popBackStack()
                 navigator.navigate(CategoriesScreenDestination)
             },
-            colors = ButtonDefaults.buttonColors(containerColor = green60)
+            colors = ButtonDefaults.buttonColors(containerColor = green60),
+            enabled = uiState.value.email.isNotEmpty() && uiState.value.password.isNotEmpty()
         ) {
             Text(text = "Log in", fontSize = 18.sp, color = pastelBlack)
         }

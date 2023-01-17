@@ -1,5 +1,8 @@
 package com.android.quizzy.data.repository.quiz_repository
 
+import android.content.SharedPreferences
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.android.quizzy.api.NetworkService
 import com.android.quizzy.domain.mapToQuestion
 import com.android.quizzy.domain.model.*
@@ -10,10 +13,10 @@ import javax.inject.Singleton
 
 @Singleton
 class QuizRepositoryImpl @Inject constructor(
-    private val networkService: NetworkService
+    private val networkService: NetworkService,
+    private val sharedPreferences: SharedPreferences
 ): QuizRepository {
 
-    //TODO Change method to be called on service
     override suspend fun getQuizzes(): List<Quiz> = networkService.getAllQuizzes().map {
         with(it) {
             Quiz(
@@ -45,6 +48,7 @@ class QuizRepositoryImpl @Inject constructor(
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun addNewQuiz(quiz: QuizResponse) {
         val quizModel = QuizResponse(
             name ="Quiz naukowy",
@@ -67,9 +71,12 @@ class QuizRepositoryImpl @Inject constructor(
 
     override suspend fun deleteQuiz(id: String) = networkService.deleteQuiz(id)
 
-    override suspend fun addQuizToFavourites(quizId: Long) = networkService.addFavouriteQuiz(
-        FavouriteItem(2, quizId)
-    )
+    override suspend fun addQuizToFavourites(quizId: Long) {
+        val userId = sharedPreferences.getString("user_id", "")
+        if (!userId.isNullOrEmpty()) {
+            networkService.addFavouriteQuiz(FavouriteItem(userId.toLong(), quizId))
+        }
+    }
 
     override suspend fun getFavouriteQuizzes(userId: Long) = networkService.getFavouritesQuizzes(userId)
 
@@ -103,9 +110,11 @@ class QuizRepositoryImpl @Inject constructor(
 
     override suspend fun getRanks(): List<RankResponse> = networkService.getRanks()
 
-    override suspend fun deleteQuizFromFavourites(id: Long) = networkService.deleteFavouriteQuiz(FavouriteItem(
-        2, id
-    ))
-
+    override suspend fun deleteQuizFromFavourites(id: Long) {
+        val userId = sharedPreferences.getString("user_id", "")
+        if (!userId.isNullOrEmpty()) {
+            networkService.deleteFavouriteQuiz(FavouriteItem(userId.toLong(), id))
+        }
+    }
     override suspend fun addQuizToSolved(quiz: SolvedQuizResponse) = networkService.addQuizToSolved(quiz)
 }

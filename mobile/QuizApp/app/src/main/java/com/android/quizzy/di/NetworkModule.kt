@@ -9,7 +9,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import javax.net.ssl.HostnameVerifier
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -30,6 +32,12 @@ object NetworkModule {
         OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .connectTimeout(1, TimeUnit.DAYS)
+            .readTimeout(1, TimeUnit.DAYS)
+            .writeTimeout(1, TimeUnit.DAYS)
+            .retryOnConnectionFailure(true)
+            .callTimeout(1, TimeUnit.DAYS)
+            .hostnameVerifier(HostnameVerifier { hostname, session -> true })
             .build()
 
     @Provides

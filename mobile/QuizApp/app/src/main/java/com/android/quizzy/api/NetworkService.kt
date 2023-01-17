@@ -18,12 +18,24 @@ interface NetworkService {
     @POST("/api/quizzes")
     suspend fun addQuiz(@Body quiz: QuizResponse)
 
-    //TODO change body to id
     @DELETE("/api/quizzes/{id}")
     suspend fun deleteQuiz(@Path("id") id: String)
 
     @GET("/api/users")
     suspend fun getAllUsers(): List<User>
+    @GET("/api/users/name/{userName}")
+    suspend fun getUserByUserName(@Path("userName") userName: String): User
+    @GET("/api/login")
+    suspend fun loginUser(@Query("username") userName: String, @Query("password") password: String): Int
+
+    @GET("/api/register")
+    suspend fun register(
+        username: String,
+        password: String,
+        name: String,
+        email: String,
+        avatar: String,
+    ): String?
 
     @GET("/api/users/{id}")
     suspend fun getUserById(@Path("id") id: String): User

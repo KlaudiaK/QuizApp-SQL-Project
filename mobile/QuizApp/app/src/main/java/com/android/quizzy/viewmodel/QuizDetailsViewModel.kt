@@ -1,5 +1,8 @@
 package com.android.quizzy.viewmodel
 
+import android.content.SharedPreferences
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
@@ -28,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class QuizDetailsViewModel @Inject constructor(
     private val quizRepository: QuizRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(QuizDetailsScreenState())
@@ -60,13 +64,21 @@ class QuizDetailsViewModel @Inject constructor(
         }
     }
 
+    fun getAuthorization(): Boolean {
+        val userId = sharedPreferences.getString("user_id", "")
+        if (!userId.isNullOrEmpty()) {
+            return userId == uiState.value.quiz?.author
+        }
+        return false
+    }
+
     fun getDifficultyColor(difficultyLevel: String?): Color =
         DifficultyLevel.values().find { it.name == difficultyLevel }?.color ?: easyGreen
 
     fun getUsername(id: String) {
         viewModelScope.launch {
             val user = userRepository.getUser(id)
-            _uiState.value = _uiState.value.copy(username = user.username)
+            _uiState.value = _uiState.value.copy(username = user.userName)
         }
     }
 
@@ -136,15 +148,19 @@ class QuizDetailsViewModel @Inject constructor(
         userAnswers.value = listOf()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addQuizToSolved(quizId: Long) {
         viewModelScope.launch {
-            quizRepository.addQuizToSolved(
-                SolvedQuizResponse(
-                    quizReferenceId = quizId,
-                    userReferenceId = 1, //TODO current user
-                    date = LocalDate.now().toString()
+            val userId = sharedPreferences.getString("user_id", "")
+            if (!userId.isNullOrEmpty()) {
+                quizRepository.addQuizToSolved(
+                    SolvedQuizResponse(
+                        quizReferenceId = quizId,
+                        userReferenceId = userId.toLong(),
+                        date = LocalDate.now().toString()
+                    )
                 )
-            )
+            }
         }
     }
 }
