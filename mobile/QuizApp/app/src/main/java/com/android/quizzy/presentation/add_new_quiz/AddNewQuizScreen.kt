@@ -276,6 +276,7 @@ fun AddNewQuizScreen(
                             quizToEditID?.let {
                                 quizViewModel.editQuiz(it)
                             }
+                            navigator.navigateUp()
                         } else {
                             quizViewModel.onContinueClick {
                                 navigator.navigateUp()
