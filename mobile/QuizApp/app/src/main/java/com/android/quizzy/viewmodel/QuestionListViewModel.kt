@@ -60,6 +60,7 @@ class QuestionListViewModel @Inject constructor(
         viewModelScope.launch {
             val answers = quizRepository.getAnswersForQuestion(questionId.toString())
             _answers.apply {
+                clear()
                 addAll(
                     answers
                 )

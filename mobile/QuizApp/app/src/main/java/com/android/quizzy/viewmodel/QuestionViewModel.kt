@@ -119,6 +119,7 @@ class QuestionViewModel @Inject constructor(
                 _uiState.value.copy(question = question.content, image = question.image ?: "")
             val answers = quizRepository.getAnswersForQuestion(question.questionId.toString())
             _list.apply {
+                clear()
                 addAll(answers)
             }
         }
