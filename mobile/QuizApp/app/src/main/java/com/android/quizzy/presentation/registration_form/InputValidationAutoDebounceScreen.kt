@@ -62,11 +62,12 @@ fun InputValidationAutoDebounceScreen(
     }
 
     val username by viewModel.username.collectAsState()
-    val firstname by viewModel.username.collectAsState()
+    val firstname by viewModel.firstname.collectAsState()
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
     val repeatedPassword by viewModel.repeatedPassword.collectAsState()
     val areInputsValid by viewModel.areInputsValid.collectAsState()
+    val proceed by viewModel.proceed.collectAsState()
 
     val creditCardNumberFocusRequester = remember { FocusRequester() }
     val usernameFocusRequester = remember { FocusRequester() }
@@ -94,6 +95,9 @@ fun InputValidationAutoDebounceScreen(
                     }
                 }
                 is ScreenEvent.MoveFocus -> focusManager.moveFocus(event.direction)
+                ScreenEvent.RegiosteredChangeScreen -> {
+                    navigator.navigate(CategoriesScreenDestination)
+                }
             }
         }
     }
@@ -225,9 +229,11 @@ fun InputValidationAutoDebounceScreen(
                 .width(250.dp)
                 .align(Alignment.CenterHorizontally),
             onClick = {
-                viewModel::onContinueClick;
-                navigator.popBackStack()
-                navigator.navigate(CategoriesScreenDestination)
+                viewModel.onContinueClick()
+//                navigator.popBackStack()
+                if (proceed) {
+                    navigator.navigate(CategoriesScreenDestination)
+                }
             },
             enabled = areInputsValid,
             colors = ButtonDefaults.buttonColors(containerColor = pastelBlue20),

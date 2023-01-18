@@ -10,4 +10,8 @@ data class OnboardingState(
     val error: Error? = null,
     val incorrectEmail: Boolean = false,
     val incorrectUsername: Boolean = false,
+    val incorrectPassword: Boolean = false,
+    val incorrectRepeatedPassword: Boolean = false,
+    val userNameTaken: Boolean = false,
+    val proceed: Boolean = false,
 )

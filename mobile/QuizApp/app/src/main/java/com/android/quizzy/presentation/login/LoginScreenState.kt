@@ -7,6 +7,7 @@ data class LoginScreenState(
     val error: Error? = null,
     val incorrectEmail:Boolean = false,
     val incorrectPassword:Boolean = false,
+    var loggedIn:Boolean = false,
     val items : List<String> = listOf()
 ){
     sealed class Error {

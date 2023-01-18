@@ -53,12 +53,14 @@ fun MyQuizesScreen(
     val uiState = quizViewModel.uiState
     var url = "https://freesvg.org/img/abstract-user-flat-4.png"
 
-    val favourites by quizViewModel.getListOfFavouritesQuizzes(8L)
+    val favourites by quizViewModel.getListOfFavouritesQuizzes(uiState.value.userId.toLong())
         .collectAsState(initial = listOf())
 
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        quizViewModel.initialize()
+        quizViewModel.getMyQuizzes()
         quizViewModel
             .toastMessage
             .collect { message ->
@@ -116,7 +118,7 @@ fun MyQuizesScreen(
                             ),
                         )
                         Text(
-                            text = "Katie",
+                            text = uiState.value.userName,
                             style = TextStyle(
                                 fontSize = 28.sp,
                                 color = white20,

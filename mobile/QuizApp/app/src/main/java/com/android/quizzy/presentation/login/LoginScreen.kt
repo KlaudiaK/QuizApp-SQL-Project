@@ -68,7 +68,7 @@ fun LoginScreen(
             //      Text(text = "Email")
             //  },
             label = {
-                Text(text = "Email")
+                Text(text = "Username")
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email
@@ -77,7 +77,7 @@ fun LoginScreen(
         )
         if (uiState.value.incorrectEmail) {
             Text(
-                text = "This email does't exist",
+                text = "This username does't exist",
                 color = MaterialTheme.colorScheme.error
             )
         }
@@ -99,7 +99,7 @@ fun LoginScreen(
             ),
             visualTransformation = PasswordVisualTransformation()
         )
-        if (uiState.value.incorrectEmail) {
+        if (uiState.value.incorrectPassword) {
             Text(
                 text = "Incorrect password",
                 color = MaterialTheme.colorScheme.error
@@ -115,9 +115,10 @@ fun LoginScreen(
                 .fillMaxWidth(),
             onClick = {
                 viewModel.onEvent(LoginScreenEvent.OnLoginButtonClicked)
-                //  if (!uiState.value.incorrectEmail && !uiState.value.incorrectPassword)
-                navigator.popBackStack()
-                navigator.navigate(CategoriesScreenDestination)
+//                navigator.popBackStack()
+                if (uiState.value.loggedIn) {
+                    navigator.navigate(CategoriesScreenDestination)
+                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = green60),
             enabled = uiState.value.email.isNotEmpty() && uiState.value.password.isNotEmpty()

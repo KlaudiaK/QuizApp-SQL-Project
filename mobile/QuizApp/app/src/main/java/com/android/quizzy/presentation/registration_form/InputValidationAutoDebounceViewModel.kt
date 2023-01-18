@@ -7,14 +7,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.network.HttpException
 import com.android.quizzy.R
+import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.data.repository.user_repository.UserRepositoryImpl
+import com.android.quizzy.domain.model.RegistryResponse
+import com.android.quizzy.domain.model.User
+import com.android.quizzy.domain.model.UserRegister
+import com.android.quizzy.presentation.login.LoginScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.awaitResponse
+import java.lang.Error
 import java.util.prefs.Preferences
 import javax.inject.Inject
 
@@ -23,7 +34,8 @@ import javax.inject.Inject
 @HiltViewModel
 class InputValidationAutoDebounceViewModel @Inject constructor(
     private val handle: SavedStateHandle,
-    private val userRepositoryImpl: UserRepositoryImpl,
+    private val userRepository: UserRepository,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
     private val _uiState = mutableStateOf(OnboardingState())
     val uiState: State<OnboardingState> = _uiState
@@ -33,6 +45,7 @@ class InputValidationAutoDebounceViewModel @Inject constructor(
     val email = handle.getStateFlow(viewModelScope, "email", InputWrapper())
     val password = handle.getStateFlow(viewModelScope, "password", InputWrapper())
     val repeatedPassword = handle.getStateFlow(viewModelScope, "repeatedPassword", InputWrapper())
+    val proceed = handle.getStateFlow(viewModelScope, "proceed", false)
 
     val areInputsValid = combine(username, firstname, email, password, repeatedPassword)
     { (username, firstname, email,password, repeatedPassword) ->
@@ -41,6 +54,7 @@ class InputValidationAutoDebounceViewModel @Inject constructor(
         email.value.isNotEmpty() && email.errorId == null &&
         password.value.isNotEmpty() && password.errorId == null &&
         repeatedPassword.value.isNotEmpty() && repeatedPassword.errorId == null
+                && !_uiState.value.userNameTaken
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
 
@@ -65,7 +79,9 @@ class InputValidationAutoDebounceViewModel @Inject constructor(
                 .onEach { event ->
                     when (event) {
                         is UserInputEvent.OnUsernameTextFieldValueChanged -> {
-                            when (InputValidator.getUsernameErrorIdOrNull(event.input)) {
+                            val userNameTaken = userRepository.getUsers().map { it.userName }.contains(event.input)
+                            _uiState.value = uiState.value.copy(userNameTaken = userNameTaken)
+                            when (InputValidator.getUsernameErrorIdOrNull(event.input, userNameTaken)) {
                                 null -> {
                                     username.value =
                                         username.value.copy(value = event.input, errorId = null)
@@ -127,7 +143,9 @@ class InputValidationAutoDebounceViewModel @Inject constructor(
                 .collect { event ->
                     when (event) {
                         is UserInputEvent.OnUsernameTextFieldValueChanged -> {
-                            val errorId = InputValidator.getUsernameErrorIdOrNull(event.input)
+                            val userNameTaken = userRepository.getUsers().map { it.userName }.contains(event.input)
+                            _uiState.value = uiState.value.copy(userNameTaken = userNameTaken)
+                            val errorId = InputValidator.getUsernameErrorIdOrNull(event.input, userNameTaken)
                             username.value = username.value.copy(errorId = errorId)
                         }
                         is UserInputEvent.OnFirstnameTextFieldValueChanged -> {
@@ -163,18 +181,42 @@ class InputValidationAutoDebounceViewModel @Inject constructor(
                                         )
                                     )
                                      */
-                                    //TODO save should show home screen
+                                    if (!uiState.value.proceed) {
+                                        try {
+                                            val user = UserRegister(
+                                                username = username.value.value,
+                                                name = firstname.value.value,
+                                                email = email.value.value,
+                                                password = password.value.value
+                                            )
+                                            val response = userRepository.createUser(user)
+                                            val responseString = response.value
+                                            val userId = responseString.let {
+                                                it.split(",")[0].removePrefix("(")
+                                            }
+                                            if (!userId.isNullOrEmpty() && userId.toIntOrNull() != null) {
+                                                sharedPreferences.edit()
+                                                    .putString("user_id", userId).apply()
+                                                _uiState.value =
+                                                    uiState.value.copy(proceed = true)
+                                                proceed.value = true
+                                                _events.send(ScreenEvent.RegiosteredChangeScreen)
+                                            }
+                                        } catch (e: java.lang.Exception) {
+                                            _uiState.value = uiState.value.copy(error = Error("Unexpected error occurred"))
+                                            _uiState.value = uiState.value.copy(proceed = false)
+                                            proceed.value = false
+                                        }
+                                    }
                                     onContinueClick()
                                 }
                                 else{
                                     Log.i("Username exist in database", uiState.value.incorrectUsername.toString())
                                   
-                                    //TODO incorrect username
                                 }
                             }
                             else {
                                 Log.i("Email exist in database", uiState.value.incorrectEmail.toString())
-                                //TODO incorrect email
                             }}
                     }
                 }

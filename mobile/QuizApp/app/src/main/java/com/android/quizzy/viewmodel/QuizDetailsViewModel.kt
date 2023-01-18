@@ -60,7 +60,8 @@ class QuizDetailsViewModel @Inject constructor(
     fun getQuizDetails(id: String) {
         viewModelScope.launch {
             val quiz = quizRepository.getQuizById(id)
-            _uiState.value = _uiState.value.copy(quiz = quiz)
+            val authorName = userRepository.getUser(quiz.author).userName
+            _uiState.value = uiState.value.copy(quiz = quiz, username = authorName)
         }
     }
 

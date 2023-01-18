@@ -5,10 +5,17 @@ import com.android.quizzy.R
 
 object InputValidator {
 
-    fun getUsernameErrorIdOrNull(input: String): Int? {
+    fun getUsernameErrorIdOrNull(input: String, taken: Boolean = false): Int? {
         return when {
             input.length < 2 -> R.string.username_too_short
             input.all { it.isDigit() }  -> R.string.username_pattern
+            taken -> R.string.username_taken
+            else -> null
+        }
+    }
+    fun getUsernameTakenErrorIdOrNull(value: Boolean): Int? {
+        return when {
+            value -> R.string.username_taken
             else -> null
         }
     }

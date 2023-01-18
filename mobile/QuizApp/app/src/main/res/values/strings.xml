@@ -45,4 +45,5 @@
     <string name="question_cannot_be_empty">Question cannot be empty</string>
     <string name="answer_cannot_be_empty">Answers cannot be empty</string>
     <string name="incorrect_image_url">Incorrect image url</string>
+    <string name="username_taken">This username is already taken</string>
 </resources>

@@ -17,7 +17,9 @@ object PreferencesModule {
     @Provides
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("shared_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putString("user_id", "-1").apply()
+        return prefs
     }
 
 }

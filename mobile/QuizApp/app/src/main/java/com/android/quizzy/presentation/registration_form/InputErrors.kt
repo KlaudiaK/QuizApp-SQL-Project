@@ -5,5 +5,5 @@ class InputErrors(
     val firstnameErrorId: Int?,
     val emailErrorId: Int?,
     val passwordErrorId: Int?,
-    val repeatedPasswordErrorId: Int?
+    val repeatedPasswordErrorId: Int?,
 )

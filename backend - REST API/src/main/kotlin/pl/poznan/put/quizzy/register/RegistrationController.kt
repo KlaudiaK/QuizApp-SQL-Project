@@ -5,6 +5,7 @@ import org.hibernate.exception.ConstraintViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import pl.poznan.put.quizzy.register.model.RegistryResponse
 import pl.poznan.put.quizzy.register.model.UserPassword
 import pl.poznan.put.quizzy.userSettings.UserSettingsService
 import pl.poznan.put.quizzy.userSettings.model.UserSettingsItem
@@ -21,10 +22,10 @@ class RegistrationController(
         @RequestParam password: String,
         @RequestParam email: String,
         @RequestParam name: String,
-        @RequestParam avatar: String?) : String? {
+        @RequestParam avatar: String?) : RegistryResponse? {
         try {
             registrationService.registerUser(username, password, email, name, avatar)?.let {
-                return it
+                return RegistryResponse(it)
             }
         } catch (e: Exception) {
             throw ResponseStatusException(

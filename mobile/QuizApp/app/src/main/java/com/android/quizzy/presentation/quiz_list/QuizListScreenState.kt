@@ -11,5 +11,7 @@ data class QuizListScreenState (
     val categoryNamesList: List<String> = listOf(),
     val favouriteChecked: Boolean = false,
     val favouriteList: MutableList<String> = mutableListOf<String>(),
-    val showFilter: Boolean = false
+    val showFilter: Boolean = false,
+    var userName: String = "",
+    var userId: Int = -1
 )

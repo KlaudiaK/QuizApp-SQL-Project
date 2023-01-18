@@ -1,10 +1,12 @@
 package com.android.quizzy.viewmodel
 
+import android.content.SharedPreferences
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
+import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.domain.model.Quiz
@@ -14,12 +16,15 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
 class QuizListViewModel @Inject constructor(
-    private val quizRepository: QuizRepository
+    private val quizRepository: QuizRepository,
+    private val sharedPreferences: SharedPreferences,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(QuizListScreenState())
@@ -29,7 +34,28 @@ class QuizListViewModel @Inject constructor(
     val toastMessage = _toastMessage.asSharedFlow()
 
     init {
-        getQuizzes()
+        initialize()
+    }
+
+    fun initialize() {
+        viewModelScope.launch {
+            val userId = sharedPreferences.getString("user_id", "")
+            Timber.e("UserId: $userId")
+            if (!userId.isNullOrEmpty()) {
+                _uiState.value = uiState.value.copy(
+                    userId = userId.toInt(),
+                    userName = userRepository.getUser(userId).userName
+                )
+            }
+            getQuizzes()
+        }
+    }
+
+    fun getMyQuizzes() {
+        viewModelScope.launch {
+            val list = quizRepository.getQuizzes().filter { it.author == _uiState.value.userId.toString() }
+            _uiState.value = _uiState.value.copy(quizItems = list)
+        }
     }
 
     fun getQuizzes() {
@@ -38,6 +64,7 @@ class QuizListViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(quizItems = list)
         }
     }
+
 
     fun getFilteredQuizes(privacySetting: PrivacySetting, selectedCategory: String? = null): List<Quiz> {
         var result  = _uiState.value.quizItems?.filter { it.sharing?.name == privacySetting.name }

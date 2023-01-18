@@ -24,10 +24,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Stairs
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -74,11 +72,16 @@ fun QuizDetails(
     val scrollState = rememberScrollState()
     val scrollUpState = uiViewModel.scrollUp.observeAsState()
     // viewModel.updateScrollPosition(scrollState.firstVisibleItemIndex)
-    uiViewModel.onBottomBarVisibilityChange(false)
-    quizDetailsViewModel.getQuizDetails(quizId.toString())
+    var user by remember {
+        mutableStateOf("")
+    }
+    LaunchedEffect(key1 = true) {
+        uiViewModel.onBottomBarVisibilityChange(false)
+        quizDetailsViewModel.getQuizDetails(quizId.toString())
+        user = quizDetailsViewModel.uiState.value.username.toString()
+    }
     val uiDetailsState = quizDetailsViewModel.uiState
     val lazyListState = rememberLazyListState()
-    val user = profileViewModel.uiState.value
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -93,7 +96,7 @@ fun QuizDetails(
                             navigator.navigate(AddNewQuizScreenDestination(quizToEditID = quizId, isEditMode = true))
             },
             isAuthorized = quizDetailsViewModel.getAuthorization(),
-            username = user.username
+            username = user.toString()
             )
         }
     ) {
@@ -330,7 +333,9 @@ fun MotionAppBar(
                 placeholder = painterResource(R.drawable.profile_pic),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.clip(CircleShape).layoutId("user_image"))
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .layoutId("user_image"))
         }
     }
 }
