@@ -21,17 +21,20 @@ class ProfileViewModel @Inject constructor(
     val uiState: State<ProfileScreenState> = _uiState
 
     init {
-        getUsername()
+        getUserInfo()
     }
 
-    private fun getUsername() {
+    private fun getUserInfo() {
         viewModelScope.launch {
             val userId = sharedPreferences.getString("user_id", "")
             if (!userId.isNullOrEmpty()) {
                 val user  = userRepository.getUser(userId)
                 _uiState.value = _uiState.value.copy(
                     username = user.userName,
-                    email = user.email
+                    email = user.email,
+                    points = user.totalPoints.toString(),
+                    solvedQuizzes = user.solvedQuizes.toString(),
+                    createdQuizzes = user.createdQuizes.toString()
                 )
 
             }
@@ -39,7 +42,7 @@ class ProfileViewModel @Inject constructor(
     }
     fun logout() {
         viewModelScope.launch {
-            val userId = sharedPreferences.edit().remove("user_id")
+            sharedPreferences.edit().remove("user_id").apply()
         }
     }
 }
