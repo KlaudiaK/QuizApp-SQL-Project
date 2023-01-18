@@ -8,12 +8,16 @@ class LoginService(
     private val loginRepository: LoginRepository
 ) {
 
-    fun validatePassword(username: String, password: String): Boolean? {
+        fun validatePassword(username: String, password: String): Int {
        loginRepository.getUserPasswordClass(username)?.let { userData ->
            userData.username?.let {
-               return userData.password == password
+               if ( userData.password == password ) {
+                   return userData.userReferenceId
+               } else {
+                   return -1
+               }
            }
        }
-        return null
+        return -1
     }
 }
