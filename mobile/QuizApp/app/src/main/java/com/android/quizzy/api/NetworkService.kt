@@ -26,7 +26,7 @@ interface NetworkService {
     @GET("/api/users/name/{userName}")
     suspend fun getUserByUserName(@Path("userName") userName: String): User
     @GET("/api/login")
-    suspend fun loginUser(@Query("username") userName: String, @Query("password") password: String): Int
+    suspend fun loginUser(@Query("username") userName: String, @Query("password") password: String): LoginResponse
 
     @GET("/api/register")
     suspend fun register(

@@ -15,8 +15,8 @@ class UserRepositoryImpl @Inject constructor(
         return networkService.getUserByUserName(userName)
     }
 
-    override suspend fun login(userName: String, password: String): Int? {
-        return networkService.loginUser(userName, password)
+    override suspend fun login(userName: String, password: String): Int {
+        return networkService.loginUser(userName, password).id
     }
 
     override suspend fun editUser(user: User) = networkService.editUser(user)
