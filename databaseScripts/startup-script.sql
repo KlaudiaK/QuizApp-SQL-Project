@@ -230,6 +230,24 @@ CREATE OR REPLACE FUNCTION calculate_global_ranks() returns trigger as $calculat
         END IF;
          vCnt := vCnt + 1;
     END LOOP;
+        UPDATE ranks
+            set max_points = (select max(total_points) from users)
+            where name = 'GOLD';
+        UPDATE ranks
+            set min_points = (select max(total_points) + 1 from users where rank = 'SILVER')
+            where name = 'GOLD';
+        UPDATE ranks
+            set max_points = (select max(total_points) from users where rank = 'SILVER')
+            where name = 'SILVER';
+        UPDATE ranks
+            set min_points = (select max(total_points) + 1 from users where rank = 'BRONZ')
+            where name = 'BRONZ';
+        UPDATE ranks
+            set max_points = (select max(total_points) from users where rank = 'BRONZ')
+            where name = 'BRONZ';
+        UPDATE ranks
+            set min_points = (select min(total_points) + 1 from users)
+            where name = 'BRONZ';
     return null;
     END;
     $calculate_global_ranks$ LANGUAGE plpgsql;
@@ -278,3 +296,34 @@ CREATE OR REPLACE FUNCTION create_user(
         select (up.id, up.username, up.password, up.last_modified) from users_passwords up into vUserPass where up.id = vid;
         return vUserPass;
 END; $$
+
+CREATE OR REPLACE FUNCTION update_points_and_quizzes() returns trigger as $update_points_and_quizzes$
+    BEGIN
+    UPDATE users us
+        set total_points = (select sum(q.points)
+                            from users u join solved_quizes s on u.id = s.user_id
+                                join quizes q on s.quiz_id = q.id
+                                group by u.id
+                                having u.id = us.id);
+
+    UPDATE users us
+        set solved_quizes = (select count(q.id)
+                                from users u join solved_quizes s on u.id = s.user_id
+                                join quizes q on s.quiz_id = q.id
+                                group by u.id
+                                having u.id = us.id);
+    UPDATE users us
+        set created_quizes = (select count(q.creator_user_id) from users u
+                                join quizes q on q.creator_user_id = u.id
+                                group by u.id
+                                having u.id = us.id);
+    return null;
+    END;
+    $update_points_and_quizzes$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER calculate_points_and_quizzes
+    AFTER
+	INSERT OR TRUNCATE OR UPDATE
+    ON quizes
+    EXECUTE FUNCTION update_points_and_quizzes();
