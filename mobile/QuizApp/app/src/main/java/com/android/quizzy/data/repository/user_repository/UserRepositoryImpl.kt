@@ -53,4 +53,12 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updatePassword(userPassword: UserPassword) {
         return networkService.updatePassword(userPassword)
     }
+
+    override suspend fun getFriendsRequests(fromUser: Int?, toUser: Int?): List<FriendRequest> {
+        return networkService.getFriendsRequests(fromUser = fromUser, toUser = toUser)
+    }
+
+    override suspend fun updateFriendsRequests(friendRequest: FriendRequest): FriendRequest {
+        return networkService.updateFriendsRequests(friendRequest)
+    }
 }

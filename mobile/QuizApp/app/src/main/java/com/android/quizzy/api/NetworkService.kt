@@ -125,4 +125,10 @@ interface NetworkService {
 
     @POST("/api/solved_quizzes")
     suspend fun addQuizToSolved(@Body solvedQuiz: SolvedQuizResponse)
+
+    @GET("/api/requests")
+    suspend fun getFriendsRequests(@Query("fromUser") fromUser: Int? = null, @Query("toUser") toUser: Int? = null): List<FriendRequest>
+
+    @POST("/api/requests")
+    suspend fun updateFriendsRequests(@Body friendRequest: FriendRequest) : FriendRequest
 }

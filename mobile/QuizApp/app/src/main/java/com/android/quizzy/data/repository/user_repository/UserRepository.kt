@@ -21,4 +21,8 @@ interface UserRepository {
     suspend fun updateSettings( userSettings: UserSettings): UserSettings
     suspend fun getPassword( id: Int): UserPassword
     suspend fun updatePassword(  userPassword: UserPassword)
+
+    suspend fun getFriendsRequests(fromUser: Int? = null, toUser: Int? = null): List<FriendRequest>
+
+    suspend fun updateFriendsRequests(friendRequest: FriendRequest) : FriendRequest
 }

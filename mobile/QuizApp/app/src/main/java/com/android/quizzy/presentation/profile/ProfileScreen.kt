@@ -9,6 +9,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.MilitaryTech
+import androidx.compose.material.icons.outlined.PersonAdd
 import androidx.compose.material.icons.twotone.Create
 import androidx.compose.material.icons.twotone.DoneAll
 import androidx.compose.material.icons.twotone.Star
@@ -115,6 +116,17 @@ fun ProfileScreen(
             Icon(Icons.Outlined.Dashboard, contentDescription = null)
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(text = "See categories", fontSize = 20.sp, modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp))
+        }
+
+        Button(
+            onClick = { navigator.navigate("friends") }, modifier = Modifier
+                .padding(top = 550.dp, start = 16.dp, end = 16.dp)
+                .wrapContentHeight()
+                .fillMaxWidth()
+        ) {
+            Icon(Icons.Outlined.PersonAdd, contentDescription = null)
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = "Friends", fontSize = 20.sp, modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp))
         }
 
         Box(

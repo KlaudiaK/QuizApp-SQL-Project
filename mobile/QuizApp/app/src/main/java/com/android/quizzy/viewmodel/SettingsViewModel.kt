@@ -47,8 +47,6 @@ class SettingsViewModel @Inject constructor(
             userRepository.updateSettings(userSettings)
             userRepository.updatePassword(userPassword)
             userRepository.editUser(user)
-            userRepository.editUser(user)
-            userRepository.editUser(user)
         }
     }
     private fun getUserInfo() {
@@ -75,10 +73,10 @@ class SettingsViewModel @Inject constructor(
                 )
                 val userPassword = userRepository.getPassword(userId.toInt())
                 _password.value = password.value.copy(
-                    userPassword.userReferenceId,
-                    userPassword.password,
-                    userPassword.username,
-                    userPassword.lastModified
+                    userReferenceId = userPassword.userReferenceId,
+                    password = userPassword.password,
+                    username = userPassword.username,
+                    lastModified = userPassword.lastModified
                 )
             }
         }
