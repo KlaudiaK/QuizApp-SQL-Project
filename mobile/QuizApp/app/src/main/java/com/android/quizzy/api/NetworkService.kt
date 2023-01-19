@@ -47,8 +47,18 @@ interface NetworkService {
                     @Query("email") email: String,
                     @Query("name") name: String,
                     @Query("avatar") avatar: String?): RegistryResponse
+    @GET("/api/user/settings")
+    suspend fun getSettingsForUser( @Query("id") id: Long): UserSettings
+    @GET("/api/user/settings/all")
+    suspend fun getSettings(): List<UserSettings>
+    @PUT("/api/user/settings")
+    suspend fun updateSettings( @Body userSettings: UserSettings): UserSettings
+    @GET("/api/register/{id}")
+    suspend fun getPassword( @Path("id") id: Int): UserPassword
+    @PUT("/api/user/register")
+    suspend fun updatePassword( @Body userPassword: UserPassword)
 
-    @POST("/api/users")
+    @PUT("/api/users")
     fun editUser(@Body user: User)
 
     @DELETE("/api/users")

@@ -77,7 +77,8 @@ fun ProfileScreen(
             ) {
                 TakePicture(
                     uiState = uiState,
-                    bottomSheetModalState = bottomSheetModalState
+                    bottomSheetModalState = bottomSheetModalState,
+                    navigator = navigator
                 )
             }
 
