@@ -10,11 +10,10 @@ import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.domain.model.Quiz
+import com.android.quizzy.domain.reponse.FavouriteItem
 import com.android.quizzy.presentation.quiz_list.QuizListScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,6 +31,12 @@ class QuizListViewModel @Inject constructor(
 
     private val _toastMessage = MutableSharedFlow<String>()
     val toastMessage = _toastMessage.asSharedFlow()
+
+    private val _quizzes = MutableStateFlow(listOf<Quiz>())
+    val quizzes: StateFlow<List<Quiz>> get() = _quizzes
+
+    private val _favouritesQuizzes = MutableStateFlow(listOf<FavouriteItem>())
+    val favouritesQuizzes: StateFlow<List<FavouriteItem>> get() = _favouritesQuizzes
 
     init {
         initialize()
@@ -53,33 +58,44 @@ class QuizListViewModel @Inject constructor(
 
     fun getMyQuizzes() {
         viewModelScope.launch {
-            val list = quizRepository.getQuizzes().filter { it.author == _uiState.value.userId.toString() }
+            val list =
+                quizRepository.getQuizzes().filter { it.author == _uiState.value.userId.toString() }
             _uiState.value = _uiState.value.copy(quizItems = list)
+            _quizzes.value = list
         }
     }
 
-    fun getQuizzes() {
+    private fun getQuizzes() {
         viewModelScope.launch {
             val list = quizRepository.getQuizzes()
             _uiState.value = _uiState.value.copy(quizItems = list)
+            _quizzes.value = list
         }
     }
 
 
-    fun getFilteredQuizes(privacySetting: PrivacySetting, selectedCategory: String? = null): List<Quiz> {
-        var result  = _uiState.value.quizItems?.filter { it.sharing?.name == privacySetting.name }
-            ?: emptyList()
+    fun getFilteredQuizes(privacySetting: PrivacySetting, selectedCategory: String? = null) = flow {
+        _quizzes.value = listOf()
+        val list = quizRepository.getQuizzes()
+        var result = list.filter { it.sharing?.name == privacySetting.name }
         selectedCategory?.let {
-            if (!it.equals(Categories.OTHER.name, ignoreCase = true)) result = result.filter { it.category.equals(selectedCategory, ignoreCase = true)  }
+            if (!it.equals(Categories.OTHER.name, ignoreCase = true)) result =
+                result.filter { it.category.equals(selectedCategory, ignoreCase = true) }
         }
-        return result
+        _quizzes.value = result
+        emit(result)
     }
 
     fun getFilterQuizesByCategory(selectedCategory: String): List<Quiz> {
-        return _uiState.value.quizItems?.filter { it.category.equals(selectedCategory, ignoreCase = true)  } ?: listOf()
+        return _uiState.value.quizItems?.filter {
+            it.category.equals(
+                selectedCategory,
+                ignoreCase = true
+            )
+        } ?: listOf()
     }
 
-    fun addQuizToFavourites(id: Long){
+    fun addQuizToFavourites(id: Long) {
         viewModelScope.launch {
             quizRepository.addQuizToFavourites(id)
         }
@@ -93,8 +109,11 @@ class QuizListViewModel @Inject constructor(
         sendMessage("Quiz deleted from favourites")
     }
 
-    fun getListOfFavouritesQuizzes(userId: Long) = flow {
-        emit(quizRepository.getFavouriteQuizzes(userId))
+    fun getListOfFavouritesQuizzes(userId: Long) {
+        viewModelScope.launch {
+            val favourites = quizRepository.getFavouriteQuizzes(userId)
+            _favouritesQuizzes.value = favourites
+        }
     }
 
     private fun sendMessage(message: String) {

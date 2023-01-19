@@ -13,7 +13,6 @@ import com.android.quizzy.domain.mapper.mapToCategory
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.domain.model.Question
-import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.domain.reponse.QuizResponse
 import com.android.quizzy.presentation.add_new_quiz.NewQuizInputErrors
 import com.android.quizzy.presentation.add_new_quiz.QuizScreenState
@@ -80,6 +79,7 @@ class QuizViewModel @Inject constructor(
     }
 
     fun onContinueClick(navigateBack: () -> Unit) {
+        val userId = sharedPreferences.getString("user_id", "")
         viewModelScope.launch {
             with(_uiState.value) {
                 val newQuiz = QuizResponse(
@@ -90,7 +90,7 @@ class QuizViewModel @Inject constructor(
                     difficultyLevelReferenceId = quizRepository.getDifficultyLevels()
                         .find { it.name == difficulty }?.id ?: 1,
                     categoryName = category,
-                    creatorId = 1,
+                    creatorId = userId?.toInt() ?: 1,
                     image = image,
                     likes = 0,
                     privacySettings = privacySettings,

@@ -2,7 +2,6 @@ package com.android.quizzy.api
 
 import com.android.quizzy.domain.model.*
 import com.android.quizzy.domain.reponse.*
-import retrofit2.Call
 import retrofit2.http.*
 
 interface NetworkService {
@@ -14,7 +13,7 @@ interface NetworkService {
     suspend fun getQuizById(@Path("id") id: String): QuizResponse
 
     @PUT("/api/quizzes")
-    suspend fun updateQuiz(@Body quiz: QuizResponse)
+    suspend fun updateQuiz(@Body quiz: QuizResponse): QuizResponse
 
     @POST("/api/quizzes")
     suspend fun addQuiz(@Body quiz: QuizResponse)
@@ -24,10 +23,15 @@ interface NetworkService {
 
     @GET("/api/users")
     suspend fun getAllUsers(): List<User>
+
     @GET("/api/users/name/{userName}")
     suspend fun getUserByUserName(@Path("userName") userName: String): User
+
     @GET("/api/login")
-    suspend fun loginUser(@Query("username") userName: String, @Query("password") password: String): LoginResponse
+    suspend fun loginUser(
+        @Query("username") userName: String,
+        @Query("password") password: String
+    ): LoginResponse
 
     @GET("/api/register")
     suspend fun register(
@@ -42,21 +46,28 @@ interface NetworkService {
     suspend fun getUserById(@Path("id") id: String): User
 
     @GET("/api/register")
-    suspend fun createUser( @Query("username") username: String,
-                    @Query("password") password: String,
-                    @Query("email") email: String,
-                    @Query("name") name: String,
-                    @Query("avatar") avatar: String?): RegistryResponse
+    suspend fun createUser(
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("email") email: String,
+        @Query("name") name: String,
+        @Query("avatar") avatar: String?
+    ): RegistryResponse
+
     @GET("/api/user/settings")
-    suspend fun getSettingsForUser( @Query("id") id: Long): UserSettings
+    suspend fun getSettingsForUser(@Query("id") id: Long): UserSettings
+
     @GET("/api/user/settings/all")
     suspend fun getSettings(): List<UserSettings>
+
     @PUT("/api/user/settings")
-    suspend fun updateSettings( @Body userSettings: UserSettings): UserSettings
+    suspend fun updateSettings(@Body userSettings: UserSettings): UserSettings
+
     @GET("/api/register/{id}")
-    suspend fun getPassword( @Path("id") id: Int): UserPassword
+    suspend fun getPassword(@Path("id") id: Int): UserPassword
+
     @PUT("/api/user/register")
-    suspend fun updatePassword( @Body userPassword: UserPassword)
+    suspend fun updatePassword(@Body userPassword: UserPassword)
 
     @PUT("/api/users")
     fun editUser(@Body user: User)
@@ -127,8 +138,11 @@ interface NetworkService {
     suspend fun addQuizToSolved(@Body solvedQuiz: SolvedQuizResponse)
 
     @GET("/api/requests")
-    suspend fun getFriendsRequests(@Query("fromUser") fromUser: Int? = null, @Query("toUser") toUser: Int? = null): List<FriendRequest>
+    suspend fun getFriendsRequests(
+        @Query("fromUser") fromUser: Int? = null,
+        @Query("toUser") toUser: Int? = null
+    ): List<FriendRequest>
 
     @POST("/api/requests")
-    suspend fun updateFriendsRequests(@Body friendRequest: FriendRequest) : FriendRequest
+    suspend fun updateFriendsRequests(@Body friendRequest: FriendRequest): FriendRequest
 }

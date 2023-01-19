@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
-import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.presentation.destinations.NewQuestionDestination
@@ -44,6 +43,8 @@ import com.android.quizzy.viewmodel.QuizViewModel
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 val textFieldModifier = Modifier
     .fillMaxWidth()
@@ -81,15 +82,13 @@ fun AddNewQuizScreen(
     val inputErrors = quizViewModel.inputErrors
 
     viewModel.onBottomBarVisibilityChange(false)
-    val categories = Categories.values().map {
-        it.name
-    }
+
     val privacySettings = PrivacySetting.values().map {
         it.name
     }
 
     val difficultyLevels = DifficultyLevel.values().map {
-        it.name
+        it.description
     }
 
     val scrollState = rememberScrollState()
@@ -98,6 +97,8 @@ fun AddNewQuizScreen(
     val context = LocalContext.current
 
     viewModel.onBottomBarVisibilityChange(false)
+
+    val scope = rememberCoroutineScope()
     Scaffold(topBar = {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { navigator.navigateUp() }) {
@@ -192,7 +193,7 @@ fun AddNewQuizScreen(
                     colors = quizDetailsTextFieldColors(),
                 )
                 CategoryDropDown(
-                    optionList = uiState.value.categoriesList.map{ it.name },
+                    optionList = uiState.value.categoriesList.map { it.name },
                     label = "Category",
                     selectedOption = uiState.value.category,
                     isError = inputErrors.value.categoryErrorId != null,
@@ -276,7 +277,10 @@ fun AddNewQuizScreen(
                             quizToEditID?.let {
                                 quizViewModel.editQuiz(it)
                             }
-                            navigator.navigateUp()
+                            scope.launch {
+                                delay(200)
+                                navigator.navigateUp()
+                            }
                         } else {
                             quizViewModel.onContinueClick {
                                 navigator.navigateUp()
