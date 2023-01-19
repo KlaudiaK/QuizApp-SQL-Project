@@ -1,5 +1,7 @@
 package com.android.quizzy.presentation.profile
 
+import com.android.quizzy.domain.model.Rank
+
 data class ProfileScreenState(
     val name: String = "",
     val username: String = "",
@@ -7,4 +9,5 @@ data class ProfileScreenState(
     val points: String = "0",
     val createdQuizzes: String = "0",
     val solvedQuizzes: String = "0",
+    val rank: Rank = Rank.BRONZ,
 )

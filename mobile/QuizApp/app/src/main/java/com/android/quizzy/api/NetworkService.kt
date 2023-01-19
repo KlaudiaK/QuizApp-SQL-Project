@@ -2,6 +2,7 @@ package com.android.quizzy.api
 
 import com.android.quizzy.domain.model.*
 import com.android.quizzy.domain.reponse.*
+import retrofit2.Call
 import retrofit2.http.*
 
 interface NetworkService {
@@ -61,16 +62,14 @@ interface NetworkService {
     suspend fun getSettings(): List<UserSettings>
 
     @PUT("/api/user/settings")
-    suspend fun updateSettings(@Body userSettings: UserSettings): UserSettings
-
+    fun updateSettings( @Body userSettings: UserSettings): Call<UserSettings>
     @GET("/api/register/{id}")
-    suspend fun getPassword(@Path("id") id: Int): UserPassword
-
-    @PUT("/api/user/register")
-    suspend fun updatePassword(@Body userPassword: UserPassword)
+    suspend fun getPassword( @Path("id") id: Int): UserPassword
+    @PUT("/api/register")
+    fun updatePassword( @Body userPassword: UserPassword): Call<Void>
 
     @PUT("/api/users")
-    fun editUser(@Body user: User)
+    fun editUser(@Body user: User): Call<Void>
 
     @DELETE("/api/users")
     suspend fun deleteUser(@Query("id") id: String)

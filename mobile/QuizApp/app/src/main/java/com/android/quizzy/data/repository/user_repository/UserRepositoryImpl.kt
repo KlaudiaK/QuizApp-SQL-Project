@@ -24,7 +24,7 @@ class UserRepositoryImpl @Inject constructor(
         return networkService.loginUser(userName, password).id
     }
 
-    override suspend fun editUser(user: User) = networkService.editUser(user)
+    override fun editUser(user: User): Call<Void> = networkService.editUser(user)
 
     override suspend fun deleteUser(id: String) = networkService.deleteUser(id)
 
@@ -42,7 +42,7 @@ class UserRepositoryImpl @Inject constructor(
         return networkService.getSettings()
     }
 
-    override suspend fun updateSettings(userSettings: UserSettings): UserSettings {
+    override fun updateSettings(userSettings: UserSettings): Call<UserSettings> {
         return networkService.updateSettings(userSettings)
     }
 
@@ -50,7 +50,7 @@ class UserRepositoryImpl @Inject constructor(
         return networkService.getPassword(id)
     }
 
-    override suspend fun updatePassword(userPassword: UserPassword) {
+    override fun updatePassword(userPassword: UserPassword): Call<Void> {
         return networkService.updatePassword(userPassword)
     }
 

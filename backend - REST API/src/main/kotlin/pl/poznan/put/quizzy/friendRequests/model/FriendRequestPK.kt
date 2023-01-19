@@ -13,6 +13,6 @@ import java.time.LocalDate
 @AllArgsConstructor
 data class FriendRequestPK(
     val sent: LocalDate = LocalDate.now(),
-    val fromUserReferenceId: Int,
-    val toUserReferenceId: Int
+    val fromUserReferenceId: Int? = null,
+    val toUserReferenceId: Int? = null
 ): Serializable

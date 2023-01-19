@@ -11,7 +11,12 @@ import com.android.quizzy.domain.model.UserPassword
 import com.android.quizzy.domain.model.UserSettings
 import com.android.quizzy.presentation.profile.ProfileScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,10 +48,37 @@ class SettingsViewModel @Inject constructor(
                 avatar = uiState.value.avatar,
                 rank = uiState.value.rank)
             val userSettings = UserSettings(settings.value.userReferenceId, settings.value.darkMode, settings.value.preferredLanguage)
-            val userPassword = UserPassword(password.value.userReferenceId, password.value.password, password.value.lastModified.toString())
-            userRepository.updateSettings(userSettings)
-            userRepository.updatePassword(userPassword)
-            userRepository.editUser(user)
+            val userPassword = UserPassword(userReferenceId = password.value.userReferenceId, password = password.value.password, username = password.value.username)
+            userRepository.editUser(user).enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>?, t: Throwable?) {
+                    Timber.v("retrofit", "call failed")
+                }
+
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Timber.v("retrofit", "call succeded")
+                }
+
+            })
+            userRepository.updatePassword(userPassword).enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>?, t: Throwable?) {
+                    Timber.v("retrofit", "call failed")
+                }
+
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    Timber.v("retrofit", "call succeded")
+                }
+
+            })
+            userRepository.updateSettings(userSettings).enqueue(object : Callback<UserSettings> {
+                override fun onFailure(call: Call<UserSettings>?, t: Throwable?) {
+                    Timber.v("retrofit", "call failed")
+                }
+
+                override fun onResponse(call: Call<UserSettings>, response: Response<UserSettings>) {
+                    Timber.v("retrofit", "call succeded")
+                }
+
+            })
         }
     }
     private fun getUserInfo() {

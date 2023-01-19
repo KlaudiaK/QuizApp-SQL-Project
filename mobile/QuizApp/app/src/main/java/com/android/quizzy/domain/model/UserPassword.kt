@@ -9,5 +9,5 @@ data class UserPassword (
 
     val username: String? = null,
 
-    val lastModified: List<Int>? = null
+    val lastModified: String = LocalDate.now().toString()
 )

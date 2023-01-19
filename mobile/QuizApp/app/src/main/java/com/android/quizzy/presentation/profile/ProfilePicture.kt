@@ -230,6 +230,14 @@ fun TakePicture(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
+
+            Text(
+                text = "${uiState.value.rank}",
+                color = uiState.value.rank.color,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
             Card(
                 modifier = Modifier
                     .padding(start = 100.dp, end = 100.dp)

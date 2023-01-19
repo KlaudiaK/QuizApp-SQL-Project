@@ -1,5 +1,7 @@
 package com.android.quizzy.presentation.profile
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -100,61 +102,75 @@ fun ProfileScreen(
             onClick = { navigator.navigate(RanksListInfoDestination) }, modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .padding(top = 250.dp, start = 16.dp, end = 16.dp)
+                .padding(top = 190.dp, start = 16.dp, end = 16.dp)
         ) {
             Icon(Icons.Outlined.MilitaryTech, contentDescription = null)
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = "See ranks", fontSize = 20.sp,  modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp))
+            Text(
+                text = "See ranks", fontSize = 15.sp, modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(vertical = 8.dp)
+            )
         }
 
         Button(
             onClick = { navigator.navigate(CategoriesListInfoDestination) }, modifier = Modifier
-                .padding(top = 400.dp, start = 16.dp, end = 16.dp)
+                .padding(top = 300.dp, start = 16.dp, end = 16.dp)
                 .wrapContentHeight()
                 .fillMaxWidth()
         ) {
             Icon(Icons.Outlined.Dashboard, contentDescription = null)
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = "See categories", fontSize = 20.sp, modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp))
+            Text(
+                text = "See categories", fontSize = 15.sp, modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(vertical = 8.dp)
+            )
         }
 
         Button(
             onClick = { navigator.navigate("friends") }, modifier = Modifier
-                .padding(top = 550.dp, start = 16.dp, end = 16.dp)
+                .padding(top = 410.dp, start = 16.dp, end = 16.dp)
                 .wrapContentHeight()
                 .fillMaxWidth()
         ) {
             Icon(Icons.Outlined.PersonAdd, contentDescription = null)
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = "Friends", fontSize = 20.sp, modifier = Modifier.wrapContentHeight().padding(vertical = 8.dp))
+            Text(
+                text = "Friends", fontSize = 15.sp, modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(vertical = 8.dp)
+            )
         }
 
-        Box(
+        OutlinedButton(
+            onClick = {
+                navigator.popBackStack(CategoriesScreenDestination, true)
+                navigator.navigate(LoginScreenDestination)
+                viewModel.logout()
+            },
             modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 20.dp),
-            contentAlignment = Alignment.BottomCenter
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(top = 520.dp, start = 16.dp, end = 16.dp, bottom = 4.dp)
+                .border(
+                    BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                    shape = RoundedCornerShape(32.dp)
+                ),
         ) {
-
-            OutlinedButton(
-                onClick = {
-                    navigator.popBackStack(CategoriesScreenDestination, true)
-                    navigator.navigate(LoginScreenDestination)
-                    viewModel.logout()
-                }, modifier = Modifier
-                    .width(120.dp)
-                    .height(50.dp)
-            ) {
-                Text("Log out", fontSize = 18.sp, color = MaterialTheme.colorScheme.onPrimary)
-            }
+            Text("Log out", fontSize = 15.sp, color = MaterialTheme.colorScheme.onPrimary)
         }
     }
-
 
 }
 
 @Composable
-fun Achievements(points: String, createdQuizzesNum: String, solvedQuizzesNum: String, show: Boolean) {
+fun Achievements(
+    points: String,
+    createdQuizzesNum: String,
+    solvedQuizzesNum: String,
+    show: Boolean
+) {
     if (show) {
         Card(
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),

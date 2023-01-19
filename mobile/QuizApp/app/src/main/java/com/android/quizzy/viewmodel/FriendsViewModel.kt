@@ -54,9 +54,20 @@ class FriendsViewModel @Inject constructor(
                 _requests.value = friendsRequestAll
                 val friendsRequestForUser = friendsRequestAll.filter { it.toUserReferenceId == userId.toInt() }
                 _userFriendsRequest.value = friendsRequestForUser.filter { it.status == "Sent" }.map { userRepository.getUser(it.fromUserReferenceId.toString()) }
-                val friends = friendsRequestForUser.filter { it.status == "Accepted" }.map { userRepository.getUser(it.fromUserReferenceId.toString()) }
+                val friends = friendsRequestAll.filter { it.status == "Accepted" && (it.fromUserReferenceId == userId.toInt() || it.toUserReferenceId == userId.toInt()) }.map {
+                    if (it.fromUserReferenceId == userId.toInt()) {
+                        userRepository.getUser(it.toUserReferenceId.toString())
+                    } else {
+                        userRepository.getUser(it.fromUserReferenceId.toString())
+                    }
+                }
                 _userFriends.value = friends
-                val filterPeopleToInvite = userRepository.getUsers().filter { !userFriends.value.contains(it) && !userFriendsRequest.value.contains(it) && userId.toInt() != it.id}
+                val filterPeopleToInvite = userRepository.getUsers().filter {
+                    !userFriends.value.contains(it)
+                            && !userFriendsRequest.value.contains(it)
+                            && userId.toInt() != it.id
+                            && !friendsRequestAll.filter { it.fromUserReferenceId == userId.toInt() }.map { it.toUserReferenceId }.contains(it.id)
+                }
                 _peopleToInvite.value = filterPeopleToInvite
             }
         }

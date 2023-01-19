@@ -34,7 +34,8 @@ class ProfileViewModel @Inject constructor(
                     email = user.email,
                     points = user.totalPoints.toString(),
                     solvedQuizzes = user.solvedQuizes.toString(),
-                    createdQuizzes = user.createdQuizes.toString()
+                    createdQuizzes = user.createdQuizes.toString(),
+                    rank = user.rank
                 )
 
             }

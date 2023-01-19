@@ -11,16 +11,16 @@ interface UserRepository {
     suspend fun getUserByUserName(userName: String): User?
     suspend fun login(userName: String, password: String): Int?
 
-    suspend fun editUser(user: User)
+    fun editUser(user: User): Call<Void>
 
     suspend fun deleteUser(id: String)
 
     suspend fun createUser(user: UserRegister): RegistryResponse
 
     suspend fun getSettings(): List<UserSettings>
-    suspend fun updateSettings( userSettings: UserSettings): UserSettings
+    fun updateSettings( userSettings: UserSettings): Call<UserSettings>
     suspend fun getPassword( id: Int): UserPassword
-    suspend fun updatePassword(  userPassword: UserPassword)
+    fun updatePassword(  userPassword: UserPassword): Call<Void>
 
     suspend fun getFriendsRequests(fromUser: Int? = null, toUser: Int? = null): List<FriendRequest>
 
