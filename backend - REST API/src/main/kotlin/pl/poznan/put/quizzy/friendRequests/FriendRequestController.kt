@@ -19,7 +19,7 @@ class FriendRequestController(
             fromUser != null && toUser != null -> friendRequestService.getFriendsRequestForUsersIfExists(fromUser, toUser)
             fromUser != null -> friendRequestService.getSentFriendsRequestsForUser(fromUser)
             toUser != null -> friendRequestService.getReceivedFriendsRequestsForUser(toUser)
-            else -> listOf()
+            else -> friendRequestService.getAllFriendsRequests()
         }
     }
 

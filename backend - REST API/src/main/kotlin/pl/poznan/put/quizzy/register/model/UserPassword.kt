@@ -26,5 +26,5 @@ data class UserPassword (
     val username: String? = null,
 
     @Column(name = "last_modified")
-    val lastModified: LocalDate? = LocalDate.now()
+    val lastModified: String? = LocalDate.now().toString()
 )
