@@ -43,7 +43,8 @@ CREATE TABLE favourites (
 CREATE TABLE friends_requests (
                                   sent      DATE NOT NULL,
                                   from_user INTEGER NOT NULL,
-                                  to_user   INTEGER NOT NULL
+                                  to_user   INTEGER NOT NULL,
+                                  status varchar(100) NOT NULL
 );
 
 CREATE TABLE questions (

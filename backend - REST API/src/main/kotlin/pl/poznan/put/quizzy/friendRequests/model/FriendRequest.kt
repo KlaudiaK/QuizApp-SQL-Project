@@ -26,9 +26,13 @@ data class FriendRequest(
 
     @Id
     @Column(name = "from_user")
-    val fromUserReferenceId: Int,
+    val fromUserReferenceId: Int? = null,
 
     @Id
     @Column(name = "to_user")
-    val toUserReferenceId: Int
+    val toUserReferenceId: Int? = null,
+
+    @Id
+    @Column(name = "status")
+    val status: String = "Sent"
 )

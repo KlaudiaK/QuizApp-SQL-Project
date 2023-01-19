@@ -1,9 +1,6 @@
 package com.android.quizzy.api
 
-import com.android.quizzy.domain.model.Answer
-import com.android.quizzy.domain.model.LoginResponse
-import com.android.quizzy.domain.model.RegistryResponse
-import com.android.quizzy.domain.model.User
+import com.android.quizzy.domain.model.*
 import com.android.quizzy.domain.reponse.*
 import retrofit2.http.*
 
@@ -57,7 +54,22 @@ interface NetworkService {
         @Query("avatar") avatar: String?
     ): RegistryResponse
 
-    @POST("/api/users")
+    @GET("/api/user/settings")
+    suspend fun getSettingsForUser(@Query("id") id: Long): UserSettings
+
+    @GET("/api/user/settings/all")
+    suspend fun getSettings(): List<UserSettings>
+
+    @PUT("/api/user/settings")
+    suspend fun updateSettings(@Body userSettings: UserSettings): UserSettings
+
+    @GET("/api/register/{id}")
+    suspend fun getPassword(@Path("id") id: Int): UserPassword
+
+    @PUT("/api/user/register")
+    suspend fun updatePassword(@Body userPassword: UserPassword)
+
+    @PUT("/api/users")
     fun editUser(@Body user: User)
 
     @DELETE("/api/users")
@@ -124,4 +136,13 @@ interface NetworkService {
 
     @POST("/api/solved_quizzes")
     suspend fun addQuizToSolved(@Body solvedQuiz: SolvedQuizResponse)
+
+    @GET("/api/requests")
+    suspend fun getFriendsRequests(
+        @Query("fromUser") fromUser: Int? = null,
+        @Query("toUser") toUser: Int? = null
+    ): List<FriendRequest>
+
+    @POST("/api/requests")
+    suspend fun updateFriendsRequests(@Body friendRequest: FriendRequest): FriendRequest
 }

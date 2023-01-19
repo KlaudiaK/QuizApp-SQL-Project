@@ -3,6 +3,7 @@ package pl.poznan.put.quizzy.register
 import lombok.RequiredArgsConstructor
 import org.hibernate.exception.ConstraintViolationException
 import org.springframework.http.HttpStatus
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import pl.poznan.put.quizzy.register.model.RegistryResponse
@@ -22,7 +23,8 @@ class RegistrationController(
         @RequestParam password: String,
         @RequestParam email: String,
         @RequestParam name: String,
-        @RequestParam avatar: String?) : RegistryResponse? {
+        @RequestParam avatar: String?
+    ): RegistryResponse? {
         try {
             registrationService.registerUser(username, password, email, name, avatar)?.let {
                 return RegistryResponse(it)
@@ -34,5 +36,16 @@ class RegistrationController(
             )
         }
         return null
+    }
+
+    @GetMapping("/api/register/{id}")
+    fun getPassword(@PathVariable("id") id: Int): UserPassword {
+        return registrationService.getPassword(id)
+    }
+
+    @Transactional
+    @PutMapping("/api/register")
+    fun updatePassword(@RequestBody userPassword: UserPassword) {
+        registrationService.updatePassword(userPassword)
     }
 }

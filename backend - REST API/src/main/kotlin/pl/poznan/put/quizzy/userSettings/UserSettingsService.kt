@@ -9,8 +9,8 @@ import pl.poznan.put.quizzy.userSettings.model.UserSettingsItem
 class UserSettingsService(
     private val userSettingsRepository: UserSettingsRepository
 ) {
-    fun getSettingsForUser(userId: Long): UserSettingsItem? {
-        return userSettingsRepository.findById(userId).orElseThrow {
+    fun getSettingsForUser(userId: Int): UserSettingsItem? {
+        return userSettingsRepository.findById(userId.toLong()).orElseThrow {
             ResponseStatusException(
                 HttpStatus.NOT_FOUND,
                 "Settings for user with id: $userId not found"
@@ -26,7 +26,11 @@ class UserSettingsService(
         return userSettingsRepository.save(userSettingsItem)
     }
 
-    fun deleteUserSettingsForId(userId: Long) {
-        return userSettingsRepository.deleteById(userId)
+    fun deleteUserSettingsForId(userId: Int) {
+        return userSettingsRepository.deleteById(userId.toLong())
+    }
+
+    fun getSettings(): List<UserSettingsItem> {
+        return userSettingsRepository.findAll()
     }
 }

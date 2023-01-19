@@ -11,8 +11,12 @@ class UserSettingsController(
 ) {
 
     @GetMapping("/api/user/settings")
-    fun getUserSettings(@RequestParam("id") id: Long): UserSettingsItem? {
+    fun getUserSettings(@RequestParam("id") id: Int): UserSettingsItem? {
         return userSettingsService.getSettingsForUser(id)
+    }
+    @GetMapping("/api/user/settings/all")
+    fun getSettings(): List<UserSettingsItem> {
+        return userSettingsService.getSettings()
     }
 
     @PutMapping("/api/user/settings")
@@ -26,7 +30,7 @@ class UserSettingsController(
     }
 
     @DeleteMapping("/api/user/settings")
-    fun deleteUserSettings(@RequestParam("id") id: Long) {
+    fun deleteUserSettings(@RequestParam("id") id: Int) {
         return userSettingsService.deleteUserSettingsForId(id)
     }
 

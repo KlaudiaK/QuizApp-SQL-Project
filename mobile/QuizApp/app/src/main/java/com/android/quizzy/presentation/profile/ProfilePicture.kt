@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.android.quizzy.R
 import com.android.quizzy.ui.theme.*
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -52,7 +53,8 @@ fun TakePicture(
     uiState: State<ProfileScreenState>,
     //   bitmap: Bitmap?,
     bottomSheetModalState: ModalBottomSheetState,
-    //  saveImage : () -> Unit
+    //  saveImage : () -> Unit,
+    navigator: DestinationsNavigator
 ) {
     var isCameraSelected by rememberSaveable { mutableStateOf(false) }
     //var imageUri: Uri? = null
@@ -221,7 +223,7 @@ fun TakePicture(
         ) {
             TextButton(
                 modifier = Modifier.align(Alignment.End),
-                onClick = { /*TODO*/ }) {
+                onClick = { navigator.navigate("settings") }) {
                 Text(
                     style = MaterialTheme.typography.labelMedium,
                     text = "Edit Profile",

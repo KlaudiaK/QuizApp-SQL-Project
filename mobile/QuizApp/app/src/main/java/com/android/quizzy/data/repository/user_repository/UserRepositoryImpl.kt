@@ -1,9 +1,7 @@
 package com.android.quizzy.data.repository.user_repository
 
 import com.android.quizzy.api.NetworkService
-import com.android.quizzy.domain.model.RegistryResponse
-import com.android.quizzy.domain.model.User
-import com.android.quizzy.domain.model.UserRegister
+import com.android.quizzy.domain.model.*
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -38,5 +36,29 @@ class UserRepositoryImpl @Inject constructor(
             password = user.password,
             avatar = user.avatar
         )
+    }
+
+    override suspend fun getSettings(): List<UserSettings> {
+        return networkService.getSettings()
+    }
+
+    override suspend fun updateSettings(userSettings: UserSettings): UserSettings {
+        return networkService.updateSettings(userSettings)
+    }
+
+    override suspend fun getPassword(id: Int): UserPassword {
+        return networkService.getPassword(id)
+    }
+
+    override suspend fun updatePassword(userPassword: UserPassword) {
+        return networkService.updatePassword(userPassword)
+    }
+
+    override suspend fun getFriendsRequests(fromUser: Int?, toUser: Int?): List<FriendRequest> {
+        return networkService.getFriendsRequests(fromUser = fromUser, toUser = toUser)
+    }
+
+    override suspend fun updateFriendsRequests(friendRequest: FriendRequest): FriendRequest {
+        return networkService.updateFriendsRequests(friendRequest)
     }
 }
