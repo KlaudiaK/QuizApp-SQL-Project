@@ -11,10 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.twotone.WorkspacePremium
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.android.quizzy.domain.model.Categories
+import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.domain.model.Rank
 import com.android.quizzy.presentation.destinations.AddNewQuizScreenDestination
 import com.android.quizzy.presentation.destinations.QuizDetailsDestination
@@ -53,11 +51,13 @@ fun MyQuizesScreen(
     val uiState = quizViewModel.uiState
     var url = "https://freesvg.org/img/abstract-user-flat-4.png"
 
-    val favourites by quizViewModel.getListOfFavouritesQuizzes(uiState.value.userId.toLong())
-        .collectAsState(initial = listOf())
+    quizViewModel.getListOfFavouritesQuizzes(uiState.value.userId.toLong())
+
+    val favourites by quizViewModel.favouritesQuizzes.collectAsState(initial = listOf())
 
     val context = LocalContext.current
 
+    val quizzes by quizViewModel.quizzes.collectAsState()
     LaunchedEffect(Unit) {
         quizViewModel.initialize()
         quizViewModel.getMyQuizzes()
@@ -67,6 +67,14 @@ fun MyQuizesScreen(
                 context.showToastMessage(message)
             }
     }
+
+    val listItems = remember { mutableStateListOf<Quiz>() }
+    listItems.addAll(quizzes.filter { it.author == uiState.value.userId.toString() })
+    LaunchedEffect(quizzes){
+        listItems.clear()
+        listItems.addAll(quizzes.filter { it.author == uiState.value.userId.toString() })
+    }
+
 
     Scaffold(
         floatingActionButton = {
@@ -153,7 +161,6 @@ fun MyQuizesScreen(
 
                     Row(modifier = Modifier.fillMaxWidth()) {
 
-
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(url)
@@ -210,8 +217,8 @@ fun MyQuizesScreen(
                 horizontalAlignment = Alignment.Start,
                 content = {
 
-                    uiState.value.quizItems?.let { item ->
-                        items(item) { quiz ->
+
+                        items(listItems) { quiz ->
                             QuizCard(
                                 item = quiz,
                                 onClick = {
@@ -229,7 +236,7 @@ fun MyQuizesScreen(
 
                         }
                     }
-                })
+                )
         }
     }
 }

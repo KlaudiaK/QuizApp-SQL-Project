@@ -5,7 +5,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.android.quizzy.api.NetworkService
 import com.android.quizzy.domain.mapToQuestion
-import com.android.quizzy.domain.model.*
+import com.android.quizzy.domain.model.Answer
+import com.android.quizzy.domain.model.PrivacySetting
+import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.domain.reponse.*
 import java.time.LocalDate
 import javax.inject.Inject
@@ -67,7 +69,7 @@ class QuizRepositoryImpl @Inject constructor(
         networkService.addQuiz(quiz)
     }
 
-    override suspend fun updateQuiz(quiz: QuizResponse) = networkService.updateQuiz(quiz)
+    override suspend fun updateQuiz(quiz: QuizResponse): QuizResponse = networkService.updateQuiz(quiz)
 
     override suspend fun deleteQuiz(id: String) = networkService.deleteQuiz(id)
 

@@ -1,8 +1,10 @@
 package com.android.quizzy.api
 
-import com.android.quizzy.domain.model.*
+import com.android.quizzy.domain.model.Answer
+import com.android.quizzy.domain.model.LoginResponse
+import com.android.quizzy.domain.model.RegistryResponse
+import com.android.quizzy.domain.model.User
 import com.android.quizzy.domain.reponse.*
-import retrofit2.Call
 import retrofit2.http.*
 
 interface NetworkService {
@@ -14,7 +16,7 @@ interface NetworkService {
     suspend fun getQuizById(@Path("id") id: String): QuizResponse
 
     @PUT("/api/quizzes")
-    suspend fun updateQuiz(@Body quiz: QuizResponse)
+    suspend fun updateQuiz(@Body quiz: QuizResponse): QuizResponse
 
     @POST("/api/quizzes")
     suspend fun addQuiz(@Body quiz: QuizResponse)
@@ -24,10 +26,15 @@ interface NetworkService {
 
     @GET("/api/users")
     suspend fun getAllUsers(): List<User>
+
     @GET("/api/users/name/{userName}")
     suspend fun getUserByUserName(@Path("userName") userName: String): User
+
     @GET("/api/login")
-    suspend fun loginUser(@Query("username") userName: String, @Query("password") password: String): LoginResponse
+    suspend fun loginUser(
+        @Query("username") userName: String,
+        @Query("password") password: String
+    ): LoginResponse
 
     @GET("/api/register")
     suspend fun register(
@@ -42,11 +49,13 @@ interface NetworkService {
     suspend fun getUserById(@Path("id") id: String): User
 
     @GET("/api/register")
-    suspend fun createUser( @Query("username") username: String,
-                    @Query("password") password: String,
-                    @Query("email") email: String,
-                    @Query("name") name: String,
-                    @Query("avatar") avatar: String?): RegistryResponse
+    suspend fun createUser(
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("email") email: String,
+        @Query("name") name: String,
+        @Query("avatar") avatar: String?
+    ): RegistryResponse
 
     @POST("/api/users")
     fun editUser(@Body user: User)

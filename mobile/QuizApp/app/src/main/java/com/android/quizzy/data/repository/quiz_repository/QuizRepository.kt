@@ -1,6 +1,8 @@
 package com.android.quizzy.data.repository.quiz_repository
 
-import com.android.quizzy.domain.model.*
+import com.android.quizzy.domain.model.Answer
+import com.android.quizzy.domain.model.Question
+import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.domain.reponse.*
 
 interface QuizRepository {
@@ -10,7 +12,7 @@ interface QuizRepository {
 
     suspend fun addNewQuiz(quiz: QuizResponse)
 
-    suspend fun updateQuiz(quiz: QuizResponse)
+    suspend fun updateQuiz(quiz: QuizResponse): QuizResponse
 
     suspend fun deleteQuiz(quizId: String)
 
