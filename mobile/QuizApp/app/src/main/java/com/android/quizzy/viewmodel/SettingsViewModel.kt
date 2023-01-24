@@ -9,9 +9,7 @@ import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.domain.model.User
 import com.android.quizzy.domain.model.UserPassword
 import com.android.quizzy.domain.model.UserSettings
-import com.android.quizzy.presentation.profile.ProfileScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback

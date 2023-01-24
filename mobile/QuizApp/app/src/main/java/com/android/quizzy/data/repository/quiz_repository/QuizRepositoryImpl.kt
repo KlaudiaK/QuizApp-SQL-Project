@@ -52,7 +52,7 @@ class QuizRepositoryImpl @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun addNewQuiz(quiz: QuizResponse) {
-        val quizModel = QuizResponse(
+        QuizResponse(
             name ="Quiz naukowy",
             description = "Testowy quiz naukowy",
             categoryName = "Science",

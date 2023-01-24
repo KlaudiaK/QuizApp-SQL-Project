@@ -1,6 +1,5 @@
 package com.android.quizzy.presentation.registration_form
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -30,7 +29,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.android.quizzy.R
 import com.android.quizzy.presentation.destinations.CategoriesScreenDestination
-import com.android.quizzy.ui.theme.*
+import com.android.quizzy.ui.theme.black80
+import com.android.quizzy.ui.theme.pastelBlue20
+import com.android.quizzy.ui.theme.pastelBlue60
 import com.android.quizzy.viewmodel.UiViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -78,7 +79,7 @@ fun InputValidationAutoDebounceScreen(
     LaunchedEffect(Unit) {
         events.collect { event ->
             when (event) {
-                is ScreenEvent.ShowToast -> {}//context.toast(event.messageId)
+                is ScreenEvent.ShowToast -> {}
                 is ScreenEvent.UpdateKeyboard -> {
                     if (event.show) keyboardController?.show() else keyboardController?.hide()
                 }
@@ -112,8 +113,7 @@ fun InputValidationAutoDebounceScreen(
                     focusManager.clearFocus()
                 })
             },
-        verticalArrangement = Arrangement.Center,
-        //horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = "Register",
@@ -176,7 +176,6 @@ fun InputValidationAutoDebounceScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            //visualTransformation = ::creditCardFilter,
             inputWrapper = email,
             onValueChange = viewModel::onEmailEntered,
             onImeKeyAction = viewModel::onEmailImeActionClick
@@ -230,7 +229,6 @@ fun InputValidationAutoDebounceScreen(
                 .align(Alignment.CenterHorizontally),
             onClick = {
                 viewModel.onContinueClick()
-//                navigator.popBackStack()
                 if (proceed) {
                     navigator.navigate(CategoriesScreenDestination)
                 }

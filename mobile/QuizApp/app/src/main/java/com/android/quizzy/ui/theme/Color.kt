@@ -2,20 +2,11 @@ package com.android.quizzy.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
 val green20 = Color(0xFF90a582)
 val lightGreen20 = Color(0xFFc1d6b2)
 val darkGreen80 = Color(0xFF627655)
 
 
-val navyDarkBlue80 = Color(0xFF2C3639)
 val navyDarkBlue60 = Color(0xFF3F4E4F)
 val navyDarkBlue40 = Color(0xFF8B9899)
 val brown80 = Color(0xB2A27B5C)

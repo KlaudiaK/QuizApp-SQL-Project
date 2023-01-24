@@ -1,17 +1,14 @@
 package com.android.quizzy.viewmodel
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.presentation.login.LoginScreenEvent
 import com.android.quizzy.presentation.login.LoginScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -72,9 +69,6 @@ class AppViewModel @Inject constructor(
                     if (!uiState.value.incorrectEmail) {
                         checkUserPassword(uiState.value.email, uiState.value.password)
                         if (!uiState.value.incorrectPassword) {
-                            //    preferences.saveUserEmail(uiState.value.email)
-                            //   preferences.saveShouldShowOnboarding(false)
-                            //   preferences.saveShouldShowHome(true)
                             getUserId(uiState.value.email, uiState.value.password)
                             if (!sharedPreferences.getString("user_id", "").isNullOrEmpty()
                                 && sharedPreferences.getString("user_id", "")?.toInt() != -1

@@ -51,13 +51,11 @@ import timber.log.Timber
 @Composable
 fun TakePicture(
     uiState: State<ProfileScreenState>,
-    //   bitmap: Bitmap?,
     bottomSheetModalState: ModalBottomSheetState,
-    //  saveImage : () -> Unit,
     navigator: DestinationsNavigator
 ) {
     var isCameraSelected by rememberSaveable { mutableStateOf(false) }
-    //var imageUri: Uri? = null
+
     var imageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
     var bitmap by rememberSaveable { mutableStateOf<Bitmap?>(null) }
     var newPhoto = remember { mutableStateOf(false) }
@@ -270,7 +268,6 @@ fun TakePicture(
                                 bottomSheetModalState.hide()
                             }
                         }
-                        //TODO  newPhoto.value = !newPhoto.value
                     },
                     modifier = Modifier
                         .align(Alignment.End)

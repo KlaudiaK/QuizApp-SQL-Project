@@ -23,7 +23,6 @@ class QuestionListViewModel @Inject constructor(
     val uiState: State<QuestionListScreenState> = _uiState
 
     private val _questions = mutableStateListOf<Question>()
-    val questions: List<Question> = _questions
 
     private val _data = mutableStateListOf<Map<Question, List<Answer>>>()
     val data: List<Map<Question, List<Answer>>> = _data
@@ -32,7 +31,6 @@ class QuestionListViewModel @Inject constructor(
     val answers: List<Answer> = _answers
     fun getQuestions(quizId: String) {
         viewModelScope.launch {
-            // _uiState.value = _uiState.value.copy(questions = emptyList())
             val questionList = quizRepository.getQuestionsForQuiz(quizId).map { it.mapToQuestion() }
             _uiState.value = _uiState.value.copy(questions = questionList)
             questionList.forEach {
@@ -56,7 +54,7 @@ class QuestionListViewModel @Inject constructor(
         }
     }
 
-    fun getAnswersForQuestion(questionId: Long) {
+    private fun getAnswersForQuestion(questionId: Long) {
         viewModelScope.launch {
             val answers = quizRepository.getAnswersForQuestion(questionId.toString())
             _answers.apply {

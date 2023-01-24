@@ -7,12 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,7 +28,6 @@ import com.android.quizzy.domain.model.Categories
 import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.ui.theme.black60
 import com.android.quizzy.ui.theme.black80
-import com.android.quizzy.ui.theme.hardRed
 import com.android.quizzy.ui.theme.redLight
 
 @Composable
@@ -53,7 +49,6 @@ fun QuizCard(
         shape = RoundedCornerShape(24),
         modifier = Modifier
             .padding(vertical = 16.dp)
-            //  .border(BorderStroke(2.dp,MaterialTheme.colorScheme.secondary))
             .heightIn(max = 120.dp)
             .clickable(
                 onClick = onClick,

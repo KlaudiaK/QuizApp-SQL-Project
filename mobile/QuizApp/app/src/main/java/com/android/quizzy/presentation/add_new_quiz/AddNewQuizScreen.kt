@@ -2,27 +2,25 @@ package com.android.quizzy.presentation.add_new_quiz
 
 import android.content.Intent
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.twotone.AddCircleOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -33,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.presentation.destinations.NewQuestionDestination
@@ -407,56 +404,3 @@ fun CategoryDropDown(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun QuizImage(modifier: Modifier) {
-    var selectImages by remember { mutableStateOf(listOf<Uri>()) }
-
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
-            selectImages = it
-        }
-
-
-    Box(
-        modifier
-            .padding(start = 12.dp, top = 12.dp)
-
-    ) {
-
-
-        Card(
-            border = BorderStroke(0.3.dp, black60),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
-            modifier = Modifier
-                .height(100.dp)
-                .width(100.dp)
-                .align(Alignment.TopStart),
-            colors = CardDefaults.cardColors(containerColor = green60)
-        ) {
-
-            if (selectImages.isNotEmpty()) {
-                Image(
-                    painter = rememberImagePainter(selectImages[0]),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null,
-                    modifier = Modifier
-                        // .padding(16.dp, 8.dp)
-                        .size(100.dp)
-                        .clickable {
-
-                        }
-                )
-            }
-        }
-
-        IconButton(
-            onClick = { galleryLauncher.launch("image/*") },
-            modifier = Modifier
-                .height(30.dp)
-                .align(Alignment.BottomEnd)
-        ) {
-            Icon(Icons.TwoTone.AddCircleOutline, contentDescription = null, tint = orange20)
-        }
-    }
-}

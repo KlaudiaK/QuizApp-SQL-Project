@@ -2,7 +2,6 @@ package com.android.quizzy.data.repository.user_repository
 
 import com.android.quizzy.domain.model.*
 import retrofit2.Call
-import retrofit2.http.*
 
 interface UserRepository {
 

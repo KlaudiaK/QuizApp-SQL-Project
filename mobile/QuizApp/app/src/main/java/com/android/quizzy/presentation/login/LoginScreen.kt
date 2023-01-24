@@ -25,7 +25,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
-//@RootNavGraph(start = true)
 @Destination(route = "login", start = true)
 @Composable
 fun LoginScreen(
@@ -64,16 +63,12 @@ fun LoginScreen(
                 viewModel.onEvent(LoginScreenEvent.OnEmailTextFieldValueChange(it))
             },
             modifier = Modifier.fillMaxWidth(),
-            // placeholder = {
-            //      Text(text = "Email")
-            //  },
             label = {
                 Text(text = "Username")
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email
-            ),
-            //colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = pastelBlue20)
+            )
         )
         if (uiState.value.incorrectEmail) {
             Text(
@@ -90,9 +85,6 @@ fun LoginScreen(
                 viewModel.onEvent(LoginScreenEvent.OnPasswordTextFieldValueChange(it))
             },
             modifier = Modifier.fillMaxWidth(),
-            //placeholder = {
-            //    Text(text = "Password")
-            //  },
             label = { Text(text = "Password") },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password
@@ -115,7 +107,6 @@ fun LoginScreen(
                 .fillMaxWidth(),
             onClick = {
                 viewModel.onEvent(LoginScreenEvent.OnLoginButtonClicked)
-//                navigator.popBackStack()
                 if (uiState.value.loggedIn) {
                     navigator.navigate(CategoriesScreenDestination)
                 }

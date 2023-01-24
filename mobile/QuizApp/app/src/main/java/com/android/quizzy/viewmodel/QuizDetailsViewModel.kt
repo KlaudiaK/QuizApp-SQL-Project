@@ -41,7 +41,7 @@ class QuizDetailsViewModel @Inject constructor(
     val answers =
         MutableLiveData<List<Answer>>()
 
-    val userAnswers =
+    private val userAnswers =
         MutableLiveData<List<QuestionWithAnswers.QuestionsList>>()
 
     private val _questionWithAnswers = MutableLiveData<List<QuestionWithAnswers.QuestionsList>>(
@@ -88,13 +88,6 @@ class QuizDetailsViewModel @Inject constructor(
             answers.value = listOf()
             val questions = quizRepository.getQuestionsForQuiz(quizId).map { it.mapToQuestion() }
             _uiState.value = _uiState.value.copy(questions = questions)
-        }
-    }
-
-    fun getAnswers(questionId: String) {
-        viewModelScope.launch {
-            answers.value = listOf()
-            answers.value = (quizRepository.getAnswersForQuestion(questionId))
         }
     }
 

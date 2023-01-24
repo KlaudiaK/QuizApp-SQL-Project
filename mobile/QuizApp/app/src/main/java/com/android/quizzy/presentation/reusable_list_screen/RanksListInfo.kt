@@ -1,12 +1,10 @@
 package com.android.quizzy.presentation.reusable_list_screen
 
 
-import android.util.Size
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MilitaryTech
@@ -18,13 +16,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.quizzy.domain.model.Rank
-import com.android.quizzy.ui.theme.*
-import com.android.quizzy.viewmodel.QuestionViewModel
+import com.android.quizzy.ui.theme.brown80
+import com.android.quizzy.ui.theme.pastelBlack80
+import com.android.quizzy.ui.theme.pastelWhite
 import com.android.quizzy.viewmodel.RanksViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 

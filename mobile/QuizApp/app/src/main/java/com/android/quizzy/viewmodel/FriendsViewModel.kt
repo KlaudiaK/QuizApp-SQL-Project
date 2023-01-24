@@ -8,10 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.domain.model.FriendRequest
 import com.android.quizzy.domain.model.User
-import com.android.quizzy.domain.model.UserSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel

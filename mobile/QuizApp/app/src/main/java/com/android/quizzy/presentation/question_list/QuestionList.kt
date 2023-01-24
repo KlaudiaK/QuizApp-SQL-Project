@@ -16,14 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.android.quizzy.domain.model.Answer
 import com.android.quizzy.presentation.destinations.NewQuestionDestination
 import com.android.quizzy.presentation.expanded_card.ExpandableCard
 import com.android.quizzy.ui.theme.black80
 import com.android.quizzy.viewmodel.QuestionListViewModel
 import com.android.quizzy.viewmodel.QuizListViewModel
 import com.android.quizzy.viewmodel.UiViewModel
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -41,12 +39,12 @@ fun QuestionList(
     uiViewModel.onBottomBarVisibilityChange(false)
 
     val scrollState = rememberLazyListState()
-    //questionListViewModel.getAnswers(quizId)
+
     questionListViewModel.getQuestions(quizId.toString())
     val uiState = remember {
         questionListViewModel.uiState
     }
-      //.uiState.value.questions
+
     Scaffold(topBar = {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { navigator.navigateUp() }) {

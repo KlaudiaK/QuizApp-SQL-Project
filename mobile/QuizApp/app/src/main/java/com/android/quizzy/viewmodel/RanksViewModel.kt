@@ -1,6 +1,5 @@
 package com.android.quizzy.viewmodel
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
 import com.android.quizzy.domain.reponse.RankResponse

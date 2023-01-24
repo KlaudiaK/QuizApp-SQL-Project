@@ -2,7 +2,10 @@ package com.android.quizzy.presentation.bottom_navigation.animated
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -14,11 +17,17 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -100,9 +109,7 @@ fun BottomNavNoAnimation(
                         modifier = Modifier.clickable(
                             interactionSource = interactionSource,
                             indication = null
-                        ) {
-                            //selectedScreen = screens.indexOf(screen)
-                        },
+                        ) {},
                         screen = screen,
                         isSelected = isSelected,
                         onClick = {
@@ -133,7 +140,6 @@ sealed class Screen(
     object Home: Screen("Home", Icons.Filled.Home, Icons.Outlined.Home, "home_tab_screen")
     object Community: Screen("Community", Icons.Filled.Language, Icons.Outlined.Language, "community_quizes")
     object Profile: Screen("Profile", Icons.Filled.Person, Icons.Outlined.Person, "profile")
-    object Settings: Screen("Settings", Icons.Filled.Settings, Icons.Outlined.Settings, "settings")
 }
 
 @ExperimentalAnimationApi

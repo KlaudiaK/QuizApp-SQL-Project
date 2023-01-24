@@ -96,7 +96,6 @@ fun NewQuestion(
                         .align(Alignment.Start)
                 )
 
-                //QuestionImage(modifier = Modifier.height(130.dp))
                 Card(
                     border = BorderStroke(0.3.dp, black60),
                     elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
@@ -267,57 +266,6 @@ fun NewQuestion(
 }
 
 
-@Composable
-fun QuestionImage(modifier: Modifier) {
-    var selectImages by remember { mutableStateOf(listOf<Uri>()) }
-
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
-            selectImages = it
-        }
-
-
-    Card(
-        border = BorderStroke(0.3.dp, black60),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp),
-        colors = CardDefaults.cardColors(containerColor = green60)
-    ) {
-        if (selectImages.isNotEmpty()) {
-            Image(
-                painter = rememberImagePainter(selectImages[0]),
-                contentScale = ContentScale.FillWidth,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                    }
-            )
-
-        } else {
-
-            IconButton(
-                onClick = { galleryLauncher.launch("image/*") },
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.CenterHorizontally)
-            ) {
-                Icon(
-                    Icons.TwoTone.AddCircleOutline,
-                    contentDescription = null,
-                    tint = pastelGreen
-                )
-            }
-
-            Text(text = "You can add a picture to the question :)", color = Color.White)
-        }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionItem(
     text: String,

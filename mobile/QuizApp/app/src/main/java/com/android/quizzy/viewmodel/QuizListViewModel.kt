@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
 import com.android.quizzy.data.repository.user_repository.UserRepository
-import com.android.quizzy.domain.model.Categories
-import com.android.quizzy.domain.model.PrivacySetting
 import com.android.quizzy.domain.model.Quiz
 import com.android.quizzy.domain.reponse.FavouriteItem
 import com.android.quizzy.presentation.quiz_list.QuizListScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -73,27 +74,6 @@ class QuizListViewModel @Inject constructor(
         }
     }
 
-
-    fun getFilteredQuizes(privacySetting: PrivacySetting, selectedCategory: String? = null) = flow {
-        _quizzes.value = listOf()
-        val list = quizRepository.getQuizzes()
-        var result = list.filter { it.sharing?.name == privacySetting.name }
-        selectedCategory?.let {
-            if (!it.equals(Categories.OTHER.name, ignoreCase = true)) result =
-                result.filter { it.category.equals(selectedCategory, ignoreCase = true) }
-        }
-        _quizzes.value = result
-        emit(result)
-    }
-
-    fun getFilterQuizesByCategory(selectedCategory: String): List<Quiz> {
-        return _uiState.value.quizItems?.filter {
-            it.category.equals(
-                selectedCategory,
-                ignoreCase = true
-            )
-        } ?: listOf()
-    }
 
     fun addQuizToFavourites(id: Long) {
         viewModelScope.launch {

@@ -1,10 +1,13 @@
 package com.android.quizzy.presentation.settings
 
 import android.util.Log
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
@@ -18,7 +21,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -26,8 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.android.quizzy.R
-import com.android.quizzy.presentation.login.LoginScreenEvent
 import com.android.quizzy.ui.theme.black60
 import com.android.quizzy.ui.theme.brown80
 import com.android.quizzy.ui.theme.pastelBlack
@@ -154,7 +154,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(5.dp))
         Spacer(modifier = Modifier.background(black60).height(2.dp))
         Spacer(modifier = Modifier.height(5.dp))
-        //todo darkMode, preferredLanguage
+
         OutlinedTextField(
             label = { Text(text ="Name")},
             value = uiState.value.name,
@@ -175,9 +175,6 @@ fun SettingsScreen(
                 settingsViewModel.changePassword(it)
             },
             modifier = Modifier.fillMaxWidth().padding(16.dp),
-            //placeholder = {
-            //    Text(text = "Password")
-            //  },
             label = { Text(text = "Password") },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password

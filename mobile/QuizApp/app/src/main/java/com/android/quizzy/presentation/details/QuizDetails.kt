@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,7 +33,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,10 +66,7 @@ fun QuizDetails(
     profileViewModel: ProfileViewModel,
     quizId: Long
 ) {
-    val uiState = quizViewModel.uiState
-    val scrollState = rememberScrollState()
-    val scrollUpState = uiViewModel.scrollUp.observeAsState()
-    // viewModel.updateScrollPosition(scrollState.firstVisibleItemIndex)
+
     var user by remember {
         mutableStateOf("")
     }

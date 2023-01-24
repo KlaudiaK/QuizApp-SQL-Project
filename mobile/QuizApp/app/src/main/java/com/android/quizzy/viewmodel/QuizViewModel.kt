@@ -4,11 +4,9 @@ import android.content.SharedPreferences
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.quizzy.data.repository.quiz_repository.QuizRepository
-import com.android.quizzy.data.repository.user_repository.UserRepository
 import com.android.quizzy.domain.mapper.mapToCategory
 import com.android.quizzy.domain.model.DifficultyLevel
 import com.android.quizzy.domain.model.PrivacySetting
@@ -25,8 +23,6 @@ import kotlin.random.Random
 
 @HiltViewModel
 class QuizViewModel @Inject constructor(
-    private val handle: SavedStateHandle,
-    private val userRepository: UserRepository,
     private val quizRepository: QuizRepository,
     private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
@@ -104,7 +100,6 @@ class QuizViewModel @Inject constructor(
             }
 
         }
-        //_events.send(ScreenEvent.ShowToast(R.string.success))
     }
 
     private fun validateAllFields(): Boolean {

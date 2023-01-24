@@ -60,23 +60,13 @@ fun ProfileScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
 
-            //verticalArrangement = Arrangement.Center
         ) {
-            /*
-        ProfileTopCard(
-            uiState = uiState,
-            bitmap = bitmap,
-            bottomSheetModalState = bottomSheetModalState
-        )
-
-         */
 
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(340.dp),
                 shape = RectangleShape,
-                // colors = CardDefaults.elevatedCardColors(containerColor = brown80)
             ) {
                 TakePicture(
                     uiState = uiState,

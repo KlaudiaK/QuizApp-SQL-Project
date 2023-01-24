@@ -12,7 +12,6 @@ data class LoginScreenState(
 ){
     sealed class Error {
         object NetworkError: Error()
-        object InputTooShort: Error()
         object InputEmpty: Error()
     }
 }

@@ -1,7 +1,5 @@
 package com.android.quizzy.domain.reponse
 
-import java.time.LocalDate
-
 data class QuizResponse(
     val categoryName: String,
     val creationDate: String? = null,

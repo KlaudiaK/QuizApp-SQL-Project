@@ -49,7 +49,7 @@ fun MyQuizesScreen(
 ) {
     viewModel.onBottomBarVisibilityChange(true)
     val uiState = quizViewModel.uiState
-    var url = "https://freesvg.org/img/abstract-user-flat-4.png"
+    val url = "https://freesvg.org/img/abstract-user-flat-4.png"
 
     quizViewModel.getListOfFavouritesQuizzes(uiState.value.userId.toLong())
 

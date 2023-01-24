@@ -11,9 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.android.quizzy.presentation.reusable_list_screen.TableCell
 import com.android.quizzy.ui.theme.brown80
-import com.android.quizzy.ui.theme.pastelBlue
 import com.android.quizzy.viewmodel.CategoryViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 

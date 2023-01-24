@@ -7,26 +7,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.network.HttpException
 import com.android.quizzy.R
 import com.android.quizzy.data.repository.user_repository.UserRepository
-import com.android.quizzy.data.repository.user_repository.UserRepositoryImpl
-import com.android.quizzy.domain.model.RegistryResponse
-import com.android.quizzy.domain.model.User
 import com.android.quizzy.domain.model.UserRegister
-import com.android.quizzy.presentation.login.LoginScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.awaitResponse
-import java.lang.Error
-import java.util.prefs.Preferences
 import javax.inject.Inject
 
 
