@@ -52,7 +52,7 @@ fun AnimatedBottomNavigation(
 ){
 
     val currentRoute = navController.currentBackStackEntry?.destination?.route
-    val routesWithoutBottomBar = listOf<String>("login" , "quiz_list", "add_new_quiz")
+    val routesWithoutBottomBar = listOf("login" , "quiz_list", "add_new_quiz")
     if(routesWithoutBottomBar.any { currentRoute == it }){
         uiViewModel.onBottomBarVisibilityChange(false)
     }

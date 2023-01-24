@@ -32,7 +32,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination("friends")
 fun FriendsScreen(
     navigator: DestinationsNavigator,
-    viewModel: FriendsViewModel = hiltViewModel<FriendsViewModel>()
+    viewModel: FriendsViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState
     val friends = viewModel.userFriends

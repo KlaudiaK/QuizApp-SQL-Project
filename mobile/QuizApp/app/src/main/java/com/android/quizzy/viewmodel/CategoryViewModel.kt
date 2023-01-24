@@ -13,7 +13,7 @@ class CategoryViewModel @Inject constructor(
     val quizRepository: QuizRepository
 ): ViewModel() {
 
-    fun getCategories() = flow<List<CategoryResponse>> {
+    fun getCategories() = flow {
         emit(quizRepository.getCategories())
     }.distinctUntilChanged()
 }

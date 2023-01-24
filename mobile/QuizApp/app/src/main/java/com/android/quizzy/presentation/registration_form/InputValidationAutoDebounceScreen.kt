@@ -42,7 +42,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun InputValidationAutoDebounceScreen(
     navigator: DestinationsNavigator,
     viewModel: InputValidationAutoDebounceViewModel = hiltViewModel(),
-    UIviewModel: UiViewModel = hiltViewModel<UiViewModel>()
+    UIviewModel: UiViewModel = hiltViewModel()
 ) {
     UIviewModel.onBottomBarVisibilityChange(true)
     LaunchedEffect(key1 = Unit) {

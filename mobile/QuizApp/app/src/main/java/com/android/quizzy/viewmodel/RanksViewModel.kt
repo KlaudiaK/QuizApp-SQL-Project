@@ -13,7 +13,7 @@ class RanksViewModel @Inject constructor(
     val quizRepository: QuizRepository
 ): ViewModel() {
 
-    fun getRanks() = flow<List<RankResponse>> {
+    fun getRanks() = flow {
         emit(quizRepository.getRanks())
     }.distinctUntilChanged()
 }

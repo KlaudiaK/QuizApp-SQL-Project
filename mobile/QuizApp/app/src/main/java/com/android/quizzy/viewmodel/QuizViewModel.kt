@@ -34,7 +34,6 @@ class QuizViewModel @Inject constructor(
     val inputErrors: State<NewQuizInputErrors> = _inputErrors
 
     private val _questionList = mutableStateListOf<Question>()
-    val questionList: MutableList<Question> = _questionList
 
     init {
         getUsername()

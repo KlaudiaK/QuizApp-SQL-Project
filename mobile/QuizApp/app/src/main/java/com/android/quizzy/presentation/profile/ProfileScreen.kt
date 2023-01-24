@@ -44,8 +44,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun ProfileScreen(
     navigator: DestinationsNavigator,
-    viewModel: ProfileViewModel = hiltViewModel<ProfileViewModel>(),
-    uiViewMode: UiViewModel = hiltViewModel<UiViewModel>()
+    viewModel: ProfileViewModel = hiltViewModel(),
+    uiViewMode: UiViewModel = hiltViewModel()
 ) {
     val bottomSheetModalState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)

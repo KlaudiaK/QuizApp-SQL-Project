@@ -54,7 +54,7 @@ class QuizDetailsViewModel @Inject constructor(
         MutableStateFlow<QuestionWithAnswersState>(QuestionWithAnswersState.Initial)
     val questionListState = _questionListState.asStateFlow()
 
-    private val _finalScore = MutableLiveData<Int>(0)
+    private val _finalScore = MutableLiveData(0)
     val finalScore: LiveData<Int> = _finalScore
 
     fun getQuizDetails(id: String) {

@@ -41,7 +41,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination(route = "settings")
 fun SettingsScreen(
     navigator: DestinationsNavigator,
-    settingsViewModel: SettingsViewModel = hiltViewModel<SettingsViewModel>()
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState = settingsViewModel.uiState
     val password = settingsViewModel.password

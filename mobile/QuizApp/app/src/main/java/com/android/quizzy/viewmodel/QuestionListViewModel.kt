@@ -66,17 +66,4 @@ class QuestionListViewModel @Inject constructor(
         }
     }
 
-    fun getAnswers(quizId: String) {
-        viewModelScope.launch {
-            val questions = quizRepository.getQuestionsForQuiz(quizId).map { it.mapToQuestion() }
-            questions.forEach {
-                val answers = quizRepository.getAnswersForQuestion(it.questionId.toString())
-                _data.toMutableList().add(
-                    mapOf(Pair(it, answers))
-                )
-            }
-
-        }
-
-    }
 }

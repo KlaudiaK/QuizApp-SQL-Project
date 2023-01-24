@@ -31,7 +31,7 @@ fun ExampleNavigation(
     innerPadding: PaddingValues,
     navHostController: NavHostController,
     navHostEngine: NavHostEngine,
-    onboardingViewModel: OnboardingViewModel = hiltViewModel<OnboardingViewModel>(),
+    onboardingViewModel: OnboardingViewModel = hiltViewModel(),
     viewModel: UiViewModel
 ) {
 
@@ -63,7 +63,7 @@ fun ExampleNavigation(
             AddNewQuizScreen(
                 navigator = this.destinationsNavigator,
                 viewModel = viewModel,
-                quizViewModel = hiltViewModel<QuizViewModel>(),
+                quizViewModel = hiltViewModel(),
                 isEditMode = navArgs.isEditMode,
                 quizToEditID = navArgs.quizToEditID
             )

@@ -29,7 +29,7 @@ class QuestionViewModel @Inject constructor(
     private val _inputErrors = mutableStateOf(NewQuestionInputErrors())
     val inputErrors: State<NewQuestionInputErrors> = _inputErrors
 
-    private val _list = mutableStateListOf<Answer>(
+    private val _list = mutableStateListOf(
         Answer(1, "", false),
         Answer(2, "", false), Answer(3, "", false),
         Answer(4, "", false),
