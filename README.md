@@ -14,6 +14,8 @@ Przetwarzanie żądań związanych z rozwiązywaniem quizów i zwracanie wynikó
 Udostępnianie informacji o wynikach i rankingach użytkowników.
 ### 2. Baza danych (Postgres)
 Aplikacja wykorzystuje bazę danych Postgres do przechowywania informacji o użytkownikach, quizach, pytaniach, odpowiedziach i wynikach. Baza danych jest integralną częścią backendu i umożliwia trwałe przechowywanie danych aplikacji.
+![diagram1](https://github.com/KlaudiaK/QuizApp-SQL-Project/blob/main/diagram/ER_diagram.png)
+![diagram2](https://github.com/KlaudiaK/QuizApp-SQL-Project/blob/main/diagram/relational_diagram.png)
 
 ### 3. CI/CD (Azure App Service, Azure Database for Postgresql)
 Aplikacja jest wdrożona w chmurze Azure przy użyciu usługi Azure App Service, która umożliwia hostowanie i skalowanie backendu. Backend łączy się z bazą danych Azure Database for Postgresql, co zapewnia niezawodne przechowywanie danych.
